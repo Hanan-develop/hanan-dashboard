@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Website Editor — Hanan Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
   <link rel="stylesheet" href="css/auth.css" />
@@ -12,40 +13,35 @@
   <link rel="stylesheet" href="css/home.css" />
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/projects.css" />
+  <link rel="stylesheet" href="css/website-editor.css" />
   <link rel="stylesheet" href="css/upgrade-patch.css" />
   <link rel="stylesheet" href="css/mobile-responsive.css" />
-  <link rel="stylesheet" href="css/website-editor.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true">
-    <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
-  </div>
+  <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
+
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
-      <div>
-        <h3 id="sbUserName">Hanan</h3>
-        <p>Admin Panel</p>
-      </div>
+      <div><h3 id="sbUserName">Hanan</h3><p>Admin Panel</p></div>
     </div>
     <nav class="sb-nav">
       <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
-      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span></a>
+      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span> <span class="sb-badge" id="unreadBadge" style="display:none;">0</span></a>
       <a href="analytics.html"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a>
       <a href="projects.html"><i class="fa-solid fa-folder-open"></i> <span>Projects</span></a>
       <a href="testimonials.html"><i class="fa-solid fa-star"></i> <span>Testimonials</span></a>
       <a href="skills.html"><i class="fa-solid fa-code"></i> <span>Skills</span></a>
+      <a href="services.html"><i class="fa-solid fa-briefcase"></i> <span>Services</span></a>
+      <a href="achievements.html"><i class="fa-solid fa-trophy"></i> <span>Achievements</span></a>
       <a href="whatsnew.html"><i class="fa-solid fa-bullhorn"></i> <span>What's New</span></a>
       <a href="website-editor.html" class="active"><i class="fa-solid fa-pen-to-square"></i> <span>Website Editor</span></a>
       <a href="sections.html"><i class="fa-solid fa-eye"></i> <span>Sections</span></a>
       <a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
     </nav>
     <div class="sb-footer">
-      <button class="sb-logout" id="logoutBtn">
-        <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
-      </button>
+      <button class="sb-logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></button>
     </div>
   </aside>
 
@@ -54,230 +50,78 @@
       <button class="sb-toggle" id="sbToggle"><i class="fa-solid fa-bars"></i></button>
       <h1>Website Editor</h1>
       <div class="topbar-actions">
-        <button class="theme-toggle" id="themeToggle" title="Toggle theme (T)">
-          <i class="fa-solid fa-moon moon-icon"></i>
-          <i class="fa-solid fa-sun sun-icon"></i>
-        </button>
-        <a href="https://hanan-develop.github.io/hanan-portfolio/" target="_blank" class="btn-view-site">
-          <i class="fa-solid fa-eye"></i> <span>Preview</span>
-        </a>
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
       </div>
     </header>
 
-    <div class="sync-banner">
-      <i class="fa-solid fa-cloud-arrow-up"></i>
-      <div class="sync-banner-content">
-        <strong>Website CMS:</strong> Yahaan se tum apni website ke main sections edit kar sakte ho. Save karne pe Google Sheet mein store hoga.
-      </div>
-    </div>
-
     <div class="editor-tabs">
-      <button class="ed-tab active" data-tab="hero"><i class="fa-solid fa-id-card"></i> <span>Hero</span></button>
-      <button class="ed-tab" data-tab="about"><i class="fa-solid fa-user"></i> <span>About</span></button>
-      <button class="ed-tab" data-tab="contact"><i class="fa-solid fa-phone"></i> <span>Contact</span></button>
-      <button class="ed-tab" data-tab="social"><i class="fa-solid fa-share-nodes"></i> <span>Social</span></button>
+      <button class="editor-tab active" data-tab="hero"><i class="fa-solid fa-house"></i> Hero</button>
+      <button class="editor-tab" data-tab="about"><i class="fa-solid fa-user"></i> About</button>
+      <button class="editor-tab" data-tab="contact"><i class="fa-solid fa-envelope"></i> Contact</button>
+      <button class="editor-tab" data-tab="social"><i class="fa-solid fa-share-nodes"></i> Social</button>
     </div>
 
-    <!-- HERO -->
-    <div class="ed-panel active" id="panel-hero">
-      <div class="ed-panel-head">
-        <h2><i class="fa-solid fa-id-card"></i> Hero Section</h2>
-        <p>The main introduction visible at the top of your portfolio</p>
+    <form id="editorForm" class="editor-form">
+      <!-- HERO TAB -->
+      <div class="editor-panel active" data-panel="hero">
+        <h2 class="panel-title"><i class="fa-solid fa-house"></i> Hero Section</h2>
+        <div class="form-field"><label>Name *</label><input type="text" id="hero_name" maxlength="100" required placeholder="Abdul Hanan" /></div>
+        <div class="form-field"><label>Tagline *</label><input type="text" id="hero_tagline" maxlength="200" required placeholder="WordPress Developer & Shopify Designer" /></div>
+        <div class="form-field"><label>Subtitle</label><textarea id="hero_subtitle" maxlength="500" rows="3"></textarea></div>
+        <div class="form-row">
+          <div class="form-field"><label>CTA Button Text</label><input type="text" id="hero_cta_text" maxlength="50" value="Hire Me" /></div>
+          <div class="form-field"><label>CTA Link</label><input type="text" id="hero_cta_link" maxlength="200" value="#contact" /></div>
+        </div>
+        <div class="form-field"><label>Avatar URL (optional)</label><input type="url" id="hero_avatar" /></div>
       </div>
-      <form class="editor-form" id="heroForm">
-        <div class="form-row-2">
-          <div class="form-field">
-            <i class="fa-solid fa-user field-icon"></i>
-            <input type="text" id="hero_name" placeholder=" " maxlength="100" />
-            <label for="hero_name">Your Name</label>
-          </div>
-          <div class="form-field">
-            <i class="fa-solid fa-image field-icon"></i>
-            <input type="url" id="hero_avatar" placeholder=" " />
-            <label for="hero_avatar">Avatar URL (optional)</label>
-          </div>
-        </div>
-        <div class="form-field full">
-          <i class="fa-solid fa-quote-left field-icon"></i>
-          <input type="text" id="hero_tagline" placeholder=" " maxlength="150" />
-          <label for="hero_tagline">Tagline / Profession</label>
-        </div>
-        <div class="form-field full">
-          <i class="fa-solid fa-align-left field-icon" style="top: 2rem;"></i>
-          <textarea id="hero_subtitle" placeholder=" " rows="3" maxlength="300"></textarea>
-          <label for="hero_subtitle">Subtitle / Description</label>
-        </div>
-        <div class="form-row-2">
-          <div class="form-field">
-            <i class="fa-solid fa-hand-pointer field-icon"></i>
-            <input type="text" id="hero_cta_text" placeholder=" " maxlength="50" />
-            <label for="hero_cta_text">CTA Button Text</label>
-          </div>
-          <div class="form-field">
-            <i class="fa-solid fa-link field-icon"></i>
-            <input type="text" id="hero_cta_link" placeholder=" " />
-            <label for="hero_cta_link">CTA Link (e.g., #contact)</label>
-          </div>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span>Save Hero Section</span></button>
-        </div>
-      </form>
-    </div>
 
-    <!-- ABOUT -->
-    <div class="ed-panel" id="panel-about">
-      <div class="ed-panel-head">
-        <h2><i class="fa-solid fa-user"></i> About Section</h2>
-        <p>Your background, experience, and statistics</p>
+      <!-- ABOUT TAB -->
+      <div class="editor-panel" data-panel="about">
+        <h2 class="panel-title"><i class="fa-solid fa-user"></i> About Section</h2>
+        <div class="form-field"><label>Section Title</label><input type="text" id="about_title" maxlength="100" value="About Me" /></div>
+        <div class="form-field"><label>Description</label><textarea id="about_description" maxlength="1000" rows="5"></textarea></div>
+        <div class="stats-row">
+          <div class="form-field"><label>Years Experience</label><input type="text" id="about_years" maxlength="10" value="2" /></div>
+          <div class="form-field"><label>Projects</label><input type="text" id="about_projects" maxlength="10" value="6" /></div>
+          <div class="form-field"><label>Clients</label><input type="text" id="about_clients" maxlength="10" value="5" /></div>
+          <div class="form-field"><label>Satisfaction %</label><input type="text" id="about_satisfaction" maxlength="10" value="100" /></div>
+        </div>
       </div>
-      <form class="editor-form" id="aboutForm">
-        <div class="form-field full">
-          <i class="fa-solid fa-heading field-icon"></i>
-          <input type="text" id="about_title" placeholder=" " maxlength="100" />
-          <label for="about_title">Section Title</label>
-        </div>
-        <div class="form-field full">
-          <i class="fa-solid fa-align-left field-icon" style="top: 2rem;"></i>
-          <textarea id="about_description" placeholder=" " rows="5" maxlength="1000"></textarea>
-          <label for="about_description">About Description</label>
-        </div>
-        <div class="ed-section-title">Statistics</div>
-        <p class="ed-section-subtitle">Numbers shown in your about section</p>
-        <div class="form-row-2">
-          <div class="form-field">
-            <i class="fa-solid fa-calendar field-icon"></i>
-            <input type="number" id="about_years" placeholder=" " min="0" max="50" />
-            <label for="about_years">Years of Experience</label>
-          </div>
-          <div class="form-field">
-            <i class="fa-solid fa-folder field-icon"></i>
-            <input type="number" id="about_projects" placeholder=" " min="0" max="999" />
-            <label for="about_projects">Projects Completed</label>
-          </div>
-        </div>
-        <div class="form-row-2">
-          <div class="form-field">
-            <i class="fa-solid fa-users field-icon"></i>
-            <input type="number" id="about_clients" placeholder=" " min="0" max="999" />
-            <label for="about_clients">Happy Clients</label>
-          </div>
-          <div class="form-field">
-            <i class="fa-solid fa-percent field-icon"></i>
-            <input type="number" id="about_satisfaction" placeholder=" " min="0" max="100" />
-            <label for="about_satisfaction">Satisfaction (%)</label>
-          </div>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span>Save About Section</span></button>
-        </div>
-      </form>
-    </div>
 
-    <!-- CONTACT -->
-    <div class="ed-panel" id="panel-contact">
-      <div class="ed-panel-head">
-        <h2><i class="fa-solid fa-phone"></i> Contact Information</h2>
-        <p>How clients can reach you</p>
+      <!-- CONTACT TAB -->
+      <div class="editor-panel" data-panel="contact">
+        <h2 class="panel-title"><i class="fa-solid fa-envelope"></i> Contact Section</h2>
+        <div class="form-field"><label>Email *</label><input type="email" id="contact_email" required /></div>
+        <div class="form-row">
+          <div class="form-field"><label>Phone</label><input type="text" id="contact_phone" maxlength="20" /></div>
+          <div class="form-field"><label>WhatsApp (numbers only)</label><input type="text" id="contact_whatsapp" maxlength="15" placeholder="923254145534" /></div>
+        </div>
+        <div class="form-field"><label>Location</label><input type="text" id="contact_location" maxlength="100" /></div>
+        <div class="form-field"><label>Availability Status</label>
+          <div class="availability-options">
+            <label class="availability-option"><input type="radio" name="availability" value="available" checked /><span class="ao-card available"><span class="ao-dot"></span><span class="ao-label">Available for Work</span></span></label>
+            <label class="availability-option"><input type="radio" name="availability" value="busy" /><span class="ao-card busy"><span class="ao-dot"></span><span class="ao-label">Currently Busy</span></span></label>
+            <label class="availability-option"><input type="radio" name="availability" value="unavailable" /><span class="ao-card unavailable"><span class="ao-dot"></span><span class="ao-label">Not Available</span></span></label>
+          </div>
+        </div>
       </div>
-      <form class="editor-form" id="contactForm">
-        <div class="form-row-2">
-          <div class="form-field">
-            <i class="fa-solid fa-envelope field-icon"></i>
-            <input type="email" id="contact_email" placeholder=" " />
-            <label for="contact_email">Email Address</label>
-          </div>
-          <div class="form-field">
-            <i class="fa-solid fa-phone field-icon"></i>
-            <input type="tel" id="contact_phone" placeholder=" " />
-            <label for="contact_phone">Phone Number</label>
-          </div>
-        </div>
-        <div class="form-row-2">
-          <div class="form-field">
-            <i class="fa-brands fa-whatsapp field-icon"></i>
-            <input type="text" id="contact_whatsapp" placeholder=" " />
-            <label for="contact_whatsapp">WhatsApp (without +)</label>
-          </div>
-          <div class="form-field">
-            <i class="fa-solid fa-location-dot field-icon"></i>
-            <input type="text" id="contact_location" placeholder=" " maxlength="100" />
-            <label for="contact_location">Location</label>
-          </div>
-        </div>
-        <div class="ed-section-title">Availability Status</div>
-        <p class="ed-section-subtitle">Show clients if you're available for new work</p>
-        <div class="availability-options">
-          <label class="avail-option" data-value="available">
-            <input type="radio" name="availability" value="available" />
-            <div class="avail-card">
-              <div class="avail-dot green"></div>
-              <div><h4>Available for Work</h4><p>Open to new projects</p></div>
-            </div>
-          </label>
-          <label class="avail-option" data-value="busy">
-            <input type="radio" name="availability" value="busy" />
-            <div class="avail-card">
-              <div class="avail-dot yellow"></div>
-              <div><h4>Currently Busy</h4><p>Limited availability</p></div>
-            </div>
-          </label>
-          <label class="avail-option" data-value="unavailable">
-            <input type="radio" name="availability" value="unavailable" />
-            <div class="avail-card">
-              <div class="avail-dot red"></div>
-              <div><h4>Not Available</h4><p>Not accepting work</p></div>
-            </div>
-          </label>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span>Save Contact Info</span></button>
-        </div>
-      </form>
-    </div>
 
-    <!-- SOCIAL -->
-    <div class="ed-panel" id="panel-social">
-      <div class="ed-panel-head">
-        <h2><i class="fa-solid fa-share-nodes"></i> Social Media Links</h2>
-        <p>Your professional social media profiles</p>
+      <!-- SOCIAL TAB -->
+      <div class="editor-panel" data-panel="social">
+        <h2 class="panel-title"><i class="fa-solid fa-share-nodes"></i> Social Links</h2>
+        <div class="form-field"><label><i class="fa-brands fa-github"></i> GitHub</label><input type="url" id="social_github" /></div>
+        <div class="form-field"><label><i class="fa-brands fa-linkedin"></i> LinkedIn</label><input type="url" id="social_linkedin" /></div>
+        <div class="form-field"><label><i class="fa-brands fa-youtube"></i> YouTube</label><input type="url" id="social_youtube" /></div>
+        <div class="form-field"><label><i class="fa-brands fa-twitter"></i> Twitter / X</label><input type="url" id="social_twitter" /></div>
+        <div class="form-field"><label><i class="fa-brands fa-instagram"></i> Instagram</label><input type="url" id="social_instagram" /></div>
+        <div class="form-field"><label><i class="fa-brands fa-facebook"></i> Facebook</label><input type="url" id="social_facebook" /></div>
       </div>
-      <form class="editor-form" id="socialForm">
-        <div class="form-field full">
-          <i class="fa-brands fa-github field-icon"></i>
-          <input type="url" id="social_github" placeholder=" " />
-          <label for="social_github">GitHub URL</label>
-        </div>
-        <div class="form-field full">
-          <i class="fa-brands fa-linkedin field-icon"></i>
-          <input type="url" id="social_linkedin" placeholder=" " />
-          <label for="social_linkedin">LinkedIn URL</label>
-        </div>
-        <div class="form-field full">
-          <i class="fa-brands fa-youtube field-icon"></i>
-          <input type="url" id="social_youtube" placeholder=" " />
-          <label for="social_youtube">YouTube URL</label>
-        </div>
-        <div class="form-field full">
-          <i class="fa-brands fa-twitter field-icon"></i>
-          <input type="url" id="social_twitter" placeholder=" " />
-          <label for="social_twitter">Twitter URL (optional)</label>
-        </div>
-        <div class="form-field full">
-          <i class="fa-brands fa-instagram field-icon"></i>
-          <input type="url" id="social_instagram" placeholder=" " />
-          <label for="social_instagram">Instagram URL (optional)</label>
-        </div>
-        <div class="form-field full">
-          <i class="fa-brands fa-facebook field-icon"></i>
-          <input type="url" id="social_facebook" placeholder=" " />
-          <label for="social_facebook">Facebook URL (optional)</label>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span>Save Social Links</span></button>
-        </div>
-      </form>
-    </div>
+
+      <div class="editor-actions">
+        <button type="submit" class="btn-save-editor"><i class="fa-solid fa-check"></i> <span>Save All Changes</span></button>
+      </div>
+    </form>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
