@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Achievements — Hanan Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/features.css" />
+  <link rel="stylesheet" href="css/projects.css" />
+  <link rel="stylesheet" href="css/sections-page.css" />
+  <link rel="stylesheet" href="css/upgrade-patch.css" />
+  <link rel="stylesheet" href="css/mobile-responsive.css" />
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  </div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-avatar"><span>AH</span></div>
+      <div><h3 id="sbUserName">Hanan</h3><p>Admin Panel</p></div>
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span></a>
+      <a href="analytics.html"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a>
+      <a href="projects.html"><i class="fa-solid fa-folder-open"></i> <span>Projects</span></a>
+      <a href="testimonials.html"><i class="fa-solid fa-star"></i> <span>Testimonials</span></a>
+      <a href="skills.html"><i class="fa-solid fa-code"></i> <span>Skills</span></a>
+      <a href="services.html"><i class="fa-solid fa-briefcase"></i> <span>Services</span></a>
+      <a href="achievements.html" class="active"><i class="fa-solid fa-trophy"></i> <span>Achievements</span></a>
+      <a href="whatsnew.html"><i class="fa-solid fa-bullhorn"></i> <span>What's New</span></a>
+      <a href="website-editor.html"><i class="fa-solid fa-pen-to-square"></i> <span>Website Editor</span></a>
+      <a href="sections.html"><i class="fa-solid fa-eye"></i> <span>Sections</span></a>
+      <a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
+    </nav>
+    <div class="sb-footer">
+      <button class="sb-logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="sb-toggle" id="sbToggle"><i class="fa-solid fa-bars"></i></button>
+      <h1>Achievements</h1>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
+        <button class="btn-view-site" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Achievement</span></button>
+      </div>
+    </header>
+
+    <div class="section-filter">
+      <button class="active" data-filter="all">All <span id="countAll">0</span></button>
+      <button data-filter="visible">Visible <span id="countVisible">0</span></button>
+      <button data-filter="hidden">Hidden <span id="countHidden">0</span></button>
+    </div>
+
+    <div class="section-grid" id="achievementsGrid">
+      <div class="loading-state-mini"><div class="loader-spinner"></div><p>Loading achievements...</p></div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Achievement</h2>
+        <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="achievementForm" class="section-modal-form">
+        <input type="hidden" id="achId" />
+
+        <div class="form-field">
+          <label>Achievement Title *</label>
+          <input type="text" id="title" required maxlength="100" placeholder="Joined CNC Electric Pakistan" />
+        </div>
+
+        <div class="form-field">
+          <label>Description *</label>
+          <textarea id="description" required maxlength="500" placeholder="Promoted to Shopify Designer role..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Year</label>
+            <input type="text" id="year" maxlength="20" placeholder="2025" value="2025" />
+          </div>
+          <div class="form-field">
+            <label>Category</label>
+            <select id="category">
+              <option value="career">Career</option>
+              <option value="education">Education</option>
+              <option value="certification">Certification</option>
+              <option value="award">Award</option>
+              <option value="milestone">Milestone</option>
+              <option value="recognition">Recognition</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="icon-color-row">
+          <div class="form-field">
+            <label>Icon (Font Awesome)</label>
+            <input type="text" id="icon" placeholder="fa-trophy" value="fa-trophy" />
+            <small style="color: var(--text-muted); font-size: 1.1rem;">Examples: fa-trophy, fa-medal, fa-graduation-cap, fa-certificate, fa-star</small>
+          </div>
+          <div class="form-field">
+            <label>Color</label>
+            <div class="color-picker-wrap">
+              <input type="color" id="color" value="#f9ca24" />
+              <input type="text" id="colorHex" value="#f9ca24" maxlength="7" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Display Order</label>
+            <input type="number" id="orderNum" min="1" max="100" value="1" />
+          </div>
+          <div class="form-field">
+            <label>Tag (optional)</label>
+            <select id="tag">
+              <option value="">None</option>
+              <option value="latest">Latest</option>
+              <option value="featured">Featured</option>
+              <option value="major">Major</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-toggle-row">
+          <label><i class="fa-solid fa-eye"></i> Show on Website</label>
+          <div class="toggle-switch on" id="visibleToggle"></div>
+          <input type="hidden" id="visible" value="yes" />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span id="saveBtnText">Save Achievement</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/mobile.js"></script>
+  <script src="js/achievements.js"></script>
+</body>
+</html>

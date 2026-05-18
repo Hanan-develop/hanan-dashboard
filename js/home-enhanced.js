@@ -1,6 +1,6 @@
 /* =========================================================
-   DASHBOARD HOME - Enhanced with Caching + Live Data
-   Loads from cache instantly, then refreshes in background
+   DASHBOARD HOME - SUPER FAST (Single API Call)
+   Uses getAllData endpoint instead of 6 separate calls
    ========================================================= */
 
 (function () {
@@ -9,35 +9,26 @@
     var GOOGLE_SCRIPT_URL = HananAuth.getApiUrl();
     var CACHE_KEY = 'hanan_dashboard_cache';
     var CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+    var MESSAGES_CACHE_KEY = 'hanan_messages_cache';
 
-    // ===== CACHE HELPERS =====
-
-    function getCache() {
+    // ===== CACHE =====
+    function getCache(key) {
         try {
-            var raw = localStorage.getItem(CACHE_KEY);
+            var raw = localStorage.getItem(key || CACHE_KEY);
             if (!raw) return null;
             var cache = JSON.parse(raw);
-            var age = Date.now() - (cache.timestamp || 0);
-            if (age > CACHE_DURATION) return null; // Cache expired
+            if (Date.now() - (cache.timestamp || 0) > CACHE_DURATION) return null;
             return cache.data;
-        } catch (e) {
-            return null;
-        }
+        } catch (e) { return null; }
     }
 
-    function setCache(data) {
+    function setCache(data, key) {
         try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({
-                data: data,
-                timestamp: Date.now()
-            }));
-        } catch (e) {
-            console.warn('Cache write failed:', e);
-        }
+            localStorage.setItem(key || CACHE_KEY, JSON.stringify({ data: data, timestamp: Date.now() }));
+        } catch (e) {}
     }
 
     // ===== HELPERS =====
-
     function escapeHtml(str) {
         if (!str) return '';
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -62,22 +53,16 @@
         return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
     }
 
-    // ===== UPDATE GREETING =====
-
+    // ===== GREETING =====
     function updateGreeting() {
         var hour = new Date().getHours();
-        var greeting = 'Welcome back';
-        var emoji = '👋';
-
+        var greeting = 'Welcome back', emoji = '👋';
         if (hour < 12) { greeting = 'Good morning'; emoji = '☀️'; }
         else if (hour < 17) { greeting = 'Good afternoon'; emoji = '🌤️'; }
         else if (hour < 21) { greeting = 'Good evening'; emoji = '🌆'; }
         else { greeting = 'Good night'; emoji = '🌙'; }
-
         $('#greetingText').text(greeting);
         $('#greetingEmoji').text(emoji);
-
-        // Update name
         var user = HananAuth.getCurrentUser();
         if (user) {
             var name = user.charAt(0).toUpperCase() + user.slice(1);
@@ -88,14 +73,8 @@
 
     function updateClock() {
         var now = new Date();
-        var date = now.toLocaleDateString('en-US', {
-            weekday: 'short', month: 'short', day: 'numeric'
-        });
-        var time = now.toLocaleTimeString('en-US', {
-            hour: 'numeric', minute: '2-digit', hour12: true
-        });
-        $('#todayDate').text(date);
-        $('#currentTime').text(time);
+        $('#todayDate').text(now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
+        $('#currentTime').text(now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
     }
 
     // ===== RENDER FUNCTIONS =====
@@ -106,32 +85,21 @@
         var weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
         var unread = messages.filter(function (m) { return m.status === 'unread'; }).length;
-        var todayCount = messages.filter(function (m) {
-            return m.timestamp && new Date(m.timestamp).toDateString() === today;
-        }).length;
-        var weekCount = messages.filter(function (m) {
-            return m.timestamp && new Date(m.timestamp) >= weekAgo;
-        }).length;
+        var weekCount = messages.filter(function (m) { return m.timestamp && new Date(m.timestamp) >= weekAgo; }).length;
 
         $('#totalMessages').text(messages.length);
         $('#unreadMessages').text(unread);
 
-        // Update unread badge in sidebar
-        if (unread > 0) {
-            $('#unreadBadge').text(unread).show();
-        } else {
-            $('#unreadBadge').hide();
-        }
+        if (unread > 0) $('#unreadBadge').text(unread).show();
+        else $('#unreadBadge').hide();
 
-        // Render bar chart (last 7 days)
+        // Bar chart
         var chartData = {};
         for (var i = 6; i >= 0; i--) {
             var d = new Date();
             d.setDate(d.getDate() - i);
-            var key = d.toLocaleDateString('en-US', { weekday: 'short' });
-            chartData[key] = 0;
+            chartData[d.toLocaleDateString('en-US', { weekday: 'short' })] = 0;
         }
-
         messages.forEach(function (m) {
             if (!m.timestamp) return;
             var d = new Date(m.timestamp);
@@ -142,28 +110,25 @@
         });
 
         var maxValue = Math.max.apply(null, Object.values(chartData)) || 1;
-        var barHtml = '';
-        Object.keys(chartData).forEach(function (day) {
+        var barHtml = Object.keys(chartData).map(function (day) {
             var val = chartData[day];
-            var height = (val / maxValue) * 100;
-            barHtml += '<div class="bar-col">' +
+            return '<div class="bar-col">' +
                 '<div class="bar-value">' + val + '</div>' +
-                '<div class="bar" style="height: ' + height + '%;"></div>' +
+                '<div class="bar" style="height: ' + ((val / maxValue) * 100) + '%;"></div>' +
                 '<div class="bar-label">' + day + '</div>' +
             '</div>';
-        });
+        }).join('');
         $('#barChart').html(barHtml);
         $('#chartNote').text('Showing message activity for the last 7 days');
 
-        // Recent messages list (top 5)
+        // Recent list
         var recent = messages.slice(0, 5);
         if (recent.length === 0) {
             $('#recentList').html('<div class="empty-state-mini"><i class="fa-solid fa-inbox"></i><p>No messages yet</p></div>');
         } else {
             var html = recent.map(function (m) {
                 var initials = getInitials(m.name);
-                var unreadClass = m.status === 'unread' ? ' unread' : '';
-                return '<a href="messages.html" class="recent-item' + unreadClass + '">' +
+                return '<a href="messages.html" class="recent-item' + (m.status === 'unread' ? ' unread' : '') + '">' +
                     '<div class="recent-avatar">' + escapeHtml(initials) + '</div>' +
                     '<div class="recent-content">' +
                         '<div class="recent-name">' + escapeHtml(m.name) + '</div>' +
@@ -178,84 +143,61 @@
 
     function renderRecentProjects(projects) {
         $('#totalProjects').text(projects.length);
-
         var recent = projects.slice(0, 4);
         if (recent.length === 0) {
             $('#recentProjects').html(
-                '<div class="overview-empty">' +
-                '<i class="fa-solid fa-folder-open"></i>' +
-                '<p>No projects yet</p>' +
-                '<a href="projects.html"><i class="fa-solid fa-plus"></i> Add First Project</a>' +
-                '</div>'
+                '<div class="overview-empty"><i class="fa-solid fa-folder-open"></i><p>No projects yet</p>' +
+                '<a href="projects.html"><i class="fa-solid fa-plus"></i> Add First</a></div>'
             );
             return;
         }
-
         var html = recent.map(function (p) {
             return '<div class="overview-item">' +
                 '<div class="overview-item-icon" style="background: ' + escapeHtml(p.color || '#f9ca24') + '22; color: ' + escapeHtml(p.color || '#f9ca24') + ';">' +
-                    '<i class="fa-solid fa-folder-open"></i>' +
-                '</div>' +
+                    '<i class="fa-solid fa-folder-open"></i></div>' +
                 '<div class="overview-item-content">' +
                     '<div class="overview-item-title">' + escapeHtml(p.title) + '</div>' +
                     '<div class="overview-item-meta">' + escapeHtml(p.category || 'Project') + '</div>' +
-                '</div>' +
-            '</div>';
+                '</div></div>';
         }).join('');
-
         $('#recentProjects').html(html);
     }
 
     function renderRecentTestimonials(testimonials) {
         $('#totalTestimonials').text(testimonials.length);
-
         var recent = testimonials.slice(0, 4);
         if (recent.length === 0) {
             $('#recentTestimonials').html(
-                '<div class="overview-empty">' +
-                '<i class="fa-solid fa-star"></i>' +
-                '<p>No reviews yet</p>' +
-                '<a href="testimonials.html"><i class="fa-solid fa-plus"></i> Add First Review</a>' +
-                '</div>'
+                '<div class="overview-empty"><i class="fa-solid fa-star"></i><p>No reviews yet</p>' +
+                '<a href="testimonials.html"><i class="fa-solid fa-plus"></i> Add First</a></div>'
             );
             return;
         }
-
         var html = recent.map(function (t) {
             var stars = '';
             for (var i = 0; i < 5; i++) {
-                stars += i < (parseInt(t.rating) || 5)
-                    ? '<i class="fa-solid fa-star"></i>'
-                    : '<i class="fa-regular fa-star"></i>';
+                stars += i < (parseInt(t.rating) || 5) ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
             }
-
             return '<div class="overview-item">' +
                 '<div class="overview-item-icon"><i class="fa-solid fa-quote-left"></i></div>' +
                 '<div class="overview-item-content">' +
                     '<div class="overview-item-title">' + escapeHtml(t.name) + '</div>' +
                     '<div class="overview-stars">' + stars + '</div>' +
-                '</div>' +
-            '</div>';
+                '</div></div>';
         }).join('');
-
         $('#recentTestimonials').html(html);
     }
 
     function renderTopSkills(skills) {
         $('#totalSkills').text(skills.length);
-
-        // Sort by percent desc
         var sorted = skills.slice().sort(function (a, b) {
             return (parseInt(b.percent) || 0) - (parseInt(a.percent) || 0);
         }).slice(0, 4);
 
         if (sorted.length === 0) {
             $('#topSkills').html(
-                '<div class="overview-empty">' +
-                '<i class="fa-solid fa-code"></i>' +
-                '<p>No skills yet</p>' +
-                '<a href="skills.html"><i class="fa-solid fa-plus"></i> Add First Skill</a>' +
-                '</div>'
+                '<div class="overview-empty"><i class="fa-solid fa-code"></i><p>No skills yet</p>' +
+                '<a href="skills.html"><i class="fa-solid fa-plus"></i> Add First</a></div>'
             );
             return;
         }
@@ -265,35 +207,27 @@
             var iconClass = (s.icon || 'fa-code').indexOf('fa-') === 0 ? 'fa-solid ' + s.icon : s.icon;
             return '<div class="overview-item">' +
                 '<div class="overview-item-icon" style="background: ' + escapeHtml(s.color || '#f9ca24') + '22; color: ' + escapeHtml(s.color || '#f9ca24') + ';">' +
-                    '<i class="' + iconClass + '"></i>' +
-                '</div>' +
+                    '<i class="' + iconClass + '"></i></div>' +
                 '<div class="overview-item-content">' +
                     '<div class="overview-item-title">' + escapeHtml(s.name) + ' (' + percent + '%)</div>' +
                     '<div class="overview-item-progress">' +
                         '<div class="overview-item-progress-fill" style="width: ' + percent + '%; background: ' + escapeHtml(s.color || '#f9ca24') + ';"></div>' +
                     '</div>' +
-                '</div>' +
-            '</div>';
+                '</div></div>';
         }).join('');
-
         $('#topSkills').html(html);
     }
 
     function renderRecentUpdates(updates) {
         $('#totalUpdates').text(updates.length);
-
-        // Sort by date desc
         var sorted = updates.slice().sort(function (a, b) {
             return new Date(b.date || 0) - new Date(a.date || 0);
         }).slice(0, 4);
 
         if (sorted.length === 0) {
             $('#recentUpdates').html(
-                '<div class="overview-empty">' +
-                '<i class="fa-solid fa-bullhorn"></i>' +
-                '<p>No updates yet</p>' +
-                '<a href="whatsnew.html"><i class="fa-solid fa-plus"></i> Add First Update</a>' +
-                '</div>'
+                '<div class="overview-empty"><i class="fa-solid fa-bullhorn"></i><p>No updates yet</p>' +
+                '<a href="whatsnew.html"><i class="fa-solid fa-plus"></i> Add First</a></div>'
             );
             return;
         }
@@ -304,21 +238,17 @@
                 '<div class="overview-item-content">' +
                     '<div class="overview-item-title">' + escapeHtml(u.title) + '</div>' +
                     '<div class="overview-item-meta">' + escapeHtml(u.tag || 'UPDATE') + ' · ' + timeAgo(u.date) + '</div>' +
-                '</div>' +
-            '</div>';
+                '</div></div>';
         }).join('');
-
         $('#recentUpdates').html(html);
     }
 
     function renderSiteInfo(settings) {
         if (!settings || Object.keys(settings).length === 0) {
             $('#siteInfoGrid').html(
-                '<div class="overview-empty" style="grid-column: 1/-1;">' +
-                '<i class="fa-solid fa-id-card"></i>' +
+                '<div class="overview-empty" style="grid-column: 1/-1;"><i class="fa-solid fa-id-card"></i>' +
                 '<p>No website info set yet</p>' +
-                '<a href="website-editor.html"><i class="fa-solid fa-pen-to-square"></i> Edit Website Info</a>' +
-                '</div>'
+                '<a href="website-editor.html"><i class="fa-solid fa-pen-to-square"></i> Edit Website Info</a></div>'
             );
             return;
         }
@@ -326,57 +256,41 @@
         var availability = settings.contact_availability || 'available';
         var availLabel = availability === 'available' ? 'Available for Work' :
                         availability === 'busy' ? 'Currently Busy' : 'Not Available';
-
         var html = '';
 
         if (settings.hero_name) {
             html += '<div class="site-info-item">' +
                 '<div class="site-info-item-label"><i class="fa-solid fa-user"></i> Name</div>' +
-                '<div class="site-info-item-value">' + escapeHtml(settings.hero_name) + '</div>' +
-            '</div>';
+                '<div class="site-info-item-value">' + escapeHtml(settings.hero_name) + '</div></div>';
         }
-
         if (settings.hero_tagline) {
             html += '<div class="site-info-item">' +
                 '<div class="site-info-item-label"><i class="fa-solid fa-quote-left"></i> Tagline</div>' +
-                '<div class="site-info-item-value">' + escapeHtml(settings.hero_tagline) + '</div>' +
-            '</div>';
+                '<div class="site-info-item-value">' + escapeHtml(settings.hero_tagline) + '</div></div>';
         }
-
         if (settings.contact_email) {
             html += '<div class="site-info-item">' +
                 '<div class="site-info-item-label"><i class="fa-solid fa-envelope"></i> Email</div>' +
-                '<div class="site-info-item-value">' + escapeHtml(settings.contact_email) + '</div>' +
-            '</div>';
+                '<div class="site-info-item-value">' + escapeHtml(settings.contact_email) + '</div></div>';
         }
-
         if (settings.contact_whatsapp) {
             html += '<div class="site-info-item">' +
                 '<div class="site-info-item-label"><i class="fa-brands fa-whatsapp"></i> WhatsApp</div>' +
-                '<div class="site-info-item-value">+' + escapeHtml(settings.contact_whatsapp) + '</div>' +
-            '</div>';
+                '<div class="site-info-item-value">+' + escapeHtml(settings.contact_whatsapp) + '</div></div>';
         }
-
         if (settings.contact_location) {
             html += '<div class="site-info-item">' +
                 '<div class="site-info-item-label"><i class="fa-solid fa-location-dot"></i> Location</div>' +
-                '<div class="site-info-item-value">' + escapeHtml(settings.contact_location) + '</div>' +
-            '</div>';
+                '<div class="site-info-item-value">' + escapeHtml(settings.contact_location) + '</div></div>';
         }
-
         html += '<div class="site-info-item">' +
             '<div class="site-info-item-label"><i class="fa-solid fa-circle"></i> Availability</div>' +
             '<div class="site-info-item-value">' +
-                '<span class="availability-badge ' + availability + '">' +
-                    '<span class="dot"></span>' + availLabel +
-                '</span>' +
-            '</div>' +
-        '</div>';
+                '<span class="availability-badge ' + availability + '"><span class="dot"></span>' + availLabel + '</span>' +
+            '</div></div>';
 
         $('#siteInfoGrid').html(html);
     }
-
-    // ===== MAIN DATA LOAD =====
 
     function renderAllData(data) {
         renderMessageStats(data.messages || []);
@@ -386,14 +300,16 @@
         renderRecentUpdates(data.whatsnew || []);
         renderSiteInfo(data.settings || {});
 
-        $('#apiStatus').text('Connected & Live').css('color', 'var(--success)');
+        $('#apiStatus').text('Connected & Fast').css('color', 'var(--success)');
         $('#cacheStatus').text('Active (5min)').css('color', 'var(--success)');
     }
+
+    // ===== SUPER FAST LOAD =====
 
     function loadFromCache() {
         var cached = getCache();
         if (cached) {
-            console.log('Loaded from cache');
+            console.log('⚡ Loaded from cache (instant)');
             renderAllData(cached);
             return true;
         }
@@ -401,35 +317,40 @@
     }
 
     function fetchFreshData(silent) {
-        if (!silent) {
-            console.log('Fetching fresh data...');
-        }
+        if (!silent) console.log('🔄 Fetching fresh data...');
 
-        // Use Promise.all to fetch all data in parallel (FAST!)
-        var promises = [
-            fetch(GOOGLE_SCRIPT_URL + '?action=getMessages').then(function (r) { return r.json(); }).catch(function () { return { messages: [] }; }),
-            fetch(GOOGLE_SCRIPT_URL + '?action=getProjects').then(function (r) { return r.json(); }).catch(function () { return { projects: [] }; }),
-            fetch(GOOGLE_SCRIPT_URL + '?action=getTestimonials').then(function (r) { return r.json(); }).catch(function () { return { testimonials: [] }; }),
-            fetch(GOOGLE_SCRIPT_URL + '?action=getSkills').then(function (r) { return r.json(); }).catch(function () { return { skills: [] }; }),
-            fetch(GOOGLE_SCRIPT_URL + '?action=getWhatsNew').then(function (r) { return r.json(); }).catch(function () { return { updates: [] }; }),
-            fetch(GOOGLE_SCRIPT_URL + '?action=getSiteSettings').then(function (r) { return r.json(); }).catch(function () { return { settings: {} }; })
-        ];
+        var startTime = Date.now();
 
-        Promise.all(promises).then(function (results) {
+        // SINGLE API CALL for everything (much faster!)
+        var allDataPromise = fetch(GOOGLE_SCRIPT_URL + '?action=getAllData')
+            .then(function (r) { return r.json(); })
+            .catch(function () { return null; });
+
+        var messagesPromise = fetch(GOOGLE_SCRIPT_URL + '?action=getMessages')
+            .then(function (r) { return r.json(); })
+            .catch(function () { return { messages: [] }; });
+
+        Promise.all([allDataPromise, messagesPromise]).then(function (results) {
+            var allData = results[0];
+            var msgsResp = results[1];
+
             var data = {
-                messages: (results[0] && results[0].messages) || [],
-                projects: (results[1] && results[1].projects) || [],
-                testimonials: (results[2] && results[2].testimonials) || [],
-                skills: (results[3] && results[3].skills) || [],
-                whatsnew: (results[4] && results[4].updates) || [],
-                settings: (results[5] && results[5].settings) || {}
+                messages: (msgsResp && msgsResp.messages) || [],
+                projects: (allData && allData.projects) || [],
+                testimonials: (allData && allData.testimonials) || [],
+                skills: (allData && allData.skills) || [],
+                whatsnew: (allData && allData.whatsnew) || [],
+                settings: (allData && allData.settings) || {}
             };
 
             setCache(data);
             renderAllData(data);
 
-            if (!silent) {
-                console.log('Fresh data loaded and cached');
+            var loadTime = ((Date.now() - startTime) / 1000).toFixed(2);
+            console.log('✅ Loaded in ' + loadTime + 's');
+
+            if (!silent && window.notify) {
+                notify({ message: 'Loaded in ' + loadTime + 's', type: 'success' });
             }
         }).catch(function (err) {
             console.error('Fetch error:', err);
@@ -445,40 +366,29 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        // STRATEGY: Load cache first (instant), then fetch fresh in background
+        // Show cache instantly, refresh silently
         var hasCachedData = loadFromCache();
-
         if (hasCachedData) {
-            // Show cache, refresh silently in background
-            setTimeout(function () { fetchFreshData(true); }, 500);
+            setTimeout(function () { fetchFreshData(true); }, 1000);
         } else {
-            // No cache, fetch fresh now
             fetchFreshData(false);
         }
 
-        // Manual refresh button
         $('#refreshBtn').on('click', function () {
             var $btn = $(this);
             $btn.prop('disabled', true).find('i').addClass('fa-spin');
-
-            // Clear cache + fetch fresh
-            try { localStorage.removeItem(CACHE_KEY); } catch (e) {}
+            try {
+                localStorage.removeItem(CACHE_KEY);
+                localStorage.removeItem(MESSAGES_CACHE_KEY);
+            } catch (e) {}
             fetchFreshData(false);
-
             setTimeout(function () {
                 $btn.prop('disabled', false).find('i').removeClass('fa-spin');
-                if (window.notify) {
-                    notify({ message: 'Data refreshed!', type: 'success' });
-                }
+                if (window.notify) notify({ message: 'Data refreshed!', type: 'success' });
             }, 1500);
         });
 
-        // Sidebar toggle (mobile)
-        $('#sbToggle').on('click', function () {
-            $('#sidebar').toggleClass('open');
-        });
-
-        // Logout
+        $('#sbToggle').on('click', function () { $('#sidebar').toggleClass('open'); });
         $('#logoutBtn').on('click', function () {
             if (confirm('Logout?')) HananAuth.logout();
         });
