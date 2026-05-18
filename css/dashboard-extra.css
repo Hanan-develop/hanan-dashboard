@@ -1,0 +1,418 @@
+/* =========================================================
+   DASHBOARD EXTRA STYLES - Data Overview Widgets
+   ========================================================= */
+
+/* 6-column stats grid */
+.stats-grid-6 {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)) !important;
+}
+
+@media (min-width: 1400px) {
+    .stats-grid-6 {
+        grid-template-columns: repeat(6, 1fr) !important;
+    }
+}
+
+/* Pink stat card */
+.stat-card.stat-pink .stat-icon {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(236, 72, 153, 0.05));
+    color: #ec4899;
+}
+
+/* =========================================================
+   DATA OVERVIEW SECTION
+   ========================================================= */
+.data-overview {
+    margin: 2rem 0;
+}
+
+.data-overview .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.data-overview .section-title i {
+    color: var(--yellow);
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 1.4rem;
+}
+
+.overview-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid var(--border);
+    border-radius: 1.4rem;
+    padding: 1.6rem 1.8rem;
+    transition: all 0.3s var(--ease);
+    min-height: 28rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-card:hover {
+    border-color: rgba(249, 202, 36, 0.3);
+    transform: translateY(-2px);
+}
+
+.overview-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.4rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.overview-card-head h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.4rem;
+    color: var(--text);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.overview-card-head h3 i {
+    color: var(--yellow);
+    font-size: 1.5rem;
+}
+
+.overview-link {
+    font-size: 1.15rem;
+    color: var(--yellow);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: opacity 0.3s;
+}
+
+.overview-link:hover {
+    opacity: 0.7;
+}
+
+.overview-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    overflow: hidden;
+}
+
+/* Overview Item */
+.overview-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 0.8rem;
+    transition: all 0.2s var(--ease);
+}
+
+body.light-theme .overview-item {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.overview-item:hover {
+    background: rgba(249, 202, 36, 0.05);
+    border-color: rgba(249, 202, 36, 0.2);
+}
+
+.overview-item-icon {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 0.7rem;
+    background: rgba(249, 202, 36, 0.12);
+    color: var(--yellow);
+    display: grid;
+    place-items: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.overview-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.overview-item-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    color: var(--text);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.2rem;
+}
+
+.overview-item-meta {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Skill progress in overview */
+.overview-item-progress {
+    width: 100%;
+    height: 0.4rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 5rem;
+    overflow: hidden;
+    margin-top: 0.4rem;
+}
+
+.overview-item-progress-fill {
+    height: 100%;
+    background: var(--g-yellow);
+    border-radius: 5rem;
+}
+
+/* Star rating mini */
+.overview-stars {
+    display: inline-flex;
+    gap: 0.1rem;
+    font-size: 1rem;
+    color: var(--yellow);
+}
+
+/* Empty state in overview */
+.overview-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.overview-empty i {
+    font-size: 2.5rem;
+    opacity: 0.3;
+    margin-bottom: 0.8rem;
+}
+
+.overview-empty p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.overview-empty a {
+    color: var(--yellow);
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+/* Mini loading state */
+.loading-state-mini {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+    color: var(--text-muted);
+}
+
+.loading-state-mini .loader-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid rgba(249, 202, 36, 0.2);
+    border-top-color: var(--yellow);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loading-state-mini p {
+    font-size: 1.2rem;
+}
+
+/* =========================================================
+   SITE INFO WIDGET (Current Website Data)
+   ========================================================= */
+.site-info-widget {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid var(--border);
+    border-radius: 1.4rem;
+    padding: 1.8rem 2rem;
+    margin: 2rem 0;
+}
+
+.site-info-widget .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.4rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.site-info-widget .card-header h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.6rem;
+    color: var(--text);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.site-info-widget .card-header h2 i {
+    color: var(--yellow);
+}
+
+.site-info-widget .view-all {
+    color: var(--yellow);
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: rgba(249, 202, 36, 0.1);
+    border-radius: 0.6rem;
+    transition: all 0.2s;
+}
+
+.site-info-widget .view-all:hover {
+    background: rgba(249, 202, 36, 0.2);
+}
+
+.site-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1.4rem;
+}
+
+.site-info-item {
+    padding: 1.2rem 1.4rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 0.9rem;
+}
+
+body.light-theme .site-info-item {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.site-info-item-label {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.site-info-item-label i {
+    color: var(--yellow);
+}
+
+.site-info-item-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.35rem;
+    color: var(--text);
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* Availability badge */
+.availability-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.9rem;
+    border-radius: 5rem;
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.availability-badge.available {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--success);
+}
+
+.availability-badge.busy {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
+}
+
+.availability-badge.unavailable {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--error);
+}
+
+.availability-badge .dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 6px currentColor;
+}
+
+.availability-badge.available .dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE
+   ========================================================= */
+@media (max-width: 768px) {
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .overview-card {
+        min-height: auto;
+    }
+
+    .site-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid-6 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid-6 {
+        grid-template-columns: 1fr !important;
+    }
+
+    .overview-item-icon {
+        width: 2.8rem;
+        height: 2.8rem;
+        font-size: 1.15rem;
+    }
+
+    .overview-item-title {
+        font-size: 1.15rem;
+    }
+
+    .overview-item-meta {
+        font-size: 1rem;
+    }
+}

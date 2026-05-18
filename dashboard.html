@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/features.css" />
   <link rel="stylesheet" href="css/upgrade-patch.css" />
   <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <link rel="stylesheet" href="css/dashboard-extra.css" />
 </head>
 <body>
   <div class="bg-orbs" aria-hidden="true">
@@ -24,7 +25,6 @@
   </div>
   <div class="bg-grid" aria-hidden="true"></div>
 
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -60,7 +60,7 @@
         <button class="btn-refresh" id="cmdPaletteBtn" title="Search (Ctrl+K)" style="margin-right: 0.4rem;">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
-        <button class="theme-toggle" id="themeToggle" title="Toggle theme (T)" aria-label="Toggle theme">
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme (T)">
           <i class="fa-solid fa-moon moon-icon"></i>
           <i class="fa-solid fa-sun sun-icon"></i>
         </button>
@@ -73,7 +73,7 @@
       </div>
     </header>
 
-    <!-- Hero Welcome Card -->
+    <!-- Hero Welcome -->
     <div class="hero-welcome reveal">
       <div class="hw-content">
         <div class="hw-greeting">
@@ -100,9 +100,7 @@
             <i class="fa-solid fa-wifi"></i>
             <div>
               <span class="hw-label">Status</span>
-              <span class="hw-value status-online" id="systemStatus">
-                <span class="status-dot"></span> Online
-              </span>
+              <span class="hw-value status-online" id="systemStatus"><span class="status-dot"></span> Online</span>
             </div>
           </div>
         </div>
@@ -112,14 +110,14 @@
       </div>
     </div>
 
-    <!-- Stats Grid -->
-    <div class="stats-grid reveal">
+    <!-- 6 Stats Grid (UPDATED - includes Projects, Testimonials, Skills) -->
+    <div class="stats-grid stats-grid-6 reveal">
       <div class="stat-card stat-blue">
         <div class="stat-icon"><i class="fa-solid fa-envelope"></i></div>
         <div class="stat-content">
-          <span class="stat-label">Total Messages</span>
+          <span class="stat-label">Messages</span>
           <span class="stat-value" id="totalMessages">0</span>
-          <span class="stat-trend"><i class="fa-solid fa-database"></i><span>All time</span></span>
+          <span class="stat-trend"><i class="fa-solid fa-database"></i><span>Total</span></span>
         </div>
       </div>
       <div class="stat-card stat-red">
@@ -127,28 +125,106 @@
         <div class="stat-content">
           <span class="stat-label">Unread</span>
           <span class="stat-value" id="unreadMessages">0</span>
-          <span class="stat-trend"><i class="fa-solid fa-bell"></i><span>Need attention</span></span>
-        </div>
-      </div>
-      <div class="stat-card stat-green">
-        <div class="stat-icon"><i class="fa-solid fa-calendar-day"></i></div>
-        <div class="stat-content">
-          <span class="stat-label">Today</span>
-          <span class="stat-value" id="todayMessages">0</span>
-          <span class="stat-trend"><i class="fa-solid fa-arrow-trend-up"></i><span>Last 24h</span></span>
+          <span class="stat-trend"><i class="fa-solid fa-bell"></i><span>Need reply</span></span>
         </div>
       </div>
       <div class="stat-card stat-yellow">
-        <div class="stat-icon"><i class="fa-solid fa-chart-simple"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-folder-open"></i></div>
         <div class="stat-content">
-          <span class="stat-label">This Week</span>
-          <span class="stat-value" id="weekMessages">0</span>
-          <span class="stat-trend"><i class="fa-solid fa-chart-line"></i><span>Last 7 days</span></span>
+          <span class="stat-label">Projects</span>
+          <span class="stat-value" id="totalProjects">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-database"></i><span>Total</span></span>
+        </div>
+      </div>
+      <div class="stat-card stat-purple">
+        <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+        <div class="stat-content">
+          <span class="stat-label">Reviews</span>
+          <span class="stat-value" id="totalTestimonials">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-database"></i><span>Total</span></span>
+        </div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-icon"><i class="fa-solid fa-code"></i></div>
+        <div class="stat-content">
+          <span class="stat-label">Skills</span>
+          <span class="stat-value" id="totalSkills">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-database"></i><span>Total</span></span>
+        </div>
+      </div>
+      <div class="stat-card stat-pink">
+        <div class="stat-icon"><i class="fa-solid fa-bullhorn"></i></div>
+        <div class="stat-content">
+          <span class="stat-label">Updates</span>
+          <span class="stat-value" id="totalUpdates">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-database"></i><span>Total</span></span>
         </div>
       </div>
     </div>
 
-    <!-- Chart + Recent Activity -->
+    <!-- Data Overview - 4 cards showing current data -->
+    <div class="data-overview reveal">
+      <h2 class="section-title"><i class="fa-solid fa-chart-pie"></i> Your Portfolio Data Overview</h2>
+
+      <div class="overview-grid">
+        <!-- Recent Projects -->
+        <div class="overview-card">
+          <div class="overview-card-head">
+            <h3><i class="fa-solid fa-folder-open"></i> Recent Projects</h3>
+            <a href="projects.html" class="overview-link">View All <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="overview-list" id="recentProjects">
+            <div class="loading-state-mini"><div class="loader-spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Recent Testimonials -->
+        <div class="overview-card">
+          <div class="overview-card-head">
+            <h3><i class="fa-solid fa-star"></i> Recent Reviews</h3>
+            <a href="testimonials.html" class="overview-link">View All <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="overview-list" id="recentTestimonials">
+            <div class="loading-state-mini"><div class="loader-spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Top Skills -->
+        <div class="overview-card">
+          <div class="overview-card-head">
+            <h3><i class="fa-solid fa-code"></i> Top Skills</h3>
+            <a href="skills.html" class="overview-link">View All <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="overview-list" id="topSkills">
+            <div class="loading-state-mini"><div class="loader-spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Recent Updates -->
+        <div class="overview-card">
+          <div class="overview-card-head">
+            <h3><i class="fa-solid fa-bullhorn"></i> Recent Updates</h3>
+            <a href="whatsnew.html" class="overview-link">View All <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="overview-list" id="recentUpdates">
+            <div class="loading-state-mini"><div class="loader-spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Site Info Widget - Shows Current Hero/Contact -->
+    <div class="site-info-widget reveal">
+      <div class="card-header">
+        <h2><i class="fa-solid fa-id-card"></i> Current Website Info</h2>
+        <a href="website-editor.html" class="view-all"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+      </div>
+      <div class="site-info-grid" id="siteInfoGrid">
+        <div class="loading-state-mini"><div class="loader-spinner"></div><p>Loading website data...</p></div>
+      </div>
+    </div>
+
+    <!-- Chart + System Health -->
     <div class="dashboard-grid reveal">
       <div class="chart-card">
         <div class="card-header">
@@ -183,8 +259,8 @@
           <div class="health-item">
             <div class="health-icon online"><i class="fa-solid fa-check"></i></div>
             <div class="health-info">
-              <span class="health-name">Email Notifications</span>
-              <span class="health-status">Active</span>
+              <span class="health-name">Cache System</span>
+              <span class="health-status" id="cacheStatus">Active</span>
             </div>
           </div>
           <div class="health-item">
@@ -201,7 +277,7 @@
     <!-- Recent Messages -->
     <div class="recent-section reveal">
       <div class="section-head">
-        <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Activity</h2>
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Messages</h2>
         <a href="messages.html" class="view-all">View All <i class="fa-solid fa-arrow-right"></i></a>
       </div>
       <div class="recent-list" id="recentList">
@@ -223,7 +299,7 @@
         </a>
         <a href="projects.html" class="quick-link">
           <div class="ql-icon ql-yellow"><i class="fa-solid fa-folder-open"></i></div>
-          <div><h3>Manage Projects</h3><p>Add or edit portfolio projects</p></div>
+          <div><h3>Projects</h3><p>Manage portfolio projects</p></div>
           <i class="ql-arrow fa-solid fa-arrow-right"></i>
         </a>
         <a href="testimonials.html" class="quick-link">
@@ -233,7 +309,7 @@
         </a>
         <a href="skills.html" class="quick-link">
           <div class="ql-icon ql-blue"><i class="fa-solid fa-code"></i></div>
-          <div><h3>Skills</h3><p>Manage your skills & expertise</p></div>
+          <div><h3>Skills</h3><p>Manage your skills</p></div>
           <i class="ql-arrow fa-solid fa-arrow-right"></i>
         </a>
         <a href="whatsnew.html" class="quick-link">
@@ -256,11 +332,6 @@
           <div><h3>Analytics</h3><p>View visitor stats</p></div>
           <i class="ql-arrow fa-solid fa-arrow-right"></i>
         </a>
-        <a href="https://hanan-develop.github.io/hanan-portfolio/" target="_blank" class="quick-link">
-          <div class="ql-icon ql-yellow"><i class="fa-solid fa-globe"></i></div>
-          <div><h3>Visit Portfolio</h3><p>Open live website</p></div>
-          <i class="ql-arrow fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
       </div>
     </div>
   </main>
@@ -270,6 +341,6 @@
   <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/mobile.js"></script>
-  <script src="js/home.js"></script>
+  <script src="js/home-enhanced.js"></script>
 </body>
 </html>
