@@ -1,5 +1,5 @@
 /* =========================================================
-   PROJECTS PAGE - FULL CRUD
+   PROJECTS PAGE - FULL CRUD (FIXED)
    ========================================================= */
 
 (function () {
@@ -13,11 +13,9 @@
     var currentSearch = '';
     var editingId = null;
 
-    // ===== HELPERS =====
-
     function escapeHtml(str) {
         if (!str) return '';
-        return str
+        return String(str)
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
@@ -25,25 +23,10 @@
             .replace(/'/g, '&#039;');
     }
 
-    function showToast(message, type) {
-        type = type || 'info';
-        $('.toast').remove();
-        var icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-circle-exclamation' : 'fa-info-circle');
-        var $toast = $('<div class="toast ' + type + '"><i class="fa-solid ' + icon + '"></i> ' + escapeHtml(message) + '</div>');
-        $('body').append($toast);
-        setTimeout(function () { $toast.addClass('show'); }, 50);
-        setTimeout(function () {
-            $toast.removeClass('show');
-            setTimeout(function () { $toast.remove(); }, 400);
-        }, 3000);
-    }
-
     function showFormError(msg) {
         $('#formError').text(msg).addClass('show');
         setTimeout(function () { $('#formError').removeClass('show'); }, 5000);
     }
-
-    // ===== FETCH PROJECTS =====
 
     function fetchProjects() {
         $('#projectsGrid').html(
@@ -76,7 +59,7 @@
             '<div class="empty-state">' +
             '<i class="fa-solid fa-triangle-exclamation"></i>' +
             '<h3>Error</h3><p>' + escapeHtml(msg) + '</p>' +
-            '<button class="btn-save" onclick="location.reload()">Retry</button>' +
+            '<button class="btn-add-first" onclick="location.reload()"><i class="fa-solid fa-arrows-rotate"></i> Retry</button>' +
             '</div>'
         );
     }
@@ -127,7 +110,7 @@
                 '<i class="fa-solid fa-folder-open"></i>' +
                 '<h3>No projects yet</h3>' +
                 '<p>' + msg + '</p>' +
-                (allProjects.length === 0 ? '<button class="btn-save" id="emptyAddBtn"><i class="fa-solid fa-plus"></i> Add First Project</button>' : '') +
+                (allProjects.length === 0 ? '<button class="btn-add-first" id="emptyAddBtn"><i class="fa-solid fa-plus"></i> Add First Project</button>' : '') +
                 '</div>'
             );
             return;
@@ -163,7 +146,6 @@
 
         $('#projectsGrid').html(html);
 
-        // Bind actions
         $('.proj-action-btn.edit').on('click', function (e) {
             e.stopPropagation();
             openEditModal($(this).data('edit'));
@@ -173,8 +155,6 @@
             confirmDelete($(this).data('delete'));
         });
     }
-
-    // ===== ADD/EDIT MODAL =====
 
     function openAddModal() {
         editingId = null;
@@ -219,14 +199,8 @@
         var tech = $('#projTech').val().trim();
         var color = $('#projColor').val().trim() || '#f9ca24';
 
-        if (!title) {
-            showFormError('Title is required');
-            return;
-        }
-        if (!category) {
-            showFormError('Category is required');
-            return;
-        }
+        if (!title) { showFormError('Title is required'); return; }
+        if (!category) { showFormError('Category is required'); return; }
 
         var $btn = $('#saveBtn');
         $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> <span>Saving...</span>');
@@ -249,12 +223,14 @@
                 $btn.prop('disabled', false).html('<i class="fa-solid fa-check"></i> <span>Save Project</span>');
 
                 if (res && res.ok) {
-                    notify({
-                        title: editingId ? 'Project Updated' : 'Project Added',
-                        message: editingId ? 'Project changes saved successfully.' : 'New project added to your portfolio.',
-                        type: 'success',
-                        persist: true
-                    });
+                    if (window.notify) {
+                        notify({
+                            title: editingId ? 'Project Updated' : 'Project Added',
+                            message: editingId ? 'Project changes saved.' : 'New project added.',
+                            type: 'success',
+                            persist: true
+                        });
+                    }
                     closeModal();
                     fetchProjects();
                 } else {
@@ -268,8 +244,6 @@
             });
     }
 
-    // ===== DELETE =====
-
     function confirmDelete(id) {
         var project = allProjects.find(function (p) { return p.id === id; });
         if (!project) return;
@@ -280,7 +254,7 @@
                 '<div class="modal-card confirm-modal" style="max-width: 44rem;">' +
                     '<div class="confirm-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>' +
                     '<h2>Delete Project?</h2>' +
-                    '<p>Are you sure you want to delete <strong>"' + escapeHtml(project.title) + '"</strong>? This cannot be undone.</p>' +
+                    '<p>Delete <strong>"' + escapeHtml(project.title) + '"</strong>? This cannot be undone.</p>' +
                     '<div class="confirm-actions">' +
                         '<button class="btn-cancel" data-confirm-close>Cancel</button>' +
                         '<button class="btn-danger" id="confirmDeleteBtn"><i class="fa-solid fa-trash"></i> Delete</button>' +
@@ -291,9 +265,7 @@
 
         $('body').append($modal);
 
-        $modal.on('click', '[data-confirm-close]', function () {
-            $modal.remove();
-        });
+        $modal.on('click', '[data-confirm-close]', function () { $modal.remove(); });
 
         $modal.find('#confirmDeleteBtn').on('click', function () {
             var $btn = $(this);
@@ -313,32 +285,25 @@
                         updateStats();
                         updateCategoryFilters();
                         renderProjects();
-                        notify({
-                            title: 'Project Deleted',
-                            message: 'Project removed from your portfolio.',
-                            type: 'success',
-                            persist: true
-                        });
+                        if (window.notify) {
+                            notify({
+                                title: 'Project Deleted',
+                                message: 'Project removed.',
+                                type: 'success',
+                                persist: true
+                            });
+                        }
                     } else {
-                        notify({
-                            title: 'Delete Failed',
-                            message: res.error || 'Could not delete project. Please try again.',
-                            type: 'error'
-                        });
+                        if (window.notify) notify({ message: res.error || 'Failed to delete', type: 'error' });
                     }
                 })
                 .catch(function (err) {
                     $modal.remove();
-                    notify({
-                        title: 'Connection Error',
-                        message: 'Could not connect to server. Check your internet.',
-                        type: 'error'
-                    });
+                    if (window.notify) notify({ message: 'Connection error', type: 'error' });
                 });
         });
     }
 
-    // ===== INIT =====
     $(document).ready(function () {
         if (!HananAuth.requireAuth()) return;
 
@@ -347,11 +312,9 @@
 
         fetchProjects();
 
-        // Add button
         $('#addNewBtn').on('click', openAddModal);
         $(document).on('click', '#emptyAddBtn', openAddModal);
 
-        // Refresh
         $('#refreshBtn').on('click', function () {
             var $btn = $(this);
             $btn.prop('disabled', true).find('i').addClass('fa-spin');
@@ -361,19 +324,16 @@
             }, 1000);
         });
 
-        // Form submit
         $('#projectForm').on('submit', function (e) {
             e.preventDefault();
             saveProject();
         });
 
-        // Modal close
         $('#projectModal').on('click', '[data-close]', closeModal);
         $(document).on('keydown', function (e) {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape' && $('#projectModal').hasClass('show')) closeModal();
         });
 
-        // Color picker sync
         $('#projColorPicker').on('input', function () {
             $('#projColor').val($(this).val());
         });
@@ -384,7 +344,6 @@
             }
         });
 
-        // Search
         var searchTimer;
         $('#searchInput').on('input', function () {
             var val = $(this).val();
@@ -395,7 +354,6 @@
             }, 200);
         });
 
-        // Category filter
         $(document).on('click', '.fb[data-filter]', function () {
             $('.fb').removeClass('active');
             $(this).addClass('active');
@@ -403,12 +361,10 @@
             renderProjects();
         });
 
-        // Sidebar
         $('#sbToggle').on('click', function () {
             $('#sidebar').toggleClass('open');
         });
 
-        // Logout
         $('#logoutBtn').on('click', function () {
             if (confirm('Logout?')) HananAuth.logout();
         });
