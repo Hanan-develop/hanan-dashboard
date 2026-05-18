@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migrate Existing Projects — Hanan Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/features.css" />
+  <link rel="stylesheet" href="css/projects.css" />
+  <link rel="stylesheet" href="css/upgrade-patch.css" />
+  <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <style>
+    /* Migration page specific styles */
+    .migration-hero {
+        background: linear-gradient(135deg, rgba(249, 202, 36, 0.1), rgba(34, 197, 94, 0.08));
+        border: 1px solid rgba(249, 202, 36, 0.2);
+        border-radius: 1.6rem;
+        padding: 2.4rem 2.8rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .migration-hero-icon {
+        width: 8rem;
+        height: 8rem;
+        border-radius: 50%;
+        background: var(--g-yellow);
+        display: grid;
+        place-items: center;
+        font-size: 3.6rem;
+        color: #111;
+        flex-shrink: 0;
+        box-shadow: 0 0 30px var(--yellow-glow);
+        animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .migration-hero-content h1 {
+        font-family: 'Sora', sans-serif;
+        font-size: 2.4rem;
+        color: var(--text);
+        margin-bottom: 0.6rem;
+    }
+
+    .migration-hero-content p {
+        font-size: 1.35rem;
+        color: var(--text-soft);
+        line-height: 1.6;
+    }
+
+    .migration-steps {
+        background: var(--card-bg);
+        backdrop-filter: blur(16px);
+        border: 1px solid var(--border);
+        border-radius: 1.4rem;
+        padding: 2rem 2.4rem;
+        margin-bottom: 2rem;
+    }
+
+    .migration-steps h2 {
+        font-family: 'Sora', sans-serif;
+        font-size: 1.7rem;
+        color: var(--text);
+        margin-bottom: 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .migration-steps h2 i {
+        color: var(--yellow);
+    }
+
+    .migration-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.2rem;
+        padding: 1.2rem 1.4rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    body.light-theme .migration-step {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    .migration-step-num {
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+        background: rgba(249, 202, 36, 0.15);
+        color: var(--yellow);
+        display: grid;
+        place-items: center;
+        font-family: 'Sora', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .migration-step.done .migration-step-num {
+        background: var(--success);
+        color: #fff;
+    }
+
+    .migration-step-content h4 {
+        font-family: 'Sora', sans-serif;
+        font-size: 1.3rem;
+        color: var(--text);
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+    }
+
+    .migration-step-content p {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+    }
+
+    .projects-preview {
+        background: var(--card-bg);
+        backdrop-filter: blur(16px);
+        border: 1px solid var(--border);
+        border-radius: 1.4rem;
+        padding: 2rem 2.4rem;
+        margin-bottom: 2rem;
+    }
+
+    .projects-preview h2 {
+        font-family: 'Sora', sans-serif;
+        font-size: 1.7rem;
+        color: var(--text);
+        margin-bottom: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .projects-preview h2 i {
+        color: var(--yellow);
+    }
+
+    .projects-preview p {
+        color: var(--text-muted);
+        font-size: 1.3rem;
+        margin-bottom: 1.4rem;
+    }
+
+    .preview-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+        gap: 1rem;
+    }
+
+    .preview-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.2rem 1.4rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        transition: all 0.3s var(--ease);
+    }
+
+    body.light-theme .preview-item {
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    .preview-item.done {
+        border-color: rgba(34, 197, 94, 0.3);
+        background: rgba(34, 197, 94, 0.05);
+    }
+
+    .preview-item.error {
+        border-color: rgba(239, 68, 68, 0.3);
+        background: rgba(239, 68, 68, 0.05);
+    }
+
+    .preview-icon {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 0.8rem;
+        background: var(--preview-color, var(--yellow));
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .preview-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .preview-name {
+        font-family: 'Sora', sans-serif;
+        font-size: 1.3rem;
+        color: var(--text);
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+    }
+
+    .preview-status {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+    }
+
+    .preview-item.done .preview-status {
+        color: var(--success);
+    }
+
+    .preview-item.error .preview-status {
+        color: var(--error);
+    }
+
+    .preview-status i {
+        margin-right: 0.4rem;
+    }
+
+    .migration-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        gap: 1rem;
+    }
+
+    .migrate-btn {
+        padding: 1.6rem 3.2rem;
+        background: var(--g-yellow);
+        color: #111;
+        border: none;
+        border-radius: 1rem;
+        font-family: 'Sora', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        transition: all 0.3s var(--ease);
+        box-shadow: 0 12px 28px -4px var(--yellow-glow);
+    }
+
+    .migrate-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 36px -4px var(--yellow-glow);
+    }
+
+    .migrate-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .migrate-btn i {
+        font-size: 1.8rem;
+    }
+
+    .progress-summary {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: 1.2rem;
+        margin-top: 1.6rem;
+    }
+
+    .progress-summary.show {
+        display: block;
+    }
+
+    .progress-summary i {
+        font-size: 3rem;
+        color: var(--success);
+        margin-bottom: 0.8rem;
+    }
+
+    .progress-summary h3 {
+        font-family: 'Sora', sans-serif;
+        font-size: 1.6rem;
+        color: var(--text);
+        margin-bottom: 0.4rem;
+    }
+
+    .progress-summary p {
+        color: var(--text-soft);
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+
+    .progress-summary a {
+        display: inline-block;
+        margin-top: 0.6rem;
+        padding: 0.8rem 1.6rem;
+        background: var(--success);
+        color: #fff;
+        border-radius: 0.6rem;
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .migration-hero {
+            flex-direction: column;
+            text-align: center;
+            padding: 1.8rem 1.4rem;
+        }
+
+        .migration-hero-icon {
+            width: 6rem;
+            height: 6rem;
+            font-size: 2.6rem;
+        }
+
+        .migration-hero-content h1 {
+            font-size: 1.8rem;
+        }
+
+        .preview-list {
+            grid-template-columns: 1fr;
+        }
+
+        .migrate-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-avatar"><span>AH</span></div>
+      <div>
+        <h3 id="sbUserName">Hanan</h3>
+        <p>Admin Panel</p>
+      </div>
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span></a>
+      <a href="analytics.html"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a>
+      <a href="projects.html"><i class="fa-solid fa-folder-open"></i> <span>Projects</span></a>
+      <a href="testimonials.html"><i class="fa-solid fa-star"></i> <span>Testimonials</span></a>
+      <a href="skills.html"><i class="fa-solid fa-code"></i> <span>Skills</span></a>
+      <a href="whatsnew.html"><i class="fa-solid fa-bullhorn"></i> <span>What's New</span></a>
+      <a href="website-editor.html"><i class="fa-solid fa-pen-to-square"></i> <span>Website Editor</span></a>
+      <a href="sections.html"><i class="fa-solid fa-eye"></i> <span>Sections</span></a>
+      <a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
+    </nav>
+    <div class="sb-footer">
+      <button class="sb-logout" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="sb-toggle" id="sbToggle"><i class="fa-solid fa-bars"></i></button>
+      <h1>Migrate Existing Data</h1>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme (T)">
+          <i class="fa-solid fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Migration Hero -->
+    <div class="migration-hero">
+      <div class="migration-hero-icon">
+        <i class="fa-solid fa-database"></i>
+      </div>
+      <div class="migration-hero-content">
+        <h1>Migrate Your Portfolio Data</h1>
+        <p>Tumhari portfolio website pe jo 6 projects already hain, unhe Google Sheet mein add karo. Phir ye dashboard mein dikhayi denge aur future projects bhi yahaan se manage kar sako ge.</p>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="migration-steps">
+      <h2><i class="fa-solid fa-list-check"></i> What This Does</h2>
+      <div class="migration-step">
+        <div class="migration-step-num">1</div>
+        <div class="migration-step-content">
+          <h4>Add 6 Existing Projects</h4>
+          <p>Haseen Wears, Agate Tours, CNC Electric, C-Power, C-Solar, Cognitive Solutions — sab automatically Google Sheet mein add ho jayenge.</p>
+        </div>
+      </div>
+      <div class="migration-step">
+        <div class="migration-step-num">2</div>
+        <div class="migration-step-content">
+          <h4>Show on Dashboard</h4>
+          <p>Add hone ke baad ye projects dashboard pe dikhayi denge — Projects page mein, dashboard home pe, sab jagah.</p>
+        </div>
+      </div>
+      <div class="migration-step">
+        <div class="migration-step-num">3</div>
+        <div class="migration-step-content">
+          <h4>Future Sync Ready</h4>
+          <p>Ab koi naya project add karoge dashboard se, wo Sheet mein save hoga. Next session mein portfolio website bhi Sheet se data fetch karegi.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects Preview -->
+    <div class="projects-preview">
+      <h2><i class="fa-solid fa-folder-open"></i> Projects to Migrate</h2>
+      <p>Ye 6 projects add honge tumhari Google Sheet mein:</p>
+
+      <div class="preview-list" id="previewList">
+        <!-- Items added by JS -->
+      </div>
+
+      <div class="migration-actions">
+        <button class="migrate-btn" id="migrateBtn">
+          <i class="fa-solid fa-rocket"></i>
+          <span>Migrate All 6 Projects to Sheet</span>
+        </button>
+      </div>
+
+      <div class="progress-summary" id="progressSummary">
+        <i class="fa-solid fa-circle-check"></i>
+        <h3 id="summaryTitle">Migration Complete!</h3>
+        <p id="summaryText">All projects added successfully.</p>
+        <a href="projects.html"><i class="fa-solid fa-folder-open"></i> View Projects Page</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/mobile.js"></script>
+  <script>
+    /* =========================================================
+       MIGRATION SCRIPT - One-click add existing projects
+       ========================================================= */
+
+    (function () {
+        'use strict';
+
+        var GOOGLE_SCRIPT_URL = HananAuth.getApiUrl();
+        var SECRET_KEY = HananAuth.getSecret();
+
+        // EXISTING PROJECTS FROM PORTFOLIO WEBSITE
+        var EXISTING_PROJECTS = [
+            {
+                title: 'Haseen Wears',
+                category: 'E-Commerce',
+                description: 'WooCommerce-powered fashion store with Woodmart theme. Custom product pages, cart drawer, payment integration.',
+                imageUrl: 'https://hanan-develop.github.io/hanan-portfolio/Image-1.jpg',
+                liveUrl: 'https://haseenwears.com',
+                tech: 'WordPress, WooCommerce, Woodmart, PHP, MySQL',
+                color: '#e91e63'
+            },
+            {
+                title: 'Agate Tours',
+                category: 'Travel',
+                description: 'Travel agency website with booking system, package management, and destination galleries.',
+                imageUrl: 'https://hanan-develop.github.io/hanan-portfolio/Image2.jpg',
+                liveUrl: 'https://agatetours.com',
+                tech: 'WordPress, Custom Theme, Booking Plugin',
+                color: '#3b82f6'
+            },
+            {
+                title: 'CNC Electric',
+                category: 'E-Commerce',
+                description: 'Shopify store for electrical protection devices. Custom collection pages, product finder quiz, cart drawer.',
+                imageUrl: 'https://hanan-develop.github.io/hanan-portfolio/Image-3.jpg',
+                liveUrl: 'https://cncelectric.pk',
+                tech: 'Shopify, Dawn Theme, Liquid, JavaScript',
+                color: '#D42B2B'
+            },
+            {
+                title: 'C-Power',
+                category: 'Business',
+                description: 'Corporate website for power solutions company. Modern design with service catalog.',
+                imageUrl: 'https://hanan-develop.github.io/hanan-portfolio/lmage-4.jpg',
+                liveUrl: 'https://cpower.pk',
+                tech: 'HTML, CSS, JavaScript, PHP',
+                color: '#F06B2A'
+            },
+            {
+                title: 'C-Solar',
+                category: 'Business',
+                description: 'Solar energy services website with white & gold theme. Static HTML/CSS/JS site.',
+                imageUrl: 'https://hanan-develop.github.io/hanan-portfolio/Image-5.jpg',
+                liveUrl: 'https://c-solar.pk',
+                tech: 'HTML, CSS, JavaScript',
+                color: '#FEBC5A'
+            },
+            {
+                title: 'Cognitive Solutions',
+                category: 'Corporate',
+                description: 'Parent company website with 9 pages, sub-brand sections, glassmorphism navbar.',
+                imageUrl: 'https://hanan-develop.github.io/hanan-portfolio/Image-6.jpg',
+                liveUrl: 'https://cognitivesolutions.com.pk',
+                tech: 'HTML, CSS, JavaScript, Sora & Plus Jakarta Sans',
+                color: '#00499E'
+            }
+        ];
+
+        function renderPreview() {
+            var html = EXISTING_PROJECTS.map(function (p, i) {
+                return '<div class="preview-item" id="item-' + i + '" style="--preview-color: ' + p.color + ';">' +
+                    '<div class="preview-icon" style="background: ' + p.color + ';">' +
+                        '<i class="fa-solid fa-folder-open"></i>' +
+                    '</div>' +
+                    '<div class="preview-info">' +
+                        '<div class="preview-name">' + p.title + '</div>' +
+                        '<div class="preview-status" id="status-' + i + '">' +
+                            '<i class="fa-regular fa-circle"></i> Pending...' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            $('#previewList').html(html);
+        }
+
+        function updateStatus(index, status, message) {
+            var $item = $('#item-' + index);
+            var $status = $('#status-' + index);
+
+            if (status === 'success') {
+                $item.addClass('done');
+                $status.html('<i class="fa-solid fa-circle-check"></i> ' + (message || 'Added successfully'));
+            } else if (status === 'error') {
+                $item.addClass('error');
+                $status.html('<i class="fa-solid fa-circle-exclamation"></i> ' + (message || 'Failed'));
+            } else if (status === 'loading') {
+                $status.html('<i class="fa-solid fa-spinner fa-spin"></i> Adding...');
+            }
+        }
+
+        function addProject(project, index) {
+            return new Promise(function (resolve) {
+                updateStatus(index, 'loading');
+
+                var formData = new FormData();
+                formData.append('action', 'saveProject');
+                formData.append('secret', SECRET_KEY);
+                formData.append('title', project.title);
+                formData.append('category', project.category);
+                formData.append('description', project.description);
+                formData.append('imageUrl', project.imageUrl);
+                formData.append('liveUrl', project.liveUrl);
+                formData.append('tech', project.tech);
+                formData.append('color', project.color);
+
+                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData })
+                    .then(function (r) { return r.json(); })
+                    .then(function (res) {
+                        if (res && res.ok) {
+                            updateStatus(index, 'success');
+                            resolve({ ok: true });
+                        } else {
+                            updateStatus(index, 'error', res.error || 'Failed');
+                            resolve({ ok: false, error: res.error });
+                        }
+                    })
+                    .catch(function (err) {
+                        updateStatus(index, 'error', 'Connection error');
+                        resolve({ ok: false, error: err.message });
+                    });
+            });
+        }
+
+        function migrateAll() {
+            var $btn = $('#migrateBtn');
+            $btn.prop('disabled', true)
+                .html('<i class="fa-solid fa-spinner fa-spin"></i> <span>Migrating...</span>');
+
+            var successCount = 0;
+            var errorCount = 0;
+
+            // Sequential migration (one at a time to avoid rate limit)
+            var promise = Promise.resolve();
+
+            EXISTING_PROJECTS.forEach(function (project, index) {
+                promise = promise.then(function () {
+                    return addProject(project, index);
+                }).then(function (result) {
+                    if (result.ok) successCount++;
+                    else errorCount++;
+
+                    // Small delay between requests
+                    return new Promise(function (r) { setTimeout(r, 500); });
+                });
+            });
+
+            promise.then(function () {
+                $btn.html('<i class="fa-solid fa-check"></i> <span>Migration Complete!</span>');
+
+                if (errorCount === 0) {
+                    $('#summaryTitle').text('Migration Complete!');
+                    $('#summaryText').text('All ' + successCount + ' projects added successfully. Ab dashboard pe sab dikhayi denge!');
+                } else {
+                    $('#summaryTitle').text('Migration Partially Complete');
+                    $('#summaryText').text(successCount + ' succeeded, ' + errorCount + ' failed. Check above for details.');
+                }
+
+                $('#progressSummary').addClass('show');
+
+                // Clear dashboard cache so it shows fresh data
+                try {
+                    localStorage.removeItem('hanan_dashboard_cache');
+                } catch (e) {}
+
+                if (window.notify) {
+                    notify({
+                        title: 'Migration Complete',
+                        message: successCount + ' projects added!',
+                        type: 'success',
+                        persist: true
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            if (!HananAuth.requireAuth()) return;
+
+            var user = HananAuth.getCurrentUser();
+            if (user) $('#sbUserName').text(user.charAt(0).toUpperCase() + user.slice(1));
+
+            renderPreview();
+
+            $('#migrateBtn').on('click', function () {
+                if (confirm('6 projects Google Sheet mein add karne hain?\n\nAgar pehle se hain to duplicate ho sakte hain. Continue?')) {
+                    migrateAll();
+                }
+            });
+
+            $('#sbToggle').on('click', function () {
+                $('#sidebar').toggleClass('open');
+            });
+
+            $('#logoutBtn').on('click', function () {
+                if (confirm('Logout?')) HananAuth.logout();
+            });
+        });
+
+    })();
+  </script>
+</body>
+</html>
