@@ -1,25 +1,13 @@
 /* =========================================================
-   DASHBOARD - THEME TOGGLE SYSTEM
+   HANAN DASHBOARD - THEME TOGGLE + MOBILE
    ========================================================= */
 
 (function () {
     'use strict';
 
-    var THEME_KEY = 'hanan_dashboard_theme';
+    var THEME_KEY = 'hanan_theme';
 
-    function getTheme() {
-        try {
-            return localStorage.getItem(THEME_KEY) || 'dark';
-        } catch (e) {
-            return 'dark';
-        }
-    }
-
-    function setTheme(theme) {
-        try {
-            localStorage.setItem(THEME_KEY, theme);
-        } catch (e) { }
-
+    function applyTheme(theme) {
         if (theme === 'light') {
             document.body.classList.add('light-theme');
         } else {
@@ -27,56 +15,62 @@
         }
     }
 
+    function getTheme() {
+        return localStorage.getItem(THEME_KEY) || 'dark';
+    }
+
     function toggleTheme() {
         var current = getTheme();
         var next = current === 'dark' ? 'light' : 'dark';
-        setTheme(next);
-
-        // Show toast notification
-        showThemeToast(next);
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
     }
 
-    function showThemeToast(theme) {
-        $('.toast').remove();
-        var msg = theme === 'light' ? 'Light mode activated' : 'Dark mode activated';
-        var icon = theme === 'light' ? 'fa-sun' : 'fa-moon';
+    // Apply theme immediately to prevent flash
+    applyTheme(getTheme());
 
-        var $toast = $('<div class="toast"><i class="fa-solid ' + icon + '"></i> ' + msg + '</div>');
-        $('body').append($toast);
+    // Setup on DOM ready
+    document.addEventListener('DOMContentLoaded', function () {
+        var toggleBtn = document.getElementById('themeToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', toggleTheme);
+        }
 
-        setTimeout(function () { $toast.addClass('show'); }, 50);
-        setTimeout(function () {
-            $toast.removeClass('show');
-            setTimeout(function () { $toast.remove(); }, 400);
-        }, 2000);
-    }
-
-    // Apply theme immediately (prevent flash)
-    setTheme(getTheme());
-
-    // Initialize toggle button when DOM ready
-    $(document).ready(function () {
-        $(document).on('click', '#themeToggle', function () {
-            toggleTheme();
-        });
-
-        // Keyboard shortcut: T
-        $(document).on('keydown', function (e) {
-            // Skip if typing in input
+        // Keyboard shortcut T
+        document.addEventListener('keydown', function (e) {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.ctrlKey || e.metaKey || e.altKey) return;
-
             if (e.key === 't' || e.key === 'T') {
                 toggleTheme();
             }
         });
+
+        // Mobile sidebar toggle
+        var sbToggle = document.getElementById('sbToggle');
+        var sidebar = document.getElementById('sidebar');
+        if (sbToggle && sidebar) {
+            sbToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+
+            // Close on outside click
+            document.addEventListener('click', function (e) {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                    if (!sidebar.contains(e.target) && e.target !== sbToggle) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            });
+        }
+
+        // Logout button
+        var logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function () {
+                if (confirm('Logout?')) {
+                    if (window.HananAuth) HananAuth.logout();
+                }
+            });
+        }
     });
-
-    // Export to global
-    window.HananTheme = {
-        get: getTheme,
-        set: setTheme,
-        toggle: toggleTheme
-    };
-
 })();

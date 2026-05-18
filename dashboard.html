@@ -8,14 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
-  <link rel="stylesheet" href="css/dashboard-extra.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
@@ -58,10 +51,7 @@
 
     <div class="hero-welcome reveal">
       <div class="hw-content">
-        <div class="hw-greeting">
-          <span class="hw-emoji" id="greetingEmoji">👋</span>
-          <h1><span id="greetingText">Welcome back</span>, <span class="user-name" id="welcomeName">Hanan</span>!</h1>
-        </div>
+        <div class="hw-greeting"><span class="hw-emoji" id="greetingEmoji">👋</span><h1><span id="greetingText">Welcome back</span>, <span class="user-name" id="welcomeName">Hanan</span>!</h1></div>
         <p>Manage your portfolio, track messages, and grow your business — all in one place.</p>
         <div class="hw-quick-info">
           <div class="hw-info-item"><i class="fa-solid fa-calendar-day"></i><div><span class="hw-label">Today</span><span class="hw-value" id="todayDate">—</span></div></div>
@@ -72,7 +62,7 @@
       <div class="hw-decoration"><div class="hw-glow"></div></div>
     </div>
 
-    <div class="stats-grid stats-grid-6 reveal">
+    <div class="stats-grid reveal">
       <div class="stat-card stat-blue"><div class="stat-icon"><i class="fa-solid fa-envelope"></i></div><div class="stat-content"><span class="stat-label">Messages</span><span class="stat-value" id="totalMessages">0</span><span class="stat-trend"><i class="fa-solid fa-database"></i><span>Total</span></span></div></div>
       <div class="stat-card stat-red"><div class="stat-icon"><i class="fa-solid fa-circle-exclamation"></i></div><div class="stat-content"><span class="stat-label">Unread</span><span class="stat-value" id="unreadMessages">0</span><span class="stat-trend"><i class="fa-solid fa-bell"></i><span>Need reply</span></span></div></div>
       <div class="stat-card stat-yellow"><div class="stat-icon"><i class="fa-solid fa-folder-open"></i></div><div class="stat-content"><span class="stat-label">Projects</span><span class="stat-value" id="totalProjects">0</span><span class="stat-trend"><i class="fa-solid fa-database"></i><span>Total</span></span></div></div>
@@ -93,12 +83,12 @@
 
     <div class="site-info-widget reveal">
       <div class="card-header"><h2><i class="fa-solid fa-id-card"></i> Current Website Info</h2><a href="website-editor.html" class="view-all"><i class="fa-solid fa-pen-to-square"></i> Edit</a></div>
-      <div class="site-info-grid" id="siteInfoGrid"><div class="loading-state-mini"><div class="loader-spinner"></div><p>Loading website data...</p></div></div>
+      <div class="site-info-grid" id="siteInfoGrid"><div class="loading-state-mini"><div class="loader-spinner"></div></div></div>
     </div>
 
     <div class="dashboard-grid reveal">
       <div class="chart-card"><div class="card-header"><h2><i class="fa-solid fa-chart-bar"></i> Messages — Last 7 Days</h2><span class="card-badge">Live</span></div><div class="chart-wrap"><div class="bar-chart" id="barChart"></div></div><p class="chart-note" id="chartNote">Loading chart data...</p></div>
-      <div class="system-card"><div class="card-header"><h2><i class="fa-solid fa-heart-pulse"></i> System Health</h2></div><div class="health-list"><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div class="health-info"><span class="health-name">Portfolio Site</span><span class="health-status">Online & Live</span></div></div><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div class="health-info"><span class="health-name">Google Sheets API</span><span class="health-status" id="apiStatus">Checking...</span></div></div><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div class="health-info"><span class="health-name">Cache System</span><span class="health-status" id="cacheStatus">Active</span></div></div><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div class="health-info"><span class="health-name">Dashboard</span><span class="health-status">Healthy</span></div></div></div></div>
+      <div class="system-card"><div class="card-header"><h2><i class="fa-solid fa-heart-pulse"></i> System Health</h2></div><div class="health-list"><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div><span class="health-name">Portfolio Site</span><span class="health-status">Online & Live</span></div></div><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div><span class="health-name">Google Sheets API</span><span class="health-status" id="apiStatus">Checking...</span></div></div><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div><span class="health-name">Cache System</span><span class="health-status" id="cacheStatus">Active</span></div></div><div class="health-item"><div class="health-icon online"><i class="fa-solid fa-check"></i></div><div><span class="health-name">Dashboard</span><span class="health-status">Healthy</span></div></div></div></div>
     </div>
 
     <div class="recent-section reveal">
@@ -109,21 +99,20 @@
     <div class="quick-actions-section reveal">
       <h2 class="section-title"><i class="fa-solid fa-bolt"></i> Quick Actions</h2>
       <div class="quick-link-grid">
-        <a href="messages.html" class="quick-link"><div class="ql-icon ql-blue"><i class="fa-solid fa-envelope"></i></div><div><h3>Messages</h3><p>Check contact forms</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
+        <a href="messages.html" class="quick-link"><div class="ql-icon ql-blue"><i class="fa-solid fa-envelope"></i></div><div><h3>Messages</h3><p>Contact forms</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
         <a href="projects.html" class="quick-link"><div class="ql-icon ql-yellow"><i class="fa-solid fa-folder-open"></i></div><div><h3>Projects</h3><p>Manage portfolio</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
         <a href="testimonials.html" class="quick-link"><div class="ql-icon ql-purple"><i class="fa-solid fa-star"></i></div><div><h3>Testimonials</h3><p>Client reviews</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
         <a href="skills.html" class="quick-link"><div class="ql-icon ql-blue"><i class="fa-solid fa-code"></i></div><div><h3>Skills</h3><p>Tech stack</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
         <a href="services.html" class="quick-link"><div class="ql-icon ql-yellow"><i class="fa-solid fa-briefcase"></i></div><div><h3>Services</h3><p>What you offer</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
-        <a href="achievements.html" class="quick-link"><div class="ql-icon ql-purple"><i class="fa-solid fa-trophy"></i></div><div><h3>Achievements</h3><p>Awards & milestones</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
-        <a href="whatsnew.html" class="quick-link"><div class="ql-icon ql-green"><i class="fa-solid fa-bullhorn"></i></div><div><h3>What's New</h3><p>Timeline updates</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
-        <a href="website-editor.html" class="quick-link"><div class="ql-icon ql-yellow"><i class="fa-solid fa-pen-to-square"></i></div><div><h3>Website Editor</h3><p>Hero, About, Contact</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
+        <a href="achievements.html" class="quick-link"><div class="ql-icon ql-purple"><i class="fa-solid fa-trophy"></i></div><div><h3>Achievements</h3><p>Awards</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
+        <a href="whatsnew.html" class="quick-link"><div class="ql-icon ql-green"><i class="fa-solid fa-bullhorn"></i></div><div><h3>What's New</h3><p>Updates</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
+        <a href="website-editor.html" class="quick-link"><div class="ql-icon ql-yellow"><i class="fa-solid fa-pen-to-square"></i></div><div><h3>Editor</h3><p>Hero, About, Contact</p></div><i class="ql-arrow fa-solid fa-arrow-right"></i></a>
       </div>
     </div>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/mobile.js"></script>
   <script src="js/home-enhanced.js"></script>
