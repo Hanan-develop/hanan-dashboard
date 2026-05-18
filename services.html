@@ -5,24 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Services — Hanan Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/projects.css" />
-  <link rel="stylesheet" href="css/sections-page.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true">
-    <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
-  </div>
+  <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
-
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -30,7 +20,7 @@
     </div>
     <nav class="sb-nav">
       <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
-      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span></a>
+      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span> <span class="sb-badge" id="unreadBadge" style="display:none;">0</span></a>
       <a href="analytics.html"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a>
       <a href="projects.html"><i class="fa-solid fa-folder-open"></i> <span>Projects</span></a>
       <a href="testimonials.html"><i class="fa-solid fa-star"></i> <span>Testimonials</span></a>
@@ -54,98 +44,47 @@
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
-        <button class="btn-view-site" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Service</span></button>
+        <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Service</span></button>
       </div>
     </header>
 
-    <div class="section-filter">
-      <button class="active" data-filter="all">All <span id="countAll">0</span></button>
-      <button data-filter="visible">Visible <span id="countVisible">0</span></button>
-      <button data-filter="hidden">Hidden <span id="countHidden">0</span></button>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All <span class="filter-count" id="countAll">0</span></button>
+      <button class="filter-btn" data-filter="visible">Visible <span class="filter-count" id="countVisible">0</span></button>
+      <button class="filter-btn" data-filter="hidden">Hidden <span class="filter-count" id="countHidden">0</span></button>
     </div>
-
-    <div class="section-grid" id="servicesGrid">
-      <div class="loading-state-mini"><div class="loader-spinner"></div><p>Loading services...</p></div>
-    </div>
-  </main>
-
-  <!-- Modal -->
+    <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading services...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modalTitle">Add Service</h2>
-        <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="serviceForm" class="section-modal-form">
-        <input type="hidden" id="serviceId" />
-
-        <div class="form-field">
-          <label>Service Title *</label>
-          <input type="text" id="title" required maxlength="100" placeholder="WordPress Development" />
-        </div>
-
-        <div class="form-field">
-          <label>Description *</label>
-          <textarea id="description" required maxlength="500" placeholder="Custom WordPress themes & plugins..."></textarea>
-        </div>
-
+      <div class="modal-header"><h2 id="modalTitle">Add Service</h2><button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button></div>
+      <form id="itemForm">
+        <input type="hidden" id="itemId" />
+        <div class="form-field"><label>Title *</label><input type="text" id="title" required maxlength="100" placeholder="WordPress Development" /></div>
+        <div class="form-field"><label>Description *</label><textarea id="description" required maxlength="500"></textarea></div>
         <div class="icon-color-row">
-          <div class="form-field">
-            <label>Icon (Font Awesome class)</label>
-            <input type="text" id="icon" placeholder="fa-wordpress" value="fa-briefcase" />
-            <small style="color: var(--text-muted); font-size: 1.1rem;">Examples: fa-wordpress, fa-shopify, fa-code, fa-magnifying-glass</small>
-          </div>
-          <div class="form-field">
-            <label>Color</label>
-            <div class="color-picker-wrap">
-              <input type="color" id="color" value="#f9ca24" />
-              <input type="text" id="colorHex" value="#f9ca24" maxlength="7" />
-            </div>
-          </div>
+          <div class="form-field"><label>Icon</label><input type="text" id="icon" placeholder="fa-wordpress" value="fa-briefcase" /></div>
+          <div class="form-field"><label>Color</label><div class="color-picker-wrap"><input type="color" id="color" value="#f9ca24" /><input type="text" id="colorHex" value="#f9ca24" maxlength="7" /></div></div>
         </div>
-
-        <div class="form-field">
-          <label>Features (one per line, max 5)</label>
-          <textarea id="features" placeholder="Theme customization&#10;Plugin integration&#10;Elementor / WPBakery"></textarea>
-          <small style="color: var(--text-muted); font-size: 1.1rem;">Enter each feature on a new line</small>
-        </div>
-
+        <div class="form-field"><label>Features (one per line)</label><textarea id="features" placeholder="Theme customization&#10;Plugin integration"></textarea></div>
         <div class="form-row">
-          <div class="form-field">
-            <label>Display Order</label>
-            <input type="number" id="orderNum" min="1" max="100" value="1" />
-          </div>
-          <div class="form-field">
-            <label>Tag (optional)</label>
-            <select id="tag">
-              <option value="">None</option>
-              <option value="popular">Popular</option>
-              <option value="new">New</option>
-              <option value="featured">Most Loved</option>
-              <option value="bestseller">Best Seller</option>
-            </select>
-          </div>
+          <div class="form-field"><label>Display Order</label><input type="number" id="orderNum" min="1" max="100" value="1" /></div>
+          <div class="form-field"><label>Tag</label><select id="tag"><option value="">None</option><option value="popular">Popular</option><option value="new">New</option><option value="featured">Featured</option></select></div>
         </div>
-
-        <div class="modal-toggle-row">
-          <label><i class="fa-solid fa-eye"></i> Show on Website</label>
-          <div class="toggle-switch on" id="visibleToggle"></div>
-          <input type="hidden" id="visible" value="yes" />
-        </div>
-
+        <div class="modal-toggle-row"><label><i class="fa-solid fa-eye"></i> Show on Website</label><div class="toggle-switch on" id="visibleToggle"></div><input type="hidden" id="visible" value="yes" /></div>
         <div class="form-actions">
           <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
-          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span id="saveBtnText">Save Service</span></button>
+          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span id="saveBtnText">Save</span></button>
         </div>
       </form>
     </div>
   </div>
+  </main>
 
+  <div class="notify-container" id="notifyContainer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/mobile.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/services.js"></script>
 </body>
 </html>

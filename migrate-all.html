@@ -7,872 +7,191 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/projects.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
-  <style>
-    .migration-hero {
-        background: linear-gradient(135deg, rgba(249, 202, 36, 0.1), rgba(34, 197, 94, 0.08));
-        border: 1px solid rgba(249, 202, 36, 0.2);
-        border-radius: 1.6rem;
-        padding: 2.4rem 2.8rem;
-        margin-bottom: 2rem;
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    .migration-hero-icon {
-        width: 8rem;
-        height: 8rem;
-        border-radius: 50%;
-        background: var(--g-yellow);
-        display: grid;
-        place-items: center;
-        font-size: 3.6rem;
-        color: #111;
-        flex-shrink: 0;
-        box-shadow: 0 0 30px var(--yellow-glow);
-        animation: pulse-glow 2s ease-in-out infinite;
-    }
-
-    .migration-hero h1 {
-        font-family: 'Sora', sans-serif;
-        font-size: 2.4rem;
-        color: var(--text);
-        margin-bottom: 0.6rem;
-    }
-
-    .migration-hero p {
-        font-size: 1.35rem;
-        color: var(--text-soft);
-        line-height: 1.6;
-    }
-
-    /* Migration Tabs */
-    .migration-tabs {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .migration-tab {
-        background: var(--card-bg);
-        backdrop-filter: blur(16px);
-        border: 1px solid var(--border);
-        border-radius: 1.2rem;
-        padding: 1.6rem 1.8rem;
-        cursor: pointer;
-        transition: all 0.3s var(--ease);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .migration-tab:hover {
-        border-color: rgba(249, 202, 36, 0.3);
-        transform: translateY(-2px);
-    }
-
-    .migration-tab.done {
-        border-color: rgba(34, 197, 94, 0.4);
-        background: rgba(34, 197, 94, 0.05);
-    }
-
-    .migration-tab.done::after {
-        content: '✓';
-        position: absolute;
-        top: 1rem;
-        right: 1.2rem;
-        width: 2.4rem;
-        height: 2.4rem;
-        background: var(--success);
-        color: #fff;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        font-size: 1.3rem;
-        font-weight: 700;
-    }
-
-    .tab-icon {
-        width: 4.4rem;
-        height: 4.4rem;
-        border-radius: 1rem;
-        background: rgba(249, 202, 36, 0.15);
-        color: var(--yellow);
-        display: grid;
-        place-items: center;
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-    }
-
-    .migration-tab.done .tab-icon {
-        background: rgba(34, 197, 94, 0.15);
-        color: var(--success);
-    }
-
-    .tab-title {
-        font-family: 'Sora', sans-serif;
-        font-size: 1.4rem;
-        color: var(--text);
-        font-weight: 700;
-        margin-bottom: 0.4rem;
-    }
-
-    .tab-count {
-        font-size: 1.2rem;
-        color: var(--text-muted);
-    }
-
-    /* Card */
-    .migrate-card {
-        background: var(--card-bg);
-        backdrop-filter: blur(16px);
-        border: 1px solid var(--border);
-        border-radius: 1.4rem;
-        padding: 2rem 2.4rem;
-        margin-bottom: 2rem;
-    }
-
-    .migrate-card h2 {
-        font-family: 'Sora', sans-serif;
-        font-size: 1.7rem;
-        color: var(--text);
-        margin-bottom: 0.4rem;
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-    }
-
-    .migrate-card h2 i {
-        color: var(--yellow);
-    }
-
-    .migrate-card .subtitle {
-        color: var(--text-muted);
-        font-size: 1.3rem;
-        margin-bottom: 1.4rem;
-    }
-
-    .preview-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
-        gap: 1rem;
-        margin-bottom: 1.6rem;
-    }
-
-    .preview-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1.2rem 1.4rem;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border);
-        border-radius: 1rem;
-        transition: all 0.3s var(--ease);
-    }
-
-    body.light-theme .preview-item {
-        background: rgba(0, 0, 0, 0.03);
-    }
-
-    .preview-item.done {
-        border-color: rgba(34, 197, 94, 0.3);
-        background: rgba(34, 197, 94, 0.05);
-    }
-
-    .preview-item.error {
-        border-color: rgba(239, 68, 68, 0.3);
-        background: rgba(239, 68, 68, 0.05);
-    }
-
-    .preview-icon-mini {
-        width: 4rem;
-        height: 4rem;
-        border-radius: 0.8rem;
-        background: var(--item-color, var(--yellow));
-        color: #fff;
-        display: grid;
-        place-items: center;
-        font-size: 1.4rem;
-        flex-shrink: 0;
-    }
-
-    .preview-info {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .preview-name {
-        font-family: 'Sora', sans-serif;
-        font-size: 1.3rem;
-        color: var(--text);
-        font-weight: 700;
-        margin-bottom: 0.2rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .preview-status {
-        font-size: 1.1rem;
-        color: var(--text-muted);
-    }
-
-    .preview-item.done .preview-status { color: var(--success); }
-    .preview-item.error .preview-status { color: var(--error); }
-    .preview-status i { margin-right: 0.4rem; }
-
-    .migrate-btn {
-        padding: 1.4rem 2.4rem;
-        background: var(--g-yellow);
-        color: #111;
-        border: none;
-        border-radius: 0.9rem;
-        font-family: 'Sora', sans-serif;
-        font-size: 1.4rem;
-        font-weight: 800;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.8rem;
-        transition: all 0.3s var(--ease);
-        box-shadow: 0 8px 20px -4px var(--yellow-glow);
-    }
-
-    .migrate-btn:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 28px -4px var(--yellow-glow);
-    }
-
-    .migrate-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    .migrate-btn.done {
-        background: var(--success);
-        color: #fff;
-        box-shadow: none;
-    }
-
-    .super-migrate {
-        background: linear-gradient(135deg, #a855f7, #ec4899);
-        color: #fff;
-        font-size: 1.6rem;
-        padding: 1.6rem 3.2rem;
-        box-shadow: 0 12px 28px -4px rgba(168, 85, 247, 0.4);
-    }
-
-    .super-migrate:hover:not(:disabled) {
-        box-shadow: 0 18px 36px -4px rgba(168, 85, 247, 0.5);
-    }
-
-    @media (max-width: 768px) {
-        .migration-hero {
-            flex-direction: column;
-            text-align: center;
-            padding: 1.8rem 1.4rem;
-        }
-
-        .migration-hero-icon {
-            width: 6rem;
-            height: 6rem;
-            font-size: 2.6rem;
-        }
-
-        .migration-hero h1 {
-            font-size: 1.8rem;
-        }
-
-        .preview-list {
-            grid-template-columns: 1fr;
-        }
-    }
-  </style>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sb-brand">
-      <div class="sb-avatar"><span>AH</span></div>
-      <div>
-        <h3 id="sbUserName">Hanan</h3>
-        <p>Admin Panel</p>
-      </div>
-    </div>
-    <nav class="sb-nav">
-      <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
-      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span></a>
-      <a href="analytics.html"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a>
-      <a href="projects.html"><i class="fa-solid fa-folder-open"></i> <span>Projects</span></a>
-      <a href="testimonials.html"><i class="fa-solid fa-star"></i> <span>Testimonials</span></a>
-      <a href="skills.html"><i class="fa-solid fa-code"></i> <span>Skills</span></a>
-      <a href="whatsnew.html"><i class="fa-solid fa-bullhorn"></i> <span>What's New</span></a>
-      <a href="website-editor.html"><i class="fa-solid fa-pen-to-square"></i> <span>Website Editor</span></a>
-      <a href="sections.html"><i class="fa-solid fa-eye"></i> <span>Sections</span></a>
-      <a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
-    </nav>
-    <div class="sb-footer">
-      <button class="sb-logout" id="logoutBtn">
-        <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
-      </button>
-    </div>
-  </aside>
-
-  <main class="main">
+  <main class="main" style="margin-left: 0; max-width: 90rem; margin: 0 auto;">
     <header class="topbar">
-      <button class="sb-toggle" id="sbToggle"><i class="fa-solid fa-bars"></i></button>
-      <h1>Migrate All Data</h1>
-      <div class="topbar-actions">
-        <button class="theme-toggle" id="themeToggle" title="Toggle theme (T)">
-          <i class="fa-solid fa-moon moon-icon"></i>
-          <i class="fa-solid fa-sun sun-icon"></i>
-        </button>
-      </div>
+      <h1><i class="fa-solid fa-database" style="color:var(--yellow);"></i> Migrate All Portfolio Data</h1>
+      <a href="dashboard.html" class="btn-view-site"><i class="fa-solid fa-arrow-left"></i> <span>Dashboard</span></a>
     </header>
 
-    <!-- Hero -->
-    <div class="migration-hero">
-      <div class="migration-hero-icon">
-        <i class="fa-solid fa-rocket"></i>
-      </div>
-      <div>
-        <h1>Migrate Everything from Your Portfolio</h1>
-        <p>Tumhari portfolio website pe jo existing data hai (Skills, Testimonials, What's New, Achievements, Website Info) — sab Google Sheet mein automatically add ho jayega. Bas ek-ek button click karo, ya "Migrate All" press karo!</p>
-      </div>
+    <div class="settings-card">
+      <h2 style="color:var(--yellow);"><i class="fa-solid fa-rocket"></i> One-Click Migration</h2>
+      <p class="settings-subtitle">Click below to migrate ALL existing portfolio data to Google Sheet: 6 Projects + 8 Skills + 6 Testimonials + 4 What's New + Settings + 4 Services + 6 Achievements</p>
+      <button class="btn-save" id="megaBtn" style="padding: 1.4rem 2.8rem; font-size: 1.4rem;"><i class="fa-solid fa-rocket"></i> <span>Migrate Everything</span></button>
+      <div id="status" style="margin-top: 1.4rem; font-family: 'Sora'; font-size: 1.3rem; min-height: 4rem;"></div>
     </div>
 
-    <!-- Super Migrate -->
-    <div style="text-align: center; margin-bottom: 2rem;">
-      <button class="migrate-btn super-migrate" id="migrateAllBtn">
-        <i class="fa-solid fa-magic"></i>
-        <span>One-Click: Migrate Everything</span>
-      </button>
-    </div>
-
-    <!-- Migration Tabs -->
-    <div class="migration-tabs">
-      <div class="migration-tab" id="tab-skills">
-        <div class="tab-icon"><i class="fa-solid fa-code"></i></div>
-        <div class="tab-title">Skills</div>
-        <div class="tab-count" id="count-skills">8 items</div>
+    <div class="settings-card">
+      <h2><i class="fa-solid fa-list-check"></i> Or Migrate Individually</h2>
+      <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem;">
+        <button class="btn-cancel" data-section="projects">Projects (6)</button>
+        <button class="btn-cancel" data-section="skills">Skills (8)</button>
+        <button class="btn-cancel" data-section="testimonials">Testimonials (6)</button>
+        <button class="btn-cancel" data-section="whatsnew">What's New (4)</button>
+        <button class="btn-cancel" data-section="settings">Settings</button>
+        <button class="btn-cancel" data-section="services">Services (4)</button>
+        <button class="btn-cancel" data-section="achievements">Achievements (6)</button>
       </div>
-      <div class="migration-tab" id="tab-testimonials">
-        <div class="tab-icon"><i class="fa-solid fa-star"></i></div>
-        <div class="tab-title">Testimonials</div>
-        <div class="tab-count" id="count-testimonials">6 items</div>
-      </div>
-      <div class="migration-tab" id="tab-whatsnew">
-        <div class="tab-icon"><i class="fa-solid fa-bullhorn"></i></div>
-        <div class="tab-title">What's New</div>
-        <div class="tab-count" id="count-whatsnew">4 items</div>
-      </div>
-      <div class="migration-tab" id="tab-settings">
-        <div class="tab-icon"><i class="fa-solid fa-id-card"></i></div>
-        <div class="tab-title">Website Info</div>
-        <div class="tab-count" id="count-settings">Hero, About, Contact</div>
-      </div>
-    </div>
-
-    <!-- Skills Migration -->
-    <div class="migrate-card">
-      <h2><i class="fa-solid fa-code"></i> Skills Migration</h2>
-      <p class="subtitle">Add 8 skills with proficiency levels from your portfolio</p>
-      <div class="preview-list" id="skillsPreview"></div>
-      <button class="migrate-btn" id="btnSkills">
-        <i class="fa-solid fa-upload"></i> <span>Migrate Skills (8)</span>
-      </button>
-    </div>
-
-    <!-- Testimonials Migration -->
-    <div class="migrate-card">
-      <h2><i class="fa-solid fa-star"></i> Testimonials Migration</h2>
-      <p class="subtitle">Add 6 client reviews from your portfolio</p>
-      <div class="preview-list" id="testimonialsPreview"></div>
-      <button class="migrate-btn" id="btnTestimonials">
-        <i class="fa-solid fa-upload"></i> <span>Migrate Testimonials (6)</span>
-      </button>
-    </div>
-
-    <!-- What's New Migration -->
-    <div class="migrate-card">
-      <h2><i class="fa-solid fa-bullhorn"></i> What's New Migration</h2>
-      <p class="subtitle">Add 4 timeline updates from your portfolio</p>
-      <div class="preview-list" id="whatsnewPreview"></div>
-      <button class="migrate-btn" id="btnWhatsnew">
-        <i class="fa-solid fa-upload"></i> <span>Migrate Updates (4)</span>
-      </button>
-    </div>
-
-    <!-- Website Settings Migration -->
-    <div class="migrate-card">
-      <h2><i class="fa-solid fa-id-card"></i> Website Info Migration</h2>
-      <p class="subtitle">Save your Hero, About, Contact, and Social info to Sheet</p>
-      <div class="preview-list" id="settingsPreview"></div>
-      <button class="migrate-btn" id="btnSettings">
-        <i class="fa-solid fa-upload"></i> <span>Migrate Website Info</span>
-      </button>
     </div>
   </main>
 
+  <div class="notify-container" id="notifyContainer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/mobile.js"></script>
+  <script src="js/common.js"></script>
   <script>
-    (function () {
-        'use strict';
+(function () {
+    'use strict';
+    if (!HananAuth.requireAuth()) return;
 
-        var GOOGLE_SCRIPT_URL = HananAuth.getApiUrl();
-        var SECRET_KEY = HananAuth.getSecret();
-
-        // ============ DATA FROM PORTFOLIO ============
-
-        var SKILLS_DATA = [
+    var DATA = {
+        projects: [
+            { title: 'Haseen Wears', category: 'E-Commerce', description: 'WooCommerce store built on Woodmart theme with custom product layouts and conversion-focused UX.', color: '#e91e63', tech: 'WordPress, WooCommerce, Woodmart', liveUrl: 'https://haseenwears.com' },
+            { title: 'Agate Tours', category: 'Travel', description: 'Travel booking website with dynamic tour packages and itinerary management.', color: '#3b82f6', tech: 'WordPress, Custom Theme' },
+            { title: 'CNC Electric', category: 'E-Commerce', description: 'Shopify store for electrical protection devices with custom product pages and quiz finder.', color: '#D42B2B', tech: 'Shopify, Liquid, JavaScript', liveUrl: 'https://cncelectric.pk' },
+            { title: 'C-Power', category: 'Business', description: 'Corporate website for electrical power solutions division.', color: '#F06B2A', tech: 'HTML, CSS, JavaScript' },
+            { title: 'C-Solar', category: 'Business', description: 'Solar energy services website with white & gold theme.', color: '#FEBC5A', tech: 'HTML, CSS, JavaScript', liveUrl: 'https://c-solar.pk' },
+            { title: 'Cognitive Solutions', category: 'Corporate', description: 'Parent group corporate website connecting all sub-brands.', color: '#00499E', tech: 'HTML, CSS, JavaScript', liveUrl: 'https://cognitivesolutions.com.pk' }
+        ],
+        skills: [
             { name: 'HTML5 / CSS3', category: 'Frontend', icon: 'fa-html5', color: '#e34c26', level: 'Expert', percent: 95 },
             { name: 'Bootstrap', category: 'Frontend', icon: 'fa-bootstrap', color: '#7952b3', level: 'Expert', percent: 90 },
             { name: 'WordPress', category: 'CMS', icon: 'fa-wordpress', color: '#21759b', level: 'Expert', percent: 90 },
-            { name: 'jQuery', category: 'Frontend', icon: 'fa-js', color: '#0769ad', level: 'Advanced', percent: 85 },
+            { name: 'jQuery', category: 'Frontend', icon: 'fa-code', color: '#0769ad', level: 'Advanced', percent: 85 },
             { name: 'Shopify', category: 'E-Commerce', icon: 'fa-shopify', color: '#7ab55c', level: 'Advanced', percent: 80 },
             { name: 'JavaScript', category: 'Frontend', icon: 'fa-js', color: '#f7df1e', level: 'Advanced', percent: 80 },
-            { name: 'On-page SEO (Yoast)', category: 'SEO', icon: 'fa-magnifying-glass', color: '#a4286a', level: 'Intermediate', percent: 65 },
-            { name: 'PHP (Basic)', category: 'Backend', icon: 'fa-php', color: '#777bb4', level: 'Intermediate', percent: 60 }
-        ];
-
-        var TESTIMONIALS_DATA = [
-            { name: 'Awais Hassan', role: 'Director', company: 'CNC Electric Pakistan', message: 'Abdul Hanan delivered our Shopify store ahead of schedule. The attention to detail and clean code made future updates easy. Highly recommend for any e-commerce project.', rating: 5, featured: true, avatar: '' },
-            { name: 'Haseen Wears Team', role: 'Fashion Brand', company: 'Pakistan', message: 'Working with Hanan was a great experience. He understood the brand vision instantly and built a WordPress site that perfectly captures our identity. Fast, responsive, and professional throughout.', rating: 5, featured: false, avatar: '' },
-            { name: 'Agate Tours', role: 'Travel Company', company: 'Agate Tours', message: 'Hanan built our tour company website with great care. The booking flow is smooth and the design is beautiful. Communication was clear from day one. Will work with him again.', rating: 5, featured: false, avatar: '' },
-            { name: 'C-Solar', role: 'Renewable Energy', company: 'C-Solar', message: 'Hanan transformed our solar services website into a lead-generating machine. Mobile-first, lightning fast, and exactly what we envisioned. A true professional.', rating: 5, featured: true, avatar: '' },
-            { name: 'C-Power Team', role: 'Electrical Solutions', company: 'C-Power', message: 'Our C-Power Shopify store launched smoothly thanks to Hanan. He handled every detail from theme customization to product setup. Reliable and skilled.', rating: 5, featured: false, avatar: '' },
-            { name: 'Cognitive Solutions', role: 'Tech Consultancy', company: 'Cognitive Solutions', message: 'Excellent WordPress developer. Hanan built our corporate site with modern design and impressive performance. Communication is clear and delivery is always on time.', rating: 5, featured: false, avatar: '' }
-        ];
-
-        var WHATSNEW_DATA = [
-            { title: 'Portfolio Site Launched', tag: 'NEW', description: 'Designed and built this fully custom portfolio using HTML, CSS, JavaScript, and jQuery. Glassmorphism theme, smooth animations, full keyboard navigation, and dark/light modes.', date: getRecentDate(0), link: 'https://hanan-develop.github.io/hanan-portfolio/' },
-            { title: 'C-Solar Website Live', tag: 'LAUNCH', description: 'Completed and deployed the C-Solar renewable energy website. Mobile-first, lightning fast, and optimized for lead generation.', date: getRecentDate(14), link: 'https://c-solar.pk' },
-            { title: 'CNC Electric Shopify Optimization', tag: 'UPDATE', description: 'Pushed major performance updates to the CNC Electric Pakistan Shopify store. Improved page speed by 35% and SEO scores by 28%.', date: getRecentDate(30), link: 'https://cncelectric.pk' },
-            { title: 'Diving into Advanced JavaScript', tag: 'LEARNING', description: 'Currently exploring modern ES2024+ features, design patterns, and animation libraries. Continuous improvement is the only way forward.', date: getRecentDate(7), link: '' }
-        ];
-
-        var SETTINGS_DATA = {
+            { name: 'On-page SEO Yoast', category: 'SEO', icon: 'fa-magnifying-glass', color: '#a4286a', level: 'Intermediate', percent: 65 },
+            { name: 'PHP Basic', category: 'Backend', icon: 'fa-php', color: '#777bb4', level: 'Intermediate', percent: 60 }
+        ],
+        testimonials: [
+            { name: 'Awais Hassan', role: 'Director', company: 'CNC Electric Pakistan', message: 'Outstanding work on our Shopify store. Hanan delivered beyond expectations with custom features.', rating: 5, featured: 'yes' },
+            { name: 'Haseen Wears Team', role: 'Client', company: 'Haseen Wears', message: 'Professional WordPress development with great attention to detail.', rating: 5, featured: 'no' },
+            { name: 'Agate Tours', role: 'Client', company: 'Agate Tours', message: 'Beautiful travel website that helped grow our bookings significantly.', rating: 5, featured: 'no' },
+            { name: 'C-Solar', role: 'Client', company: 'C-Solar Pakistan', message: 'Clean modern design that perfectly represents our solar energy brand.', rating: 5, featured: 'yes' },
+            { name: 'C-Power Team', role: 'Client', company: 'C-Power', message: 'Excellent technical skills and reliable delivery.', rating: 5, featured: 'no' },
+            { name: 'Cognitive Solutions', role: 'Client', company: 'Cognitive Solutions', message: 'Connected all our sub-brands beautifully through the parent website.', rating: 5, featured: 'no' }
+        ],
+        whatsnew: [
+            { title: 'Portfolio Site Launched', tag: 'NEW', description: 'Built and deployed my personal portfolio website with dark theme and yellow accents.', date: new Date().toISOString().split('T')[0] },
+            { title: 'C-Solar Website Live', tag: 'LAUNCH', description: 'Successfully launched C-Solar services-only static website with white & gold theme.', date: new Date(Date.now() - 14 * 86400000).toISOString().split('T')[0] },
+            { title: 'CNC Electric Shopify Optimization', tag: 'UPDATE', description: 'Optimized product pages with custom Liquid templating and conversion improvements.', date: new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0] },
+            { title: 'Diving into Advanced JavaScript', tag: 'LEARNING', description: 'Expanding skill set with modern JS frameworks and design patterns.', date: new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0] }
+        ],
+        settings: {
             hero_name: 'Abdul Hanan',
             hero_tagline: 'WordPress Developer & Shopify Designer',
-            hero_subtitle: 'A passionate developer from Lahore, Pakistan — building responsive, SEO-friendly websites and online stores. Skilled in HTML, CSS, JavaScript, jQuery, Bootstrap, WordPress, and Shopify.',
+            hero_subtitle: 'Building modern, professional websites that grow your business',
             hero_cta_text: 'Hire Me',
             hero_cta_link: '#contact',
-            hero_avatar: '',
             about_title: 'About Me',
-            about_description: 'A passionate developer from Lahore, Pakistan — building responsive, SEO-friendly websites and online stores. Currently working at CNC Electric Pakistan as Shopify Designer and pursuing BS Computer Science at Virtual University of Pakistan.',
-            about_years: '2',
-            about_projects: '6',
-            about_clients: '5',
-            about_satisfaction: '100',
+            about_description: 'Passionate WordPress Developer and Shopify Designer based in Lahore, Pakistan. Currently working at CNC Electric Pakistan, building e-commerce solutions for multiple brands.',
+            about_years: '2', about_projects: '6', about_clients: '5', about_satisfaction: '100',
             contact_email: 'abdulhanan4145534@gmail.com',
             contact_phone: '+92 325 4145534',
             contact_whatsapp: '923254145534',
-            contact_location: 'Lahore, Punjab, Pakistan',
+            contact_location: 'Lahore, Pakistan',
             contact_availability: 'available',
             social_github: 'https://github.com/Hanan-develop',
             social_linkedin: 'https://www.linkedin.com/in/abdul-hanan-926a4b39a/',
-            social_youtube: 'https://www.youtube.com/@CodeLabCreations_5345',
-            social_twitter: '',
-            social_instagram: '',
-            social_facebook: ''
-        };
+            social_youtube: 'https://www.youtube.com/@CodeLabCreations_5345'
+        },
+        services: [
+            { title: 'WordPress Development', description: 'Custom WordPress themes & plugins tailored to your brand and built to scale.', icon: 'fa-wordpress', color: '#21759b', features: 'Theme customization\nPlugin integration\nElementor / WPBakery\nResponsive design', orderNum: 1, visible: 'yes' },
+            { title: 'Shopify Design', description: 'End-to-end Shopify store setup with conversion-focused design and Liquid theming.', icon: 'fa-shopify', color: '#7ab55c', features: 'Store setup\nTheme customization\nLiquid templating\nProduct management', orderNum: 2, tag: 'popular', visible: 'yes' },
+            { title: 'Frontend Development', description: 'Pixel-perfect, responsive websites built with HTML, CSS, JS, jQuery, Bootstrap.', icon: 'fa-code', color: '#f7df1e', features: 'HTML / CSS / JS\njQuery & Bootstrap\nMobile-first\nFast loading', orderNum: 3, tag: 'featured', visible: 'yes' },
+            { title: 'Basic SEO Setup', description: 'On-page SEO basics and Yoast plugin setup for WordPress sites.', icon: 'fa-magnifying-glass', color: '#a4286a', features: 'Yoast SEO setup\nMeta tags & sitemap\nPage speed basics', orderNum: 4, visible: 'yes' }
+        ],
+        achievements: [
+            { title: 'Joined CNC Electric Pakistan', description: 'Promoted to Shopify Designer role, leading e-commerce projects.', year: '2025', category: 'career', icon: 'fa-building', color: '#D42B2B', orderNum: 1, tag: 'latest' },
+            { title: 'BS Computer Science', description: 'Enrolled at Virtual University of Pakistan, balancing work with academics.', year: '2025', category: 'education', icon: 'fa-graduation-cap', color: '#3b82f6', orderNum: 2 },
+            { title: 'Frontend Developer Certified', description: 'Completed advanced training at Al Khawarizmi Institute of Computer Science.', year: '2025', category: 'certification', icon: 'fa-certificate', color: '#22c55e', orderNum: 3 },
+            { title: 'WordPress Developer Certified', description: 'Specialized training in theme/plugin development and performance optimization.', year: '2024', category: 'certification', icon: 'fa-wordpress', color: '#21759b', orderNum: 4 },
+            { title: '5-Brand Portfolio', description: 'Successfully delivered projects for 5+ brands and clients.', year: '2025', category: 'milestone', icon: 'fa-medal', color: '#f9ca24', orderNum: 5, tag: 'major' },
+            { title: '100% Client Satisfaction', description: 'Maintained perfect 5-star feedback across all completed projects.', year: '2025', category: 'recognition', icon: 'fa-star', color: '#a855f7', orderNum: 6, tag: 'featured' }
+        ]
+    };
 
-        // ============ HELPERS ============
+    var ACTIONS = {
+        projects: 'saveProject',
+        skills: 'saveSkill',
+        testimonials: 'saveTestimonial',
+        whatsnew: 'saveWhatsNew',
+        services: 'saveService',
+        achievements: 'saveAchievement'
+    };
 
-        function getRecentDate(daysAgo) {
-            var d = new Date();
-            d.setDate(d.getDate() - daysAgo);
-            return d.toISOString().split('T')[0];
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        function delay(ms) {
-            return new Promise(function (r) { setTimeout(r, ms); });
-        }
-
-        // ============ RENDER PREVIEWS ============
-
-        function renderSkillsPreview() {
-            $('#count-skills').text(SKILLS_DATA.length + ' items');
-            var html = SKILLS_DATA.map(function (s, i) {
-                var iconClass = s.icon.indexOf('fa-') === 0 ? 'fa-brands ' + s.icon : s.icon;
-                return '<div class="preview-item" id="skill-' + i + '">' +
-                    '<div class="preview-icon-mini" style="background: ' + s.color + ';"><i class="' + iconClass + '"></i></div>' +
-                    '<div class="preview-info">' +
-                        '<div class="preview-name">' + s.name + ' (' + s.percent + '%)</div>' +
-                        '<div class="preview-status" id="skill-status-' + i + '"><i class="fa-regular fa-circle"></i> Pending</div>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-            $('#skillsPreview').html(html);
-        }
-
-        function renderTestimonialsPreview() {
-            $('#count-testimonials').text(TESTIMONIALS_DATA.length + ' items');
-            var html = TESTIMONIALS_DATA.map(function (t, i) {
-                var initials = t.name.split(' ').map(function (w) { return w.charAt(0); }).join('').substring(0, 2).toUpperCase();
-                return '<div class="preview-item" id="testi-' + i + '">' +
-                    '<div class="preview-icon-mini" style="background: #a855f7;">' + initials + '</div>' +
-                    '<div class="preview-info">' +
-                        '<div class="preview-name">' + escapeHtml(t.name) + '</div>' +
-                        '<div class="preview-status" id="testi-status-' + i + '"><i class="fa-regular fa-circle"></i> Pending</div>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-            $('#testimonialsPreview').html(html);
-        }
-
-        function renderWhatsnewPreview() {
-            $('#count-whatsnew').text(WHATSNEW_DATA.length + ' items');
-            var html = WHATSNEW_DATA.map(function (w, i) {
-                return '<div class="preview-item" id="wn-' + i + '">' +
-                    '<div class="preview-icon-mini" style="background: #22c55e;"><i class="fa-solid fa-bullhorn"></i></div>' +
-                    '<div class="preview-info">' +
-                        '<div class="preview-name">' + escapeHtml(w.title) + '</div>' +
-                        '<div class="preview-status" id="wn-status-' + i + '"><i class="fa-regular fa-circle"></i> Pending</div>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-            $('#whatsnewPreview').html(html);
-        }
-
-        function renderSettingsPreview() {
-            $('#count-settings').text('15+ fields');
-            var items = [
-                { label: 'Hero Info', desc: 'Name, Tagline, Subtitle, CTA' },
-                { label: 'About', desc: 'Title, Description, 4 Stats' },
-                { label: 'Contact', desc: 'Email, Phone, WhatsApp, Location' },
-                { label: 'Social Links', desc: 'GitHub, LinkedIn, YouTube' }
-            ];
-            var html = items.map(function (item, i) {
-                return '<div class="preview-item" id="setting-' + i + '">' +
-                    '<div class="preview-icon-mini" style="background: #3b82f6;"><i class="fa-solid fa-id-card"></i></div>' +
-                    '<div class="preview-info">' +
-                        '<div class="preview-name">' + item.label + '</div>' +
-                        '<div class="preview-status" id="setting-status-' + i + '">' + item.desc + '</div>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-            $('#settingsPreview').html(html);
-        }
-
-        // ============ UPDATE STATUS ============
-
-        function updateItemStatus(prefix, index, status, message) {
-            var $item = $('#' + prefix + '-' + index);
-            var $status = $('#' + prefix + '-status-' + index);
-
-            if (status === 'success') {
-                $item.addClass('done');
-                $status.html('<i class="fa-solid fa-circle-check"></i> ' + (message || 'Added'));
-            } else if (status === 'error') {
-                $item.addClass('error');
-                $status.html('<i class="fa-solid fa-circle-exclamation"></i> ' + (message || 'Failed'));
-            } else if (status === 'loading') {
-                $status.html('<i class="fa-solid fa-spinner fa-spin"></i> Adding...');
-            }
-        }
-
-        // ============ MIGRATION FUNCTIONS ============
-
-        function migrateSkill(skill, index) {
-            return new Promise(function (resolve) {
-                updateItemStatus('skill', index, 'loading');
-                var fd = new FormData();
-                fd.append('action', 'saveSkill');
-                fd.append('secret', SECRET_KEY);
-                fd.append('name', skill.name);
-                fd.append('category', skill.category);
-                fd.append('icon', skill.icon);
-                fd.append('color', skill.color);
-                fd.append('level', skill.level);
-                fd.append('percent', skill.percent);
-
-                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: fd })
-                    .then(function (r) { return r.json(); })
-                    .then(function (res) {
-                        if (res && res.ok) {
-                            updateItemStatus('skill', index, 'success');
-                            resolve({ ok: true });
-                        } else {
-                            updateItemStatus('skill', index, 'error', res.error);
-                            resolve({ ok: false });
-                        }
-                    })
-                    .catch(function () {
-                        updateItemStatus('skill', index, 'error', 'Network error');
-                        resolve({ ok: false });
-                    });
+    function saveItem(action, data) {
+        return new Promise(function (resolve) {
+            var fd = new FormData();
+            fd.append('action', action);
+            fd.append('secret', HananAuth.getSecret());
+            Object.keys(data).forEach(function (k) {
+                if (data[k] !== null && data[k] !== undefined) fd.append(k, data[k]);
             });
-        }
-
-        function migrateTestimonial(testi, index) {
-            return new Promise(function (resolve) {
-                updateItemStatus('testi', index, 'loading');
-                var fd = new FormData();
-                fd.append('action', 'saveTestimonial');
-                fd.append('secret', SECRET_KEY);
-                fd.append('name', testi.name);
-                fd.append('role', testi.role);
-                fd.append('company', testi.company);
-                fd.append('message', testi.message);
-                fd.append('rating', testi.rating);
-                fd.append('avatar', testi.avatar);
-                fd.append('featured', testi.featured ? 'yes' : 'no');
-
-                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: fd })
-                    .then(function (r) { return r.json(); })
-                    .then(function (res) {
-                        if (res && res.ok) {
-                            updateItemStatus('testi', index, 'success');
-                            resolve({ ok: true });
-                        } else {
-                            updateItemStatus('testi', index, 'error', res.error);
-                            resolve({ ok: false });
-                        }
-                    })
-                    .catch(function () {
-                        updateItemStatus('testi', index, 'error', 'Network error');
-                        resolve({ ok: false });
-                    });
-            });
-        }
-
-        function migrateWhatsnew(item, index) {
-            return new Promise(function (resolve) {
-                updateItemStatus('wn', index, 'loading');
-                var fd = new FormData();
-                fd.append('action', 'saveWhatsNew');
-                fd.append('secret', SECRET_KEY);
-                fd.append('title', item.title);
-                fd.append('tag', item.tag);
-                fd.append('description', item.description);
-                fd.append('date', item.date);
-                fd.append('link', item.link);
-
-                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: fd })
-                    .then(function (r) { return r.json(); })
-                    .then(function (res) {
-                        if (res && res.ok) {
-                            updateItemStatus('wn', index, 'success');
-                            resolve({ ok: true });
-                        } else {
-                            updateItemStatus('wn', index, 'error', res.error);
-                            resolve({ ok: false });
-                        }
-                    })
-                    .catch(function () {
-                        updateItemStatus('wn', index, 'error', 'Network error');
-                        resolve({ ok: false });
-                    });
-            });
-        }
-
-        function migrateSettings() {
-            return new Promise(function (resolve) {
-                updateItemStatus('setting', 0, 'loading');
-                updateItemStatus('setting', 1, 'loading');
-                updateItemStatus('setting', 2, 'loading');
-                updateItemStatus('setting', 3, 'loading');
-
-                var fd = new FormData();
-                fd.append('action', 'saveSiteSettings');
-                fd.append('secret', SECRET_KEY);
-
-                Object.keys(SETTINGS_DATA).forEach(function (key) {
-                    fd.append(key, SETTINGS_DATA[key]);
-                });
-
-                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: fd })
-                    .then(function (r) { return r.json(); })
-                    .then(function (res) {
-                        if (res && res.ok) {
-                            updateItemStatus('setting', 0, 'success', 'Saved');
-                            updateItemStatus('setting', 1, 'success', 'Saved');
-                            updateItemStatus('setting', 2, 'success', 'Saved');
-                            updateItemStatus('setting', 3, 'success', 'Saved');
-                            resolve({ ok: true });
-                        } else {
-                            updateItemStatus('setting', 0, 'error', res.error);
-                            updateItemStatus('setting', 1, 'error', res.error);
-                            updateItemStatus('setting', 2, 'error', res.error);
-                            updateItemStatus('setting', 3, 'error', res.error);
-                            resolve({ ok: false });
-                        }
-                    })
-                    .catch(function () {
-                        updateItemStatus('setting', 0, 'error', 'Network');
-                        updateItemStatus('setting', 1, 'error', 'Network');
-                        updateItemStatus('setting', 2, 'error', 'Network');
-                        updateItemStatus('setting', 3, 'error', 'Network');
-                        resolve({ ok: false });
-                    });
-            });
-        }
-
-        // ============ BATCH MIGRATIONS ============
-
-        function runMigration(items, migrateFn, $btn, label) {
-            $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> <span>Migrating...</span>');
-
-            var promise = Promise.resolve();
-            items.forEach(function (item, i) {
-                promise = promise.then(function () { return migrateFn(item, i); }).then(function () { return delay(400); });
-            });
-
-            return promise.then(function () {
-                $btn.removeClass().addClass('migrate-btn done')
-                    .html('<i class="fa-solid fa-check"></i> <span>' + label + ' Done</span>')
-                    .prop('disabled', true);
-
-                try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
-
-                if (window.notify) {
-                    notify({ title: label + ' Migration Complete', message: items.length + ' items added!', type: 'success', persist: true });
-                }
-            });
-        }
-
-        // ============ INIT ============
-
-        $(document).ready(function () {
-            if (!HananAuth.requireAuth()) return;
-
-            var user = HananAuth.getCurrentUser();
-            if (user) $('#sbUserName').text(user.charAt(0).toUpperCase() + user.slice(1));
-
-            // Render previews
-            renderSkillsPreview();
-            renderTestimonialsPreview();
-            renderWhatsnewPreview();
-            renderSettingsPreview();
-
-            // Individual migrations
-            $('#btnSkills').on('click', function () {
-                if (confirm('Migrate 8 Skills to Google Sheet?')) {
-                    runMigration(SKILLS_DATA, migrateSkill, $(this), 'Skills').then(function () {
-                        $('#tab-skills').addClass('done');
-                    });
-                }
-            });
-
-            $('#btnTestimonials').on('click', function () {
-                if (confirm('Migrate 6 Testimonials to Google Sheet?')) {
-                    runMigration(TESTIMONIALS_DATA, migrateTestimonial, $(this), 'Testimonials').then(function () {
-                        $('#tab-testimonials').addClass('done');
-                    });
-                }
-            });
-
-            $('#btnWhatsnew').on('click', function () {
-                if (confirm('Migrate 4 Updates to Google Sheet?')) {
-                    runMigration(WHATSNEW_DATA, migrateWhatsnew, $(this), "What's New").then(function () {
-                        $('#tab-whatsnew').addClass('done');
-                    });
-                }
-            });
-
-            $('#btnSettings').on('click', function () {
-                if (confirm('Save Website Info to Google Sheet?')) {
-                    var $btn = $(this);
-                    $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> <span>Saving...</span>');
-                    migrateSettings().then(function () {
-                        $btn.removeClass().addClass('migrate-btn done')
-                            .html('<i class="fa-solid fa-check"></i> <span>Website Info Saved</span>');
-                        $('#tab-settings').addClass('done');
-                        try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
-                        if (window.notify) {
-                            notify({ title: 'Website Info Saved', message: 'All fields saved to Sheet!', type: 'success', persist: true });
-                        }
-                    });
-                }
-            });
-
-            // Super Migrate ALL
-            $('#migrateAllBtn').on('click', function () {
-                if (!confirm('Migrate ALL data (Skills + Testimonials + What\'s New + Website Info)?\n\nYe takriban 1-2 minutes lega.')) return;
-
-                var $btn = $(this);
-                $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> <span>Migrating Everything...</span>');
-
-                // Run all migrations sequentially
-                Promise.resolve()
-                    .then(function () {
-                        return runMigration(SKILLS_DATA, migrateSkill, $('#btnSkills'), 'Skills').then(function () {
-                            $('#tab-skills').addClass('done');
-                        });
-                    })
-                    .then(function () { return delay(500); })
-                    .then(function () {
-                        return runMigration(TESTIMONIALS_DATA, migrateTestimonial, $('#btnTestimonials'), 'Testimonials').then(function () {
-                            $('#tab-testimonials').addClass('done');
-                        });
-                    })
-                    .then(function () { return delay(500); })
-                    .then(function () {
-                        return runMigration(WHATSNEW_DATA, migrateWhatsnew, $('#btnWhatsnew'), "What's New").then(function () {
-                            $('#tab-whatsnew').addClass('done');
-                        });
-                    })
-                    .then(function () { return delay(500); })
-                    .then(function () {
-                        $('#btnSettings').prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> <span>Saving...</span>');
-                        return migrateSettings().then(function () {
-                            $('#btnSettings').removeClass().addClass('migrate-btn done')
-                                .html('<i class="fa-solid fa-check"></i> <span>Saved</span>');
-                            $('#tab-settings').addClass('done');
-                        });
-                    })
-                    .then(function () {
-                        $btn.removeClass().addClass('migrate-btn done super-migrate')
-                            .html('<i class="fa-solid fa-trophy"></i> <span>All Done! View Dashboard</span>')
-                            .prop('disabled', false)
-                            .off('click').on('click', function () {
-                                window.location.href = 'dashboard.html';
-                            });
-
-                        try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
-
-                        if (window.notify) {
-                            notify({ title: '🎉 All Data Migrated!', message: 'Everything is now in your dashboard!', type: 'success', persist: true });
-                        }
-
-                        alert('🎉 Migration Complete!\n\nAb dashboard pe jaake check karo - sab data show ho raha hoga!');
-                    });
-            });
-
-            $('#sbToggle').on('click', function () {
-                $('#sidebar').toggleClass('open');
-            });
-
-            $('#logoutBtn').on('click', function () {
-                if (confirm('Logout?')) HananAuth.logout();
-            });
+            fetch(HananAuth.getApiUrl(), { method: 'POST', body: fd })
+                .then(function (r) { return r.json(); })
+                .then(function (res) { resolve(res && res.ok); })
+                .catch(function () { resolve(false); });
         });
-    })();
+    }
+
+    function migrateSection(section) {
+        $('#status').html('<i class="fa-solid fa-spinner fa-spin"></i> Migrating ' + section + '...');
+        if (section === 'settings') {
+            return saveItem('saveSiteSettings', DATA.settings);
+        }
+        var items = DATA[section];
+        if (!items || !items.length) return Promise.resolve(false);
+        var action = ACTIONS[section];
+        var promise = Promise.resolve();
+        items.forEach(function (item, i) {
+            promise = promise.then(function () {
+                $('#status').html('<i class="fa-solid fa-spinner fa-spin"></i> ' + section + ' ' + (i + 1) + '/' + items.length);
+                return saveItem(action, item);
+            }).then(function () { return new Promise(function (r) { setTimeout(r, 400); }); });
+        });
+        return promise;
+    }
+
+    $('#megaBtn').on('click', function () {
+        if (!confirm('Migrate ALL portfolio data? This will add ~34 items to Google Sheet.')) return;
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Migrating...');
+        Promise.resolve()
+            .then(function () { return migrateSection('settings'); })
+            .then(function () { return migrateSection('projects'); })
+            .then(function () { return migrateSection('skills'); })
+            .then(function () { return migrateSection('testimonials'); })
+            .then(function () { return migrateSection('whatsnew'); })
+            .then(function () { return migrateSection('services'); })
+            .then(function () { return migrateSection('achievements'); })
+            .then(function () {
+                try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
+                $btn.html('<i class="fa-solid fa-check"></i> All Done!');
+                $('#status').html('<i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Migration complete! 🎉');
+                notify({ message: 'Migration complete!', type: 'success' });
+                setTimeout(function () { window.location.href = 'dashboard.html'; }, 2000);
+            });
+    });
+
+    $('[data-section]').on('click', function () {
+        var section = $(this).data('section');
+        var $btn = $(this);
+        $btn.prop('disabled', true);
+        migrateSection(section).then(function () {
+            try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
+            $btn.html('<i class="fa-solid fa-check"></i> Done!');
+            $('#status').html('<i class="fa-solid fa-circle-check" style="color:var(--success);"></i> ' + section + ' migrated!');
+            notify({ message: section + ' done!', type: 'success' });
+        });
+    });
+})();
   </script>
 </body>
 </html>

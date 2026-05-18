@@ -8,19 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/skills.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
-
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -52,42 +44,42 @@
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
-        <button class="btn-view-site" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Skill</span></button>
+        <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Skill</span></button>
       </div>
     </header>
 
-    <div class="skills-grid" id="skillsGrid">
-      <div class="loading-state"><div class="loader-spinner"></div><p>Loading skills...</p></div>
-    </div>
-  </main>
-
+    <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading skills...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
       <div class="modal-header"><h2 id="modalTitle">Add Skill</h2><button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button></div>
-      <form id="skillForm" class="modal-form">
-        <input type="hidden" id="skillId" />
+      <form id="itemForm">
+        <input type="hidden" id="itemId" />
         <div class="form-row">
-          <div class="form-field"><label>Skill Name *</label><input type="text" id="name" required maxlength="100" placeholder="HTML5 / CSS3" /></div>
+          <div class="form-field"><label>Name *</label><input type="text" id="name" required maxlength="100" placeholder="HTML5 / CSS3" /></div>
           <div class="form-field"><label>Category</label><input type="text" id="category" maxlength="50" placeholder="Frontend" /></div>
         </div>
-        <div class="form-row">
+        <div class="icon-color-row">
           <div class="form-field"><label>Icon (Font Awesome)</label><input type="text" id="icon" placeholder="fa-html5" value="fa-code" /></div>
-          <div class="form-field"><label>Color</label><div style="display: flex; gap: 0.5rem; align-items: center;"><input type="color" id="color" value="#f9ca24" /><input type="text" id="colorHex" value="#f9ca24" maxlength="7" style="flex: 1;" /></div></div>
+          <div class="form-field"><label>Color</label><div class="color-picker-wrap"><input type="color" id="color" value="#f9ca24" /><input type="text" id="colorHex" value="#f9ca24" maxlength="7" /></div></div>
         </div>
         <div class="form-row">
-          <div class="form-field"><label>Level</label><select id="level"><option value="Beginner">Beginner</option><option value="Intermediate" selected>Intermediate</option><option value="Advanced">Advanced</option><option value="Expert">Expert</option></select></div>
-          <div class="form-field"><label>Percentage</label><div style="display: flex; gap: 0.8rem; align-items: center;"><input type="range" id="percent" min="0" max="100" value="50" style="flex: 1;" /><span id="percentValue" style="font-family: 'Sora'; font-weight: 700; min-width: 4rem; color: var(--yellow);">50%</span></div></div>
+          <div class="form-field"><label>Level</label><select id="level"><option>Beginner</option><option>Intermediate</option><option>Advanced</option><option>Expert</option></select></div>
+          <div class="form-field"><label>Percentage</label><div class="range-with-value"><input type="range" id="percent" min="0" max="100" value="50" /><span class="range-value" id="percentValue">50%</span></div></div>
         </div>
-        <div class="form-actions"><button type="button" class="btn-cancel" id="cancelBtn">Cancel</button><button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span id="saveBtnText">Save Skill</span></button></div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+          <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span id="saveBtnText">Save</span></button>
+        </div>
       </form>
     </div>
   </div>
+  </main>
 
+  <div class="notify-container" id="notifyContainer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/mobile.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/skills.js"></script>
 </body>
 </html>

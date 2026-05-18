@@ -8,19 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/analytics.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
-
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -56,46 +48,34 @@
     </header>
 
     <div class="filter-bar">
-      <div class="time-filter">
-        <button class="tf active" data-period="today">Today</button>
-        <button class="tf" data-period="7d">7 Days</button>
-        <button class="tf" data-period="30d">30 Days</button>
-        <button class="tf" data-period="all">All Time</button>
-      </div>
+      <button class="filter-btn active" data-period="today">Today</button>
+      <button class="filter-btn" data-period="7d">7 Days</button>
+      <button class="filter-btn" data-period="30d">30 Days</button>
+      <button class="filter-btn" data-period="all">All Time</button>
     </div>
-
     <div class="stats-grid">
       <div class="stat-card stat-blue"><div class="stat-icon"><i class="fa-solid fa-eye"></i></div><div class="stat-content"><span class="stat-label">Total Visits</span><span class="stat-value" id="totalVisits">0</span><span class="stat-trend"><i class="fa-solid fa-chart-line"></i><span id="periodLabel">All time</span></span></div></div>
-      <div class="stat-card stat-yellow"><div class="stat-icon"><i class="fa-solid fa-users"></i></div><div class="stat-content"><span class="stat-label">Unique Visitors</span><span class="stat-value" id="uniqueVisitors">0</span><span class="stat-trend"><i class="fa-solid fa-user-group"></i><span>Different sessions</span></span></div></div>
-      <div class="stat-card stat-green"><div class="stat-icon"><i class="fa-solid fa-mobile-screen"></i></div><div class="stat-content"><span class="stat-label">Top Device</span><span class="stat-value" id="topDevice" style="font-size: 1.8rem;">—</span><span class="stat-trend"><i class="fa-solid fa-chart-pie"></i><span>Most used</span></span></div></div>
-      <div class="stat-card stat-purple"><div class="stat-icon"><i class="fa-solid fa-earth-asia"></i></div><div class="stat-content"><span class="stat-label">Top Country</span><span class="stat-value" id="topCountry" style="font-size: 1.8rem;">—</span><span class="stat-trend"><i class="fa-solid fa-globe"></i><span>Top visitors</span></span></div></div>
+      <div class="stat-card stat-yellow"><div class="stat-icon"><i class="fa-solid fa-users"></i></div><div class="stat-content"><span class="stat-label">Unique</span><span class="stat-value" id="uniqueVisitors">0</span><span class="stat-trend"><i class="fa-solid fa-user-group"></i><span>Sessions</span></span></div></div>
+      <div class="stat-card stat-green"><div class="stat-icon"><i class="fa-solid fa-mobile-screen"></i></div><div class="stat-content"><span class="stat-label">Top Device</span><span class="stat-value" id="topDevice" style="font-size: 1.6rem;">—</span><span class="stat-trend"><i class="fa-solid fa-chart-pie"></i><span>Most used</span></span></div></div>
+      <div class="stat-card stat-purple"><div class="stat-icon"><i class="fa-solid fa-earth-asia"></i></div><div class="stat-content"><span class="stat-label">Top Country</span><span class="stat-value" id="topCountry" style="font-size: 1.6rem;">—</span><span class="stat-trend"><i class="fa-solid fa-globe"></i><span>Visitors</span></span></div></div>
     </div>
-
-    <div class="chart-card analytics-chart"><div class="card-header"><h2><i class="fa-solid fa-chart-area"></i> Visits Over Time</h2><span class="card-badge">Live</span></div><div class="chart-wrap"><div class="bar-chart" id="visitsChart"></div></div></div>
-
     <div class="breakdown-grid">
-      <div class="breakdown-card"><h3><i class="fa-solid fa-mobile-screen"></i> Device Breakdown</h3><div class="bd-list" id="deviceList"><div class="loading-state"><div class="loader-spinner"></div></div></div></div>
-      <div class="breakdown-card"><h3><i class="fa-brands fa-chrome"></i> Browser Breakdown</h3><div class="bd-list" id="browserList"><div class="loading-state"><div class="loader-spinner"></div></div></div></div>
-      <div class="breakdown-card"><h3><i class="fa-solid fa-earth-asia"></i> Top Countries</h3><div class="bd-list" id="countryList"><div class="loading-state"><div class="loader-spinner"></div></div></div></div>
-      <div class="breakdown-card"><h3><i class="fa-solid fa-link"></i> Top Referrers</h3><div class="bd-list" id="referrerList"><div class="loading-state"><div class="loader-spinner"></div></div></div></div>
+      <div class="breakdown-card"><h3><i class="fa-solid fa-mobile-screen"></i> Devices</h3><div class="bd-list" id="deviceList"><div class="loading-state-mini"><div class="loader-spinner"></div></div></div></div>
+      <div class="breakdown-card"><h3><i class="fa-brands fa-chrome"></i> Browsers</h3><div class="bd-list" id="browserList"><div class="loading-state-mini"><div class="loader-spinner"></div></div></div></div>
+      <div class="breakdown-card"><h3><i class="fa-solid fa-earth-asia"></i> Countries</h3><div class="bd-list" id="countryList"><div class="loading-state-mini"><div class="loader-spinner"></div></div></div></div>
+      <div class="breakdown-card"><h3><i class="fa-solid fa-link"></i> Referrers</h3><div class="bd-list" id="referrerList"><div class="loading-state-mini"><div class="loader-spinner"></div></div></div></div>
     </div>
-
     <div class="recent-section">
       <div class="section-head"><h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Visits</h2></div>
-      <div class="visits-table-wrap">
-        <table class="visits-table" id="visitsTable">
-          <thead><tr><th>Time</th><th>Page</th><th>Device</th><th>Browser</th><th>Country</th><th>Referrer</th></tr></thead>
-          <tbody id="visitsTableBody"><tr><td colspan="6"><div class="loading-state"><div class="loader-spinner"></div><p>Loading visits...</p></div></td></tr></tbody>
-        </table>
-      </div>
+      <div class="visits-table-wrap"><table class="visits-table"><thead><tr><th>Time</th><th>Page</th><th>Device</th><th>Browser</th><th>Country</th></tr></thead><tbody id="visitsTableBody"><tr><td colspan="5"><div class="loading-state"><div class="loader-spinner"></div></div></td></tr></tbody></table></div>
     </div>
   </main>
 
+  <div class="notify-container" id="notifyContainer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/mobile.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/analytics.js"></script>
 </body>
 </html>

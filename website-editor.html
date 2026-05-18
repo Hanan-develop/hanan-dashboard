@@ -8,19 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/website-editor.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
-
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -61,74 +53,65 @@
       <button class="editor-tab" data-tab="contact"><i class="fa-solid fa-envelope"></i> Contact</button>
       <button class="editor-tab" data-tab="social"><i class="fa-solid fa-share-nodes"></i> Social</button>
     </div>
-
-    <form id="editorForm" class="editor-form">
-      <!-- HERO TAB -->
+    <form id="editorForm">
       <div class="editor-panel active" data-panel="hero">
         <h2 class="panel-title"><i class="fa-solid fa-house"></i> Hero Section</h2>
-        <div class="form-field"><label>Name *</label><input type="text" id="hero_name" maxlength="100" required placeholder="Abdul Hanan" /></div>
-        <div class="form-field"><label>Tagline *</label><input type="text" id="hero_tagline" maxlength="200" required placeholder="WordPress Developer & Shopify Designer" /></div>
-        <div class="form-field"><label>Subtitle</label><textarea id="hero_subtitle" maxlength="500" rows="3"></textarea></div>
+        <div class="form-field"><label>Name *</label><input type="text" id="hero_name" maxlength="100" required /></div>
+        <div class="form-field"><label>Tagline *</label><input type="text" id="hero_tagline" maxlength="200" required /></div>
+        <div class="form-field"><label>Subtitle</label><textarea id="hero_subtitle" maxlength="500"></textarea></div>
         <div class="form-row">
-          <div class="form-field"><label>CTA Button Text</label><input type="text" id="hero_cta_text" maxlength="50" value="Hire Me" /></div>
-          <div class="form-field"><label>CTA Link</label><input type="text" id="hero_cta_link" maxlength="200" value="#contact" /></div>
+          <div class="form-field"><label>CTA Button Text</label><input type="text" id="hero_cta_text" maxlength="50" /></div>
+          <div class="form-field"><label>CTA Link</label><input type="text" id="hero_cta_link" maxlength="200" /></div>
         </div>
-        <div class="form-field"><label>Avatar URL (optional)</label><input type="url" id="hero_avatar" /></div>
+        <div class="form-field"><label>Avatar URL</label><input type="url" id="hero_avatar" /></div>
       </div>
-
-      <!-- ABOUT TAB -->
       <div class="editor-panel" data-panel="about">
         <h2 class="panel-title"><i class="fa-solid fa-user"></i> About Section</h2>
-        <div class="form-field"><label>Section Title</label><input type="text" id="about_title" maxlength="100" value="About Me" /></div>
-        <div class="form-field"><label>Description</label><textarea id="about_description" maxlength="1000" rows="5"></textarea></div>
+        <div class="form-field"><label>Section Title</label><input type="text" id="about_title" maxlength="100" /></div>
+        <div class="form-field"><label>Description</label><textarea id="about_description" maxlength="1000"></textarea></div>
         <div class="stats-row">
-          <div class="form-field"><label>Years Experience</label><input type="text" id="about_years" maxlength="10" value="2" /></div>
-          <div class="form-field"><label>Projects</label><input type="text" id="about_projects" maxlength="10" value="6" /></div>
-          <div class="form-field"><label>Clients</label><input type="text" id="about_clients" maxlength="10" value="5" /></div>
-          <div class="form-field"><label>Satisfaction %</label><input type="text" id="about_satisfaction" maxlength="10" value="100" /></div>
+          <div class="form-field"><label>Years</label><input type="text" id="about_years" maxlength="10" /></div>
+          <div class="form-field"><label>Projects</label><input type="text" id="about_projects" maxlength="10" /></div>
+          <div class="form-field"><label>Clients</label><input type="text" id="about_clients" maxlength="10" /></div>
+          <div class="form-field"><label>Satisfaction %</label><input type="text" id="about_satisfaction" maxlength="10" /></div>
         </div>
       </div>
-
-      <!-- CONTACT TAB -->
       <div class="editor-panel" data-panel="contact">
         <h2 class="panel-title"><i class="fa-solid fa-envelope"></i> Contact Section</h2>
         <div class="form-field"><label>Email *</label><input type="email" id="contact_email" required /></div>
         <div class="form-row">
-          <div class="form-field"><label>Phone</label><input type="text" id="contact_phone" maxlength="20" /></div>
-          <div class="form-field"><label>WhatsApp (numbers only)</label><input type="text" id="contact_whatsapp" maxlength="15" placeholder="923254145534" /></div>
+          <div class="form-field"><label>Phone</label><input type="text" id="contact_phone" /></div>
+          <div class="form-field"><label>WhatsApp</label><input type="text" id="contact_whatsapp" placeholder="923254145534" /></div>
         </div>
-        <div class="form-field"><label>Location</label><input type="text" id="contact_location" maxlength="100" /></div>
-        <div class="form-field"><label>Availability Status</label>
+        <div class="form-field"><label>Location</label><input type="text" id="contact_location" /></div>
+        <div class="form-field"><label>Availability</label>
           <div class="availability-options">
-            <label class="availability-option"><input type="radio" name="availability" value="available" checked /><span class="ao-card available"><span class="ao-dot"></span><span class="ao-label">Available for Work</span></span></label>
-            <label class="availability-option"><input type="radio" name="availability" value="busy" /><span class="ao-card busy"><span class="ao-dot"></span><span class="ao-label">Currently Busy</span></span></label>
-            <label class="availability-option"><input type="radio" name="availability" value="unavailable" /><span class="ao-card unavailable"><span class="ao-dot"></span><span class="ao-label">Not Available</span></span></label>
+            <label><input type="radio" name="availability" value="available" checked /><span class="ao-card available"><span class="ao-dot"></span><span class="ao-label">Available</span></span></label>
+            <label><input type="radio" name="availability" value="busy" /><span class="ao-card busy"><span class="ao-dot"></span><span class="ao-label">Busy</span></span></label>
+            <label><input type="radio" name="availability" value="unavailable" /><span class="ao-card unavailable"><span class="ao-dot"></span><span class="ao-label">Not Available</span></span></label>
           </div>
         </div>
       </div>
-
-      <!-- SOCIAL TAB -->
       <div class="editor-panel" data-panel="social">
         <h2 class="panel-title"><i class="fa-solid fa-share-nodes"></i> Social Links</h2>
         <div class="form-field"><label><i class="fa-brands fa-github"></i> GitHub</label><input type="url" id="social_github" /></div>
         <div class="form-field"><label><i class="fa-brands fa-linkedin"></i> LinkedIn</label><input type="url" id="social_linkedin" /></div>
         <div class="form-field"><label><i class="fa-brands fa-youtube"></i> YouTube</label><input type="url" id="social_youtube" /></div>
-        <div class="form-field"><label><i class="fa-brands fa-twitter"></i> Twitter / X</label><input type="url" id="social_twitter" /></div>
+        <div class="form-field"><label><i class="fa-brands fa-twitter"></i> Twitter/X</label><input type="url" id="social_twitter" /></div>
         <div class="form-field"><label><i class="fa-brands fa-instagram"></i> Instagram</label><input type="url" id="social_instagram" /></div>
         <div class="form-field"><label><i class="fa-brands fa-facebook"></i> Facebook</label><input type="url" id="social_facebook" /></div>
       </div>
-
-      <div class="editor-actions">
-        <button type="submit" class="btn-save-editor"><i class="fa-solid fa-check"></i> <span>Save All Changes</span></button>
+      <div class="form-actions" style="margin-top: 1.6rem;">
+        <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span>Save All Changes</span></button>
       </div>
     </form>
   </main>
 
+  <div class="notify-container" id="notifyContainer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/mobile.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/website-editor.js"></script>
 </body>
 </html>

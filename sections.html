@@ -8,19 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/website-editor.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
-
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -48,31 +40,26 @@
   <main class="main">
     <header class="topbar">
       <button class="sb-toggle" id="sbToggle"><i class="fa-solid fa-bars"></i></button>
-      <h1>Section Visibility</h1>
+      <h1>Sections</h1>
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
       </div>
     </header>
 
-    <div class="sections-card">
-      <h2 class="panel-title"><i class="fa-solid fa-eye"></i> Toggle Website Sections</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.4rem;">Turn website sections ON or OFF. Changes apply when website fetches from Sheet.</p>
-      
-      <div class="sections-grid" id="sectionsGrid">
-        <div class="loading-state"><div class="loader-spinner"></div><p>Loading sections...</p></div>
-      </div>
-
-      <div class="editor-actions" style="margin-top: 2rem;">
-        <button class="btn-save-editor" id="saveBtn"><i class="fa-solid fa-check"></i> <span>Save Changes</span></button>
-      </div>
+    <div class="settings-card">
+      <h2><i class="fa-solid fa-eye"></i> Section Visibility</h2>
+      <p class="settings-subtitle">Toggle sections ON or OFF on your website</p>
+      <div class="section-toggle-grid" id="sectionsGrid"><div class="loading-state"><div class="loader-spinner"></div></div></div>
+      <div class="form-actions" style="margin-top: 1.4rem;"><button class="btn-save" id="saveBtn"><i class="fa-solid fa-check"></i> <span>Save Changes</span></button></div>
     </div>
   </main>
 
+  <div class="notify-container" id="notifyContainer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/mobile.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/sections.js"></script>
 </body>
 </html>

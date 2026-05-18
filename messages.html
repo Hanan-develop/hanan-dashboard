@@ -8,19 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/auth.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link rel="stylesheet" href="css/home.css" />
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/features.css" />
-  <link rel="stylesheet" href="css/messages.css" />
-  <link rel="stylesheet" href="css/upgrade-patch.css" />
-  <link rel="stylesheet" href="css/mobile-responsive.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
-
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -56,27 +48,19 @@
     </header>
 
     <div class="filter-bar">
-      <div class="time-filter">
-        <button class="tf active" data-filter="all">All <span id="countAll">0</span></button>
-        <button class="tf" data-filter="unread">Unread <span id="countUnread">0</span></button>
-        <button class="tf" data-filter="read">Read <span id="countRead">0</span></button>
-        <button class="tf" data-filter="archived">Archived <span id="countArchived">0</span></button>
-      </div>
-      <div style="margin-left: auto;">
-        <input type="search" id="searchInput" placeholder="Search messages..." style="padding: 0.8rem 1.2rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 0.8rem; color: var(--text); font-size: 1.3rem; outline: none; min-width: 25rem;" />
-      </div>
+      <button class="filter-btn active" data-filter="all">All <span class="filter-count" id="countAll">0</span></button>
+      <button class="filter-btn" data-filter="unread">Unread <span class="filter-count" id="countUnread">0</span></button>
+      <button class="filter-btn" data-filter="read">Read <span class="filter-count" id="countRead">0</span></button>
+      <input type="search" class="search-input" id="searchInput" placeholder="Search messages..." />
     </div>
-
-    <div class="messages-list" id="messagesList">
-      <div class="loading-state"><div class="loader-spinner"></div><p>Loading messages...</p></div>
-    </div>
+    <div class="messages-list" id="messagesList"><div class="loading-state"><div class="loader-spinner"></div><p>Loading messages...</p></div></div>
   </main>
 
+  <div class="notify-container" id="notifyContainer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
-  <script src="js/features.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/mobile.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/messages.js"></script>
 </body>
 </html>

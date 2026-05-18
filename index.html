@@ -13,81 +13,24 @@
 <body>
   <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
-
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-logo">AH</div>
       <h1 class="auth-title">Welcome Back</h1>
       <p class="auth-subtitle">Sign in to your dashboard</p>
-
       <form id="loginForm">
-        <div class="form-field">
-          <label for="username">Username</label>
-          <input type="text" id="username" required autocomplete="username" placeholder="hanan" />
-        </div>
-
-        <div class="form-field">
-          <label for="password">Password</label>
-          <input type="password" id="password" required autocomplete="current-password" />
-        </div>
-
-        <div id="errorMsg" style="display:none; padding: 1rem; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: var(--error); border-radius: 0.8rem; margin-bottom: 1rem; text-align: center; font-size: 1.2rem;"></div>
-
-        <button type="submit" class="btn-save" style="width: 100%; justify-content: center; padding: 1.4rem;">
-          <i class="fa-solid fa-right-to-bracket"></i> <span id="loginBtnText">Sign In</span>
-        </button>
+        <div class="form-field"><label>Username</label><input type="text" id="username" required autocomplete="username" placeholder="hanan" /></div>
+        <div class="form-field"><label>Password</label><input type="password" id="password" required autocomplete="current-password" /></div>
+        <div id="errorMsg" style="display:none; padding: 0.9rem; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: var(--error); border-radius: 0.7rem; margin-bottom: 1rem; text-align: center; font-size: 1.15rem;"></div>
+        <button type="submit" class="btn-save" style="width: 100%; justify-content: center; padding: 1.3rem;"><i class="fa-solid fa-right-to-bracket"></i> <span>Sign In</span></button>
       </form>
-
-      <p style="text-align: center; margin-top: 1.4rem; color: var(--text-muted); font-size: 1.1rem;">
-        Default: <strong>hanan</strong> / <strong>hanan@2026</strong>
-      </p>
+      <p style="text-align: center; margin-top: 1.4rem; color: var(--text-muted); font-size: 1.1rem;">Default: <strong>hanan</strong> / <strong>hanan@2026</strong></p>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/auth.js"></script>
-  <script>
-    // Already logged in? Redirect to dashboard
-    if (HananAuth.isLoggedIn()) {
-        window.location.href = 'dashboard.html';
-    }
-
-    $('#loginForm').on('submit', function (e) {
-        e.preventDefault();
-        var username = $('#username').val().trim();
-        var password = $('#password').val();
-
-        if (!username || !password) {
-            $('#errorMsg').text('Please enter username and password').show();
-            return;
-        }
-
-        var $btn = $('button[type="submit"]');
-        var btnHtml = $btn.html();
-        $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> <span>Signing in...</span>');
-
-        var fd = new FormData();
-        fd.append('action', 'verifyLogin');
-        fd.append('username', username);
-        fd.append('password', password);
-
-        fetch(HananAuth.getApiUrl(), { method: 'POST', body: fd })
-            .then(function (r) { return r.json(); })
-            .then(function (res) {
-                if (res && res.ok) {
-                    HananAuth.login(res.username || username);
-                    window.location.href = 'dashboard.html';
-                } else {
-                    $('#errorMsg').text(res.error || 'Login failed').show();
-                    $btn.prop('disabled', false).html(btnHtml);
-                }
-            })
-            .catch(function () {
-                $('#errorMsg').text('Connection error. Please try again.').show();
-                $btn.prop('disabled', false).html(btnHtml);
-            });
-    });
-  </script>
+  <script src="js/login.js"></script>
 </body>
 </html>
