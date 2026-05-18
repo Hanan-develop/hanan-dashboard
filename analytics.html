@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics — Hanan Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/features.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/analytics.css" />
+</head>
+<body>
+
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-avatar"><span>AH</span></div>
+      <div>
+        <h3 id="sbUserName">Hanan</h3>
+        <p>Admin Panel</p>
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span> <span class="sb-badge" id="unreadBadge" style="display:none;">0</span></a>
+      <a href="analytics.html" class="active"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a>
+      <a href="projects.html"><i class="fa-solid fa-folder-open"></i> <span>Projects</span></a>
+      <a href="testimonials.html"><i class="fa-solid fa-star"></i> <span>Testimonials</span></a>
+      <a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
+    </nav>
+
+    <div class="sb-footer">
+      <button class="sb-logout" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <button class="sb-toggle" id="sbToggle"><i class="fa-solid fa-bars"></i></button>
+      <h1>Analytics</h1>
+      <div class="topbar-actions">
+        <button class="btn-refresh" id="cmdPaletteBtn" title="Search (Ctrl+K)" style="margin-right: 0.4rem;">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme (T)" aria-label="Toggle theme">
+          <i class="fa-solid fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+        <button class="btn-refresh" id="refreshBtn" title="Refresh">
+          <i class="fa-solid fa-arrows-rotate"></i>
+        </button>
+        <a href="https://hanan-develop.github.io/hanan-portfolio/" target="_blank" class="btn-view-site">
+          <i class="fa-solid fa-globe"></i> <span>View Site</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Time Range Filter -->
+    <div class="time-filter">
+      <button class="tf active" data-range="7">Last 7 Days</button>
+      <button class="tf" data-range="30">Last 30 Days</button>
+      <button class="tf" data-range="90">Last 90 Days</button>
+      <button class="tf" data-range="all">All Time</button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card stat-blue">
+        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-content">
+          <span class="stat-label">Total Visits</span>
+          <span class="stat-value" id="totalVisits">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-eye"></i><span>Page views</span></span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-green">
+        <div class="stat-icon"><i class="fa-solid fa-fingerprint"></i></div>
+        <div class="stat-content">
+          <span class="stat-label">Unique Visitors</span>
+          <span class="stat-value" id="uniqueVisitors">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-user-check"></i><span>Distinct sessions</span></span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-yellow">
+        <div class="stat-icon"><i class="fa-solid fa-calendar-day"></i></div>
+        <div class="stat-content">
+          <span class="stat-label">Today</span>
+          <span class="stat-value" id="todayVisits">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-arrow-trend-up"></i><span>Last 24h</span></span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-red">
+        <div class="stat-icon"><i class="fa-solid fa-globe"></i></div>
+        <div class="stat-content">
+          <span class="stat-label">Countries</span>
+          <span class="stat-value" id="countriesCount">0</span>
+          <span class="stat-trend"><i class="fa-solid fa-earth-asia"></i><span>Unique locations</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visitor Chart -->
+    <div class="chart-card analytics-chart">
+      <div class="card-header">
+        <h2><i class="fa-solid fa-chart-line"></i> Visitor Trend</h2>
+        <span class="card-badge">Live</span>
+      </div>
+      <div class="chart-wrap">
+        <div class="bar-chart" id="visitorChart"></div>
+      </div>
+      <p class="chart-note" id="chartNote">Loading...</p>
+    </div>
+
+    <!-- Breakdown Grid -->
+    <div class="breakdown-grid">
+
+      <!-- Devices -->
+      <div class="breakdown-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-mobile-screen"></i> Devices</h2>
+        </div>
+        <div class="breakdown-list" id="devicesList">
+          <div class="empty-mini">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Browsers -->
+      <div class="breakdown-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-window-maximize"></i> Browsers</h2>
+        </div>
+        <div class="breakdown-list" id="browsersList">
+          <div class="empty-mini">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Operating Systems -->
+      <div class="breakdown-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-desktop"></i> Operating Systems</h2>
+        </div>
+        <div class="breakdown-list" id="osList">
+          <div class="empty-mini">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Top Countries -->
+      <div class="breakdown-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-flag"></i> Top Countries</h2>
+        </div>
+        <div class="breakdown-list" id="countriesList">
+          <div class="empty-mini">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Top Pages -->
+      <div class="breakdown-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-file-lines"></i> Top Pages</h2>
+        </div>
+        <div class="breakdown-list" id="pagesList">
+          <div class="empty-mini">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Referrers -->
+      <div class="breakdown-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-link"></i> Referrers</h2>
+        </div>
+        <div class="breakdown-list" id="referrersList">
+          <div class="empty-mini">Loading...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recent Visits Table -->
+    <div class="chart-card" style="margin-top: 2rem;">
+      <div class="card-header">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Visits</h2>
+        <span class="card-badge" id="recentCount">0</span>
+      </div>
+      <div class="visits-table-wrap">
+        <table class="visits-table" id="visitsTable">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Page</th>
+              <th>Device</th>
+              <th>Browser</th>
+              <th>Country</th>
+              <th>Referrer</th>
+            </tr>
+          </thead>
+          <tbody id="visitsTbody">
+            <tr><td colspan="6" class="empty-mini">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>
