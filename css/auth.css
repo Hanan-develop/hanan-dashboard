@@ -1,0 +1,639 @@
+/* =========================================================
+   HANAN DASHBOARD - LOGIN PAGE STYLES
+   ========================================================= */
+
+/* ----- CSS Variables ----- */
+:root {
+    --bg: #0a0a0a;
+    --card-bg: rgba(20, 20, 20, 0.7);
+    --text: #f5f5f7;
+    --text-soft: #b8b8c0;
+    --text-muted: #808088;
+    --yellow: #f9ca24;
+    --yellow-2: #ffd93d;
+    --yellow-glow: rgba(249, 202, 36, 0.4);
+    --yellow-soft: rgba(249, 202, 36, 0.15);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.12);
+    --error: #ef4444;
+    --success: #22c55e;
+    --g-yellow: linear-gradient(135deg, #f9ca24 0%, #ffd93d 100%);
+    --g-text: linear-gradient(135deg, #f9ca24 0%, #ffd93d 50%, #f9ca24 100%);
+    --ease: cubic-bezier(.16, 1, .3, 1);
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+    background: var(--bg);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* =========================================================
+   BACKGROUND EFFECTS
+   ========================================================= */
+
+/* Floating Glow Orbs */
+.bg-orbs {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.5;
+    animation: orbFloat 20s ease-in-out infinite;
+}
+
+.orb-1 {
+    width: 50rem;
+    height: 50rem;
+    top: -10rem;
+    left: -10rem;
+    background: radial-gradient(circle, rgba(249, 202, 36, 0.7), transparent 70%);
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 45rem;
+    height: 45rem;
+    bottom: -5rem;
+    right: -10rem;
+    background: radial-gradient(circle, rgba(255, 217, 61, 0.55), transparent 70%);
+    animation-delay: -7s;
+    animation-duration: 25s;
+}
+
+.orb-3 {
+    width: 35rem;
+    height: 35rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(249, 202, 36, 0.4), transparent 70%);
+    animation-delay: -14s;
+    animation-duration: 22s;
+}
+
+@keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(60px, -40px) scale(1.08); }
+    50% { transform: translate(-30px, 50px) scale(0.95); }
+    75% { transform: translate(-50px, -30px) scale(1.05); }
+}
+
+/* Perspective Grid */
+.bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(249, 202, 36, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249, 202, 36, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    opacity: 0.6;
+}
+
+/* =========================================================
+   AUTH WRAPPER
+   ========================================================= */
+.auth-wrap {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 44rem;
+    animation: cardEntry 0.7s var(--ease-out) both;
+}
+
+@keyframes cardEntry {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   AUTH CARD
+   ========================================================= */
+.auth-card {
+    position: relative;
+    padding: 4rem 3.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--border);
+    border-radius: 2.4rem;
+    box-shadow:
+        0 20px 50px -12px rgba(0, 0, 0, 0.6),
+        0 30px 80px -20px rgba(249, 202, 36, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+    opacity: 0.6;
+}
+
+/* =========================================================
+   BRAND HEADER
+   ========================================================= */
+.auth-brand {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.brand-avatar {
+    position: relative;
+    width: 7rem;
+    height: 7rem;
+    margin: 0 auto 1.6rem;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 30% 30%, #1f1f1f 0%, #0d0d0d 100%);
+    border: 2px solid var(--yellow);
+    border-radius: 50%;
+    box-shadow:
+        0 0 30px var(--yellow-glow),
+        inset 0 0 20px rgba(249, 202, 36, 0.1);
+    animation: avatarPulse 3s ease-in-out infinite;
+}
+
+.brand-avatar::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--yellow);
+    opacity: 0.3;
+    animation: ringSpin 4s linear infinite;
+}
+
+.brand-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 1px dashed var(--yellow);
+    opacity: 0.4;
+    animation: ringSpin 8s linear infinite reverse;
+}
+
+.brand-avatar span {
+    font-family: 'Sora', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    background: var(--g-yellow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.05em;
+}
+
+@keyframes avatarPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 30px var(--yellow-glow),
+            inset 0 0 20px rgba(249, 202, 36, 0.1);
+    }
+    50% {
+        box-shadow:
+            0 0 50px rgba(249, 202, 36, 0.6),
+            inset 0 0 30px rgba(249, 202, 36, 0.2);
+    }
+}
+
+@keyframes ringSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.auth-brand h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.02em;
+}
+
+.auth-brand p {
+    font-size: 1.35rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+/* Form Field with Floating Label */
+.form-field {
+    position: relative;
+}
+
+.field-icon {
+    position: absolute;
+    top: 50%;
+    left: 1.4rem;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    z-index: 2;
+    transition: color 0.3s var(--ease);
+    pointer-events: none;
+}
+
+.form-field input {
+    width: 100%;
+    padding: 1.6rem 1.6rem 1.6rem 4.2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
+    border-radius: 1.2rem;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    transition: all 0.3s var(--ease);
+}
+
+.form-field input:focus {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 3px rgba(249, 202, 36, 0.15);
+}
+
+.form-field input:focus ~ .field-icon {
+    color: var(--yellow);
+}
+
+.form-field label {
+    position: absolute;
+    top: 50%;
+    left: 4.2rem;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    pointer-events: none;
+    transition: all 0.3s var(--ease);
+    background: transparent;
+    padding: 0 0.4rem;
+}
+
+.form-field input:focus ~ label,
+.form-field input:not(:placeholder-shown) ~ label {
+    top: 0;
+    left: 1.6rem;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: var(--yellow);
+    background: #0a0a0a;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+/* Password toggle button */
+.toggle-pwd {
+    position: absolute;
+    top: 50%;
+    right: 1.4rem;
+    transform: translateY(-50%);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+    padding: 0.4rem;
+    z-index: 3;
+    transition: color 0.3s;
+}
+
+.toggle-pwd:hover {
+    color: var(--yellow);
+}
+
+/* =========================================================
+   FORM ROW (Remember + Forgot)
+   ========================================================= */
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+}
+
+.checkbox-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-wrap input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.checkbox-box {
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 0.4rem;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    transition: all 0.3s var(--ease);
+}
+
+.checkbox-box i {
+    font-size: 1rem;
+    color: #111;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s var(--ease);
+}
+
+.checkbox-wrap input:checked ~ .checkbox-box {
+    background: var(--yellow);
+    border-color: var(--yellow);
+}
+
+.checkbox-wrap input:checked ~ .checkbox-box i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.checkbox-label {
+    font-size: 1.3rem;
+    color: var(--text-soft);
+    font-weight: 500;
+}
+
+.forgot-link {
+    font-size: 1.3rem;
+    color: var(--yellow);
+    font-weight: 600;
+    transition: opacity 0.3s;
+}
+
+.forgot-link:hover {
+    opacity: 0.8;
+}
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+.form-error {
+    display: none;
+    padding: 1rem 1.4rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 0.8rem;
+    color: var(--error);
+    font-size: 1.3rem;
+    font-weight: 600;
+    animation: shake 0.4s;
+}
+
+.form-error.show { display: block; }
+
+.form-error::before {
+    content: '\f06a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-right: 0.6rem;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+.btn-login {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    width: 100%;
+    padding: 1.6rem;
+    background: var(--g-yellow);
+    color: #111;
+    border-radius: 1.2rem;
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s var(--ease);
+    box-shadow:
+        0 8px 24px -4px var(--yellow-glow),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 0.6rem;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow:
+        0 12px 32px -4px var(--yellow-glow),
+        0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.btn-login:active {
+    transform: scale(0.98);
+}
+
+.btn-icon {
+    transition: transform 0.3s var(--ease);
+}
+
+.btn-login:hover .btn-icon {
+    transform: translateX(4px);
+}
+
+.btn-spinner {
+    display: none;
+    animation: spin 0.6s linear infinite;
+}
+
+.btn-login.loading .btn-text,
+.btn-login.loading .btn-icon {
+    display: none;
+}
+
+.btn-login.loading .btn-spinner {
+    display: inline-block;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Shine animation on button */
+.btn-login::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%);
+    transform: skewX(-20deg);
+    transition: left 0.6s var(--ease);
+}
+
+.btn-login:hover::after {
+    left: 150%;
+}
+
+/* =========================================================
+   DEMO HINT
+   ========================================================= */
+.demo-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1rem 1.4rem;
+    background: rgba(249, 202, 36, 0.08);
+    border: 1px solid rgba(249, 202, 36, 0.2);
+    border-radius: 0.8rem;
+    font-size: 1.2rem;
+    color: var(--text-soft);
+    text-align: center;
+    margin-top: 0.6rem;
+}
+
+.demo-hint i { color: var(--yellow); font-size: 1.3rem; }
+.demo-hint strong { color: var(--yellow); font-weight: 700; }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.auth-footer {
+    margin-top: 2.4rem;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.auth-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    font-weight: 600;
+    transition: all 0.3s var(--ease);
+}
+
+.auth-footer a:hover {
+    color: var(--yellow);
+    transform: translateX(-2px);
+}
+
+.auth-footer a i {
+    transition: transform 0.3s var(--ease);
+}
+
+.auth-footer a:hover i {
+    transform: translateX(-3px);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 480px) {
+    .auth-card { padding: 3rem 2.2rem; }
+    .auth-brand h1 { font-size: 2rem; }
+    .brand-avatar { width: 6rem; height: 6rem; }
+    .brand-avatar span { font-size: 2rem; }
+    .form-field input { font-size: 1.5rem; }
+    .btn-login { font-size: 1.4rem; padding: 1.4rem; }
+    .form-row { flex-direction: column; gap: 1rem; align-items: flex-start; }
+    .orb { filter: blur(60px); opacity: 0.3; }
+    .orb-1, .orb-2 { width: 30rem; height: 30rem; }
+    .orb-3 { display: none; }
+}
+
+/* Toast notification (for future) */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 1.2rem 2rem;
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(12px);
+    color: var(--text);
+    border-radius: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border);
+    z-index: 999;
+    opacity: 0;
+    transition: all 0.4s var(--ease);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.toast.success { border-color: var(--success); color: var(--success); }
+.toast.error { border-color: var(--error); color: var(--error); }
