@@ -1,4 +1,4 @@
-/* WHAT'S NEW PAGE - Phase 1 */
+/* WHAT'S NEW PAGE - Phase 2 */
 $(function () {
     CRUD.init({
         endpoint: 'getWhatsNew',
@@ -7,6 +7,14 @@ $(function () {
         dataKey: 'updates',
         emptyIcon: 'fa-bullhorn',
         emptyText: 'No updates yet',
+        sectionName: 'Whats-New',
+        exportColumns: [
+            { key: 'title', label: 'Title' },
+            { key: 'tag', label: 'Tag' },
+            { key: 'description', label: 'Description' },
+            { key: 'date', label: 'Date', format: 'date' },
+            { key: 'link', label: 'Link' }
+        ],
         filterFn: function (u, f) {
             if (f === 'all') return true;
             return (u.tag || '').toUpperCase() === f.toUpperCase();

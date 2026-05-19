@@ -1,4 +1,4 @@
-/* PROJECTS PAGE - Phase 1 */
+/* PROJECTS PAGE - Phase 2 */
 $(function () {
     CRUD.init({
         endpoint: 'getProjects',
@@ -7,6 +7,15 @@ $(function () {
         dataKey: 'projects',
         emptyIcon: 'fa-folder-open',
         emptyText: 'No projects yet',
+        sectionName: 'Projects',
+        exportColumns: [
+            { key: 'title', label: 'Title' },
+            { key: 'category', label: 'Category' },
+            { key: 'description', label: 'Description' },
+            { key: 'tech', label: 'Tech Stack' },
+            { key: 'liveUrl', label: 'Live URL' },
+            { key: 'createdAt', label: 'Created', format: 'date' }
+        ],
         updateCounts: function (items) {
             var cats = {};
             var live = 0;
@@ -23,6 +32,7 @@ $(function () {
                 '<div class="cc-head"><div class="cc-icon"><i class="fa-solid fa-folder-open"></i></div>' +
                 '<div class="cc-meta"><div class="cc-title">' + escapeHtml(p.title) + '</div>' +
                 '<div class="cc-badges">' + (p.category ? '<span class="cc-badge">' + escapeHtml(p.category) + '</span>' : '') + '</div></div></div>' +
+                (p.imageUrl ? '<img src="' + escapeHtml(p.imageUrl) + '" style="width:100%;max-height:14rem;object-fit:cover;border-radius:0.6rem;margin-bottom:0.8rem;" loading="lazy"/>' : '') +
                 '<div class="cc-description">' + escapeHtml(p.description || '') + '</div>' +
                 (p.tech ? '<div class="cc-meta-text" style="margin-bottom:0.7rem;"><i class="fa-solid fa-microchip"></i> ' + escapeHtml(p.tech) + '</div>' : '') +
                 '<div class="cc-footer">' + (p.liveUrl ? '<a href="' + escapeHtml(p.liveUrl) + '" target="_blank" class="cc-meta-text"><i class="fa-solid fa-external-link"></i> View Live</a>' : '<span></span>') +
@@ -41,6 +51,7 @@ $(function () {
             $('#imageUrl').val(p.imageUrl || '');
             $('#liveUrl').val(p.liveUrl || '');
             $('#tech').val(p.tech || '');
+            if (p.imageUrl) $('.image-preview').attr('src', p.imageUrl).show();
         },
         resetForm: function () {
             $('#color').val('#f9ca24');

@@ -43,11 +43,25 @@
       <h1>Testimonials</h1>
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
-        <button class="btn-export" id="exportBtn" title="Export as JSON"><i class="fa-solid fa-download"></i> <span>Export</span></button>
+        <div class="export-wrapper">
+          <button class="btn-export" id="exportBtn"><i class="fa-solid fa-download"></i> <span>Export</span> <i class="fa-solid fa-chevron-down" style="font-size:0.85rem;margin-left:0.3rem;"></i></button>
+          <div class="export-menu" id="exportMenu">
+            <button id="exportPdfBtn"><i class="fa-solid fa-file-pdf menu-icon-pdf"></i> Export as PDF</button>
+            <button id="exportDocBtn"><i class="fa-solid fa-file-word menu-icon-doc"></i> Export as Word</button>
+          </div>
+        </div>
+        <button class="btn-bulk" id="bulkModeBtn" title="Bulk select mode"><i class="fa-solid fa-check-double"></i> <span>Bulk</span></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Review</span></button>
       </div>
     </header>
+
+    <div class="bulk-action-bar" id="bulkActionBar">
+      <div class="info"><i class="fa-solid fa-check-double"></i> <strong id="bulkSelectedCount">0</strong> selected — click cards to select</div>
+      <button class="btn-bulk-select" id="bulkSelectAll"><i class="fa-solid fa-list-check"></i> Select All</button>
+      <button class="btn-bulk-delete" id="bulkDeleteBtn" disabled><i class="fa-solid fa-trash"></i> Delete Selected</button>
+      <button class="btn-bulk-cancel" id="bulkCancelBtn"><i class="fa-solid fa-xmark"></i> Cancel</button>
+    </div>
 
     <div class="page-stats">
       <div class="page-stat-card"><div class="icon yellow"><i class="fa-solid fa-star"></i></div><div class="info"><div class="num" id="statTotal">0</div><div class="lbl">Total Reviews</div></div></div>
@@ -68,7 +82,7 @@
       <span class="search-result-count" id="searchResultCount" style="display:none;"></span>
     </div>
 
-    <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading testimonials...</p></div></div>
+    <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
       <div class="modal-header"><h2 id="modalTitle">Add Testimonial</h2><button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button></div>
@@ -80,9 +94,17 @@
           <div class="form-field"><label>Company</label><input type="text" id="company" maxlength="100" /></div>
         </div>
         <div class="form-field"><label>Review *</label><textarea id="message" required maxlength="2000"></textarea></div>
-        <div class="form-row">
-          <div class="form-field"><label>Rating</label><select id="rating"><option value="5">⭐⭐⭐⭐⭐ 5</option><option value="4">⭐⭐⭐⭐ 4</option><option value="3">⭐⭐⭐ 3</option><option value="2">⭐⭐ 2</option><option value="1">⭐ 1</option></select></div>
-          <div class="form-field"><label>Avatar URL</label><input type="url" id="avatar" /></div>
+        <div class="form-field"><label>Rating</label><select id="rating"><option value="5">⭐⭐⭐⭐⭐ 5</option><option value="4">⭐⭐⭐⭐ 4</option><option value="3">⭐⭐⭐ 3</option><option value="2">⭐⭐ 2</option><option value="1">⭐ 1</option></select></div>        <div class="form-field">
+          <label>Avatar Photo</label>
+          <div class="image-upload-wrap">
+            <div class="image-upload-row">
+              <input type="file" class="image-upload-input" id="imageFile_avatar" data-target="avatar" accept="image/*" />
+              <button type="button" class="image-upload-btn" onclick="document.getElementById('imageFile_avatar').click()"><i class="fa-solid fa-upload"></i> Upload Image</button>
+            </div>
+            <img class="image-preview" alt="Preview" />
+            <div class="image-or-divider">OR enter URL</div>
+            <input type="url" id="avatar" placeholder="https://..." />
+          </div>
         </div>
         <div class="modal-toggle-row"><label><i class="fa-solid fa-star"></i> Featured Review</label><div class="toggle-switch" id="featuredToggle"></div><input type="hidden" id="featured" value="no" /></div>
         <div class="form-actions">

@@ -1,4 +1,4 @@
-/* ACHIEVEMENTS PAGE - Phase 1 */
+/* ACHIEVEMENTS PAGE - Phase 2 */
 $(function () {
     CRUD.init({
         endpoint: 'getAchievements',
@@ -7,6 +7,15 @@ $(function () {
         dataKey: 'achievements',
         emptyIcon: 'fa-trophy',
         emptyText: 'No achievements yet',
+        sectionName: 'Achievements',
+        exportColumns: [
+            { key: 'title', label: 'Achievement' },
+            { key: 'description', label: 'Description' },
+            { key: 'year', label: 'Year' },
+            { key: 'category', label: 'Category' },
+            { key: 'tag', label: 'Tag' },
+            { key: 'orderNum', label: 'Order' }
+        ],
         filterFn: function (a, f) {
             if (f === 'visible') return a.visible !== 'no';
             if (f === 'hidden') return a.visible === 'no';

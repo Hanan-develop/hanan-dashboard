@@ -1,4 +1,4 @@
-/* TESTIMONIALS PAGE - Phase 1 */
+/* TESTIMONIALS PAGE - Phase 2 */
 $(function () {
     CRUD.init({
         endpoint: 'getTestimonials',
@@ -7,6 +7,15 @@ $(function () {
         dataKey: 'testimonials',
         emptyIcon: 'fa-star',
         emptyText: 'No reviews yet',
+        sectionName: 'Testimonials',
+        exportColumns: [
+            { key: 'name', label: 'Name' },
+            { key: 'role', label: 'Role' },
+            { key: 'company', label: 'Company' },
+            { key: 'message', label: 'Review' },
+            { key: 'rating', label: 'Rating', format: 'stars' },
+            { key: 'featured', label: 'Featured', format: 'bool' }
+        ],
         filterFn: function (t, f) {
             if (f === 'featured') return (t.featured === true || t.featured === 'yes');
             if (f === '5star') return (parseInt(t.rating) || 0) === 5;
@@ -30,8 +39,7 @@ $(function () {
                 '<div class="stars-row">' + stars + '</div>' +
                 '<div class="cc-badges">' + (t.role ? '<span class="cc-badge">' + escapeHtml(t.role) + '</span>' : '') + featured + '</div></div></div>' +
                 '<div class="cc-description">"' + escapeHtml(t.message) + '"</div>' +
-                '<div class="cc-footer">' +
-                '<span class="cc-meta-text">' + escapeHtml(t.company || '') + '</span>' +
+                '<div class="cc-footer"><span class="cc-meta-text">' + escapeHtml(t.company || '') + '</span>' +
                 '<div class="cc-actions">' +
                 '<button class="cc-btn btn-edit" data-id="' + t.id + '"><i class="fa-solid fa-pen"></i></button>' +
                 '<button class="cc-btn btn-delete" data-id="' + t.id + '"><i class="fa-solid fa-trash"></i></button>' +
@@ -48,6 +56,7 @@ $(function () {
             var feat = (t.featured === true || t.featured === 'yes');
             $('#featuredToggle').toggleClass('on', feat);
             $('#featured').val(feat ? 'yes' : 'no');
+            if (t.avatar) $('.image-preview').attr('src', t.avatar).show();
         },
         resetForm: function () {
             $('#featuredToggle').removeClass('on');

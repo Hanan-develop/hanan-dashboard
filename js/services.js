@@ -1,4 +1,4 @@
-/* SERVICES PAGE - Phase 1 */
+/* SERVICES PAGE - Phase 2 */
 $(function () {
     CRUD.init({
         endpoint: 'getServices',
@@ -7,6 +7,15 @@ $(function () {
         dataKey: 'services',
         emptyIcon: 'fa-briefcase',
         emptyText: 'No services yet',
+        sectionName: 'Services',
+        exportColumns: [
+            { key: 'title', label: 'Service' },
+            { key: 'description', label: 'Description' },
+            { key: 'features', label: 'Features' },
+            { key: 'tag', label: 'Tag' },
+            { key: 'orderNum', label: 'Order' },
+            { key: 'visible', label: 'Visible', format: 'bool' }
+        ],
         filterFn: function (s, f) {
             if (f === 'visible') return s.visible !== 'no';
             if (f === 'hidden') return s.visible === 'no';

@@ -749,3 +749,287 @@ body.light-theme .current-info-row { border-bottom-color: rgba(0, 0, 0, 0.05); }
 @media (max-width: 480px) {
     .page-stats { grid-template-columns: 1fr; }
 }
+/* =========================================================
+   HANAN DASHBOARD - PHASE 2 STYLES
+   Bulk mode, Export menu, Image upload, Drag-drop
+   ========================================================= */
+
+/* ===== EXPORT DROPDOWN MENU ===== */
+.export-wrapper { position: relative; display: inline-block; }
+.export-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 18rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border-strong);
+    border-radius: 0.8rem;
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.4);
+    z-index: 50;
+    overflow: hidden;
+    display: none;
+    animation: fadeInDown 0.2s var(--ease);
+}
+.export-menu.open { display: block; }
+.export-menu button {
+    width: 100%;
+    padding: 1rem 1.4rem;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-align: left;
+    transition: all 0.15s;
+    border-bottom: 1px solid var(--border);
+}
+.export-menu button:last-child { border-bottom: none; }
+.export-menu button:hover { background: rgba(249, 202, 36, 0.1); color: var(--yellow); }
+.export-menu button i { width: 1.6rem; text-align: center; font-size: 1.3rem; }
+.export-menu .menu-icon-pdf { color: #ef4444; }
+.export-menu .menu-icon-doc { color: #3b82f6; }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== BULK MODE ===== */
+.btn-bulk {
+    padding: 0 1.4rem;
+    height: 3.6rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-soft);
+    border-radius: 0.7rem;
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+.btn-bulk:hover, .btn-bulk.active {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: var(--error);
+    color: var(--error);
+}
+
+.bulk-action-bar {
+    display: none;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.4rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--error);
+    border-radius: 0.8rem;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+}
+.bulk-action-bar .info {
+    flex: 1;
+    font-family: 'Sora', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.bulk-action-bar .info i { color: var(--error); }
+.bulk-action-bar .info strong { color: var(--error); font-size: 1.4rem; }
+.bulk-action-bar button {
+    padding: 0.7rem 1.2rem;
+    border-radius: 0.6rem;
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s;
+}
+.bulk-action-bar .btn-bulk-select {
+    background: var(--card-bg);
+    border-color: var(--border-strong);
+    color: var(--text);
+}
+.bulk-action-bar .btn-bulk-select:hover { border-color: var(--yellow); color: var(--yellow); }
+.bulk-action-bar .btn-bulk-delete {
+    background: var(--error);
+    border-color: var(--error);
+    color: #fff;
+}
+.bulk-action-bar .btn-bulk-delete:hover:not(:disabled) { background: #dc2626; transform: translateY(-1px); }
+.bulk-action-bar .btn-bulk-delete:disabled { opacity: 0.5; cursor: not-allowed; }
+.bulk-action-bar .btn-bulk-cancel {
+    background: transparent;
+    border-color: var(--border-strong);
+    color: var(--text-soft);
+}
+.bulk-action-bar .btn-bulk-cancel:hover { border-color: var(--text); color: var(--text); }
+
+/* Bulk Checkbox on cards */
+.bulk-checkbox {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    border: 2px solid var(--border-strong);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+    color: transparent;
+    font-size: 1.2rem;
+}
+.bulk-checkbox.checked {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+}
+
+/* When in bulk mode, cards are selectable */
+.crud-card,
+.timeline-item {
+    position: relative;
+}
+
+/* Hide action buttons in bulk mode - cards become click-to-select */
+body.bulk-active .cc-actions { pointer-events: none; opacity: 0.4; }
+
+/* ===== IMAGE UPLOAD ===== */
+.image-upload-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+.image-upload-row {
+    display: flex;
+    gap: 0.7rem;
+    align-items: stretch;
+}
+.image-upload-btn {
+    padding: 0.9rem 1.2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    border-radius: 0.6rem;
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+.image-upload-btn:hover:not(:disabled) {
+    border-color: var(--yellow);
+    color: var(--yellow);
+}
+.image-upload-input { display: none; }
+.image-preview {
+    max-width: 100%;
+    max-height: 16rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--border);
+    object-fit: cover;
+    display: none;
+    margin-top: 0.5rem;
+}
+.image-or-divider {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin: 0.4rem 0;
+    position: relative;
+}
+.image-or-divider::before,
+.image-or-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: var(--border);
+}
+.image-or-divider::before { left: 0; }
+.image-or-divider::after { right: 0; }
+
+/* ===== DRAG-DROP REORDER ===== */
+.drag-handle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: grab;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    z-index: 5;
+    transition: all 0.2s;
+    opacity: 0;
+}
+.crud-card:hover .drag-handle,
+.timeline-item:hover .drag-handle { opacity: 1; }
+.drag-handle:hover { background: rgba(249, 202, 36, 0.15); color: var(--yellow); border-color: var(--yellow); }
+.drag-handle:active { cursor: grabbing; }
+
+.crud-card.dragging,
+.timeline-item.dragging {
+    opacity: 0.4;
+    transform: rotate(2deg);
+}
+.crud-card.drag-over,
+.timeline-item.drag-over {
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 3px rgba(249, 202, 36, 0.2);
+}
+
+/* Reorder mode button */
+.btn-reorder {
+    padding: 0 1.4rem;
+    height: 3.6rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-soft);
+    border-radius: 0.7rem;
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+.btn-reorder:hover, .btn-reorder.active {
+    border-color: #a855f7;
+    color: #a855f7;
+    background: rgba(168, 85, 247, 0.1);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+    .btn-bulk span, .btn-reorder span { display: none; }
+    .bulk-action-bar { flex-direction: column; align-items: stretch; }
+    .bulk-action-bar .info { text-align: center; }
+    .export-menu { right: auto; left: 0; min-width: 16rem; }
+    .image-upload-row { flex-direction: column; }
+    .drag-handle { opacity: 1; }
+}

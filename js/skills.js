@@ -1,4 +1,4 @@
-/* SKILLS PAGE - Phase 1 */
+/* SKILLS PAGE - Phase 2 */
 $(function () {
     CRUD.init({
         endpoint: 'getSkills',
@@ -7,6 +7,13 @@ $(function () {
         dataKey: 'skills',
         emptyIcon: 'fa-code',
         emptyText: 'No skills yet',
+        sectionName: 'Skills',
+        exportColumns: [
+            { key: 'name', label: 'Skill' },
+            { key: 'category', label: 'Category' },
+            { key: 'level', label: 'Level' },
+            { key: 'percent', label: 'Percent (%)' }
+        ],
         filterFn: function (s, f) {
             if (f === 'expert') return s.level === 'Expert';
             if (f === 'advanced') return s.level === 'Advanced';
