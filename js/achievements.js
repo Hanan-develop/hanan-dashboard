@@ -1,4 +1,4 @@
-/* ACHIEVEMENTS PAGE - Phase 2 */
+/* ACHIEVEMENTS PAGE - Phase 3 (with drag-drop) */
 $(function () {
     CRUD.init({
         endpoint: 'getAchievements',
@@ -88,4 +88,7 @@ $(function () {
             };
         }
     });
+
+    /* Phase 3: Initialize drag-drop */
+    if (window.DragDrop) DragDrop.init('achievements', '#grid');
 });

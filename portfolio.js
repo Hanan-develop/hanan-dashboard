@@ -1,7 +1,12 @@
 /* =========================================================
-   HANAN PORTFOLIO - DYNAMIC DATA LOADER
+   HANAN PORTFOLIO - DYNAMIC DATA LOADER v2
    Auto-fetches data from Google Sheet
    Respects hide/show, section visibility, edits, deletes
+
+   USAGE: Just add this script tag to portfolio HTML:
+   <script src="js/portfolio.js"></script>
+
+   The script auto-detects containers and data attributes.
    ========================================================= */
 
 (function () {
@@ -9,9 +14,8 @@
 
     var API_URL = 'https://script.google.com/macros/s/AKfycbx2sQwvMTOCeNdiE255oLaoqXUHvdsKrcn423nUIqrwqRtcWTdUL6LPm9VJjVz4M6dE/exec';
     var CACHE_KEY = 'hanan_portfolio_cache';
-    var CACHE_DURATION = 2 * 60 * 1000; // 2 minutes (shorter for portfolio)
+    var CACHE_DURATION = 2 * 60 * 1000;
 
-    // ===== UTILITIES =====
     function escapeHtml(str) {
         if (str === null || str === undefined) return '';
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -32,7 +36,6 @@
         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data: d, timestamp: Date.now() })); } catch (e) {}
     }
 
-    // ===== DEDUPLICATION (Frontend safety) =====
     function dedupe(items, nameField) {
         var seen = {};
         return items.filter(function (item) {
@@ -43,40 +46,43 @@
         });
     }
 
-    // ===== SECTION VISIBILITY =====
+    /* AUTO-DETECT containers — multiple selectors */
+    function findContainer(selectors) {
+        for (var i = 0; i < selectors.length; i++) {
+            var el = document.querySelector(selectors[i]);
+            if (el) return el;
+        }
+        return null;
+    }
+
     function applyVisibility(visibility) {
         if (!visibility) return;
         Object.keys(visibility).forEach(function (key) {
-            // key like "section_hero", "section_services"
             var sectionId = key.replace('section_', '');
-            var el = document.getElementById(sectionId) || document.querySelector('.' + sectionId);
-            if (el) {
-                if (visibility[key] === 'off') {
-                    el.style.display = 'none';
-                } else {
-                    el.style.display = '';
+            var selectors = ['#' + sectionId, '.' + sectionId, '[data-section="' + sectionId + '"]', 'section[id*="' + sectionId + '"]'];
+            for (var i = 0; i < selectors.length; i++) {
+                var els = document.querySelectorAll(selectors[i]);
+                if (els.length) {
+                    els.forEach(function (el) {
+                        el.style.display = visibility[key] === 'off' ? 'none' : '';
+                    });
+                    break;
                 }
             }
         });
     }
 
-    // ===== RENDER FUNCTIONS =====
-
     function renderProjects(projects) {
-        var container = document.getElementById('projectsContainer') || document.querySelector('.projects-grid');
+        var container = findContainer(['#projectsContainer', '.projects-grid', '.projects-list', '[data-projects-container]']);
         if (!container) return;
-        if (!projects || !projects.length) {
-            container.innerHTML = '';
-            return;
-        }
-        // Dedupe by title
+        if (!projects || !projects.length) { container.innerHTML = ''; return; }
         projects = dedupe(projects, 'title');
 
         var html = projects.map(function (p) {
             return '<div class="project-card" data-color="' + escapeHtml(p.color || '#f9ca24') + '" style="--card-color:' + escapeHtml(p.color || '#f9ca24') + ';">' +
-                (p.imageUrl ? '<div class="project-image"><img src="' + escapeHtml(p.imageUrl) + '" alt="' + escapeHtml(p.title) + '" loading="lazy" /></div>' : '<div class="project-image placeholder"></div>') +
+                (p.imageUrl ? '<div class="project-image"><img src="' + escapeHtml(p.imageUrl) + '" alt="' + escapeHtml(p.title) + '" loading="lazy" /></div>' : '<div class="project-image placeholder" style="background:' + escapeHtml(p.color || '#f9ca24') + '22;display:grid;place-items:center;min-height:200px;"><i class="fa-solid fa-folder-open" style="font-size:3rem;color:' + escapeHtml(p.color || '#f9ca24') + ';"></i></div>') +
                 '<div class="project-content">' +
-                    '<span class="project-category">' + escapeHtml(p.category || 'Project') + '</span>' +
+                    '<span class="project-category" style="color:' + escapeHtml(p.color || '#f9ca24') + ';">' + escapeHtml(p.category || 'Project') + '</span>' +
                     '<h3 class="project-title">' + escapeHtml(p.title) + '</h3>' +
                     '<p class="project-description">' + escapeHtml(p.description || '') + '</p>' +
                     (p.tech ? '<div class="project-tech">' + escapeHtml(p.tech).split(',').map(function (t) { return '<span>' + escapeHtml(t.trim()) + '</span>'; }).join('') + '</div>' : '') +
@@ -88,13 +94,9 @@
     }
 
     function renderTestimonials(testimonials) {
-        var container = document.getElementById('testimonialsContainer') || document.querySelector('.testimonials-grid');
+        var container = findContainer(['#testimonialsContainer', '.testimonials-grid', '.testimonials-list', '[data-testimonials-container]']);
         if (!container) return;
-        if (!testimonials || !testimonials.length) {
-            container.innerHTML = '';
-            return;
-        }
-        // Dedupe by name + message
+        if (!testimonials || !testimonials.length) { container.innerHTML = ''; return; }
         testimonials = dedupe(testimonials, 'name');
 
         var html = testimonials.map(function (t) {
@@ -115,12 +117,9 @@
     }
 
     function renderSkills(skills) {
-        var container = document.getElementById('skillsContainer') || document.querySelector('.skills-grid');
+        var container = findContainer(['#skillsContainer', '.skills-grid', '.skills-list', '[data-skills-container]']);
         if (!container) return;
-        if (!skills || !skills.length) {
-            container.innerHTML = '';
-            return;
-        }
+        if (!skills || !skills.length) { container.innerHTML = ''; return; }
         skills = dedupe(skills, 'name');
         skills.sort(function (a, b) { return (parseInt(b.percent) || 0) - (parseInt(a.percent) || 0); });
 
@@ -140,13 +139,9 @@
     }
 
     function renderServices(services) {
-        var container = document.getElementById('servicesContainer') || document.querySelector('.services-grid');
+        var container = findContainer(['#servicesContainer', '.services-grid', '.services-list', '[data-services-container]']);
         if (!container) return;
-        if (!services || !services.length) {
-            container.innerHTML = '';
-            return;
-        }
-        // Filter HIDDEN ones (respect dashboard hide)
+        if (!services || !services.length) { container.innerHTML = ''; return; }
         services = services.filter(function (s) { return s.visible !== 'no'; });
         services = dedupe(services, 'title');
         services.sort(function (a, b) { return (parseInt(a.orderNum) || 99) - (parseInt(b.orderNum) || 99); });
@@ -167,13 +162,9 @@
     }
 
     function renderAchievements(achievements) {
-        var container = document.getElementById('achievementsContainer') || document.querySelector('.achievements-grid');
+        var container = findContainer(['#achievementsContainer', '.achievements-grid', '.achievements-list', '[data-achievements-container]']);
         if (!container) return;
-        if (!achievements || !achievements.length) {
-            container.innerHTML = '';
-            return;
-        }
-        // Filter HIDDEN
+        if (!achievements || !achievements.length) { container.innerHTML = ''; return; }
         achievements = achievements.filter(function (a) { return a.visible !== 'no'; });
         achievements = dedupe(achievements, 'title');
         achievements.sort(function (a, b) { return (parseInt(a.orderNum) || 99) - (parseInt(b.orderNum) || 99); });
@@ -194,12 +185,9 @@
     }
 
     function renderWhatsNew(updates) {
-        var container = document.getElementById('whatsnewContainer') || document.querySelector('.whatsnew-timeline');
+        var container = findContainer(['#whatsnewContainer', '.whatsnew-timeline', '.whatsnew-list', '[data-whatsnew-container]']);
         if (!container) return;
-        if (!updates || !updates.length) {
-            container.innerHTML = '';
-            return;
-        }
+        if (!updates || !updates.length) { container.innerHTML = ''; return; }
         updates = dedupe(updates, 'title');
         updates.sort(function (a, b) { return new Date(b.date || 0) - new Date(a.date || 0); });
 
@@ -229,15 +217,18 @@
             if (!value) return;
             document.querySelectorAll(selector).forEach(function (el) { el.setAttribute('href', value); });
         };
+        var setSrc = function (selector, value) {
+            if (!value) return;
+            document.querySelectorAll(selector).forEach(function (el) { el.setAttribute('src', value); });
+        };
 
-        // Hero
         setText('[data-hero-name]', settings.hero_name);
         setText('[data-hero-tagline]', settings.hero_tagline);
         setText('[data-hero-subtitle]', settings.hero_subtitle);
         setText('[data-hero-cta-text]', settings.hero_cta_text);
         setHref('[data-hero-cta-link]', settings.hero_cta_link);
+        setSrc('[data-hero-avatar]', settings.hero_avatar);
 
-        // About
         setText('[data-about-title]', settings.about_title);
         setText('[data-about-description]', settings.about_description);
         setText('[data-about-years]', settings.about_years);
@@ -245,7 +236,6 @@
         setText('[data-about-clients]', settings.about_clients);
         setText('[data-about-satisfaction]', settings.about_satisfaction);
 
-        // Contact
         setText('[data-contact-email]', settings.contact_email);
         setText('[data-contact-phone]', settings.contact_phone);
         setText('[data-contact-location]', settings.contact_location);
@@ -253,7 +243,6 @@
         if (settings.contact_phone) setHref('[data-contact-phone-link]', 'tel:' + settings.contact_phone.replace(/\s/g, ''));
         if (settings.contact_whatsapp) setHref('[data-contact-whatsapp-link]', 'https://wa.me/' + settings.contact_whatsapp);
 
-        // Social
         setHref('[data-social-github]', settings.social_github);
         setHref('[data-social-linkedin]', settings.social_linkedin);
         setHref('[data-social-youtube]', settings.social_youtube);
@@ -261,7 +250,6 @@
         setHref('[data-social-instagram]', settings.social_instagram);
         setHref('[data-social-facebook]', settings.social_facebook);
 
-        // Availability badge
         var availEl = document.querySelector('[data-availability]');
         if (availEl && settings.contact_availability) {
             availEl.className = availEl.className.replace(/availability-\w+/g, '');
@@ -271,7 +259,6 @@
         }
     }
 
-    // ===== RENDER ALL =====
     function renderAll(data) {
         if (data.settings) applySettings(data.settings);
         if (data.visibility) applyVisibility(data.visibility);
@@ -283,7 +270,6 @@
         if (data.whatsnew || data.updates) renderWhatsNew(data.whatsnew || data.updates);
     }
 
-    // ===== FETCH =====
     function fetchData() {
         fetch(API_URL + '?action=getAllData')
             .then(function (r) { return r.json(); })
@@ -293,29 +279,15 @@
                     renderAll(data);
                 }
             })
-            .catch(function (err) {
-                console.warn('Portfolio data fetch failed:', err);
-            });
+            .catch(function (err) { console.warn('Portfolio fetch failed:', err); });
     }
 
-    // ===== INIT =====
-    document.addEventListener('DOMContentLoaded', function () {
-        // Show cached data first (instant)
-        var cached = getCache();
-        if (cached) {
-            renderAll(cached);
-            // Refresh in background after 2 sec
-            setTimeout(fetchData, 2000);
-        } else {
-            fetchData();
-        }
-
-        // Track visit (analytics)
+    function trackVisit() {
         try {
             var ua = navigator.userAgent;
             var device = /Mobile|Android|iPhone|iPad/.test(ua) ? 'mobile' : 'desktop';
-            var browser = /Chrome/.test(ua) ? 'Chrome' : /Firefox/.test(ua) ? 'Firefox' : /Safari/.test(ua) ? 'Safari' : 'Other';
-            var os = /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'Mac' : /Linux/.test(ua) ? 'Linux' : /Android/.test(ua) ? 'Android' : 'Other';
+            var browser = /Edg/.test(ua) ? 'Edge' : /Chrome/.test(ua) ? 'Chrome' : /Firefox/.test(ua) ? 'Firefox' : /Safari/.test(ua) ? 'Safari' : 'Other';
+            var os = /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'Mac' : /Linux/.test(ua) ? 'Linux' : /Android/.test(ua) ? 'Android' : /iOS|iPhone|iPad/.test(ua) ? 'iOS' : 'Other';
             var session = sessionStorage.getItem('visitor_session');
             if (!session) {
                 session = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
@@ -331,9 +303,19 @@
             fd.append('session', session);
             fetch(API_URL, { method: 'POST', body: fd }).catch(function () {});
         } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var cached = getCache();
+        if (cached) {
+            renderAll(cached);
+            setTimeout(fetchData, 2000);
+        } else {
+            fetchData();
+        }
+        trackVisit();
     });
 
-    // Expose for manual refresh
     window.HananPortfolio = {
         refresh: function () {
             try { localStorage.removeItem(CACHE_KEY); } catch (e) {}

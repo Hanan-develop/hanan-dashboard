@@ -1,313 +1,354 @@
-# 🚀 PHASE 2 — Bulk Delete + PDF/DOCX Export + Image Upload
+# 🚀 PHASE 3 — Activity Log + Drag-Drop + Portfolio Sync
 
-## ✅ Phase 2 Mein Naye Features
+## ✅ Phase 3 Mein Naye Features
 
-### **📄 1. Export → PDF + Word (JSON ki jagah)**
-- Top-right pe **Export dropdown** menu
-- Click karo → 2 options:
-  - **Export as PDF** (red icon) → Browser print dialog open hota hai → "Save as PDF"
-  - **Export as Word** (blue icon) → `.doc` file directly download
-- Yellow brand header + landscape layout
-- Auto-fires print dialog after 0.5 sec
+### **📊 1. Activity Log Page**
+- **Naya page:** `/activity-log.html`
+- Sab actions track hote hain: Create, Update, Delete, Reorder
+- Stats: Total / Created / Updated / Deleted
+- Filter karo (All, Created, Updated, Deleted)
+- Search bar
+- Clear log button
+- Auto-stored in Google Sheet (last 500 entries)
 
-### **🗑️ 2. Bulk Delete**
-- "Bulk" button click → bulk mode activate
-- Cards click karke select → green checkmark dikhayi de ga
-- "Select All" button — saari filtered items select
-- "Delete Selected" — sab ek saath delete (350ms throttle)
-- "Cancel" — bulk mode exit
-- Action bar dikhayi de ga selected count ke saath
+### **↕️ 2. Drag-and-Drop Reorder**
+- **Services aur Achievements** mein available
+- "Reorder" button click → mode activate
+- Cards drag karke rearrange karo
+- "Save Order" button → Sheet mein order update
+- Portfolio website pe naya order reflect hota hai
 
-### **🖼️ 3. Image Upload (File Picker)**
-- **Projects:** Project image upload
-- **Testimonials:** Avatar photo upload
-- 2 options:
-  - **Upload Image** button (file picker)
-  - **OR enter URL** (existing URL method bhi available)
-- Auto-compression: 800px max width, 70% JPEG quality
-- Base64 storage in Sheet
-- Live preview after upload
+### **🌐 3. Portfolio Auto-Sync**
+- `portfolio.js` upload karo portfolio repo mein
+- Auto-detect karta hai sections + containers
+- Dashboard mein changes → website pe automatic (2 min cache)
+- Hide/Show respected, Section visibility respected
 
-### **⚡ Bonus: Sab Phase 1 Features Bhi Hain**
-- Search bar har page pe
-- Filters (Featured, 5-Star, Visible, Hidden, Expert, etc.)
-- Stats widgets (Total, Categories, Live, Avg, etc.)
-- Better empty states
+### **🎨 4. Sidebar Updated**
+- Activity Log link added between What's New aur Website Editor
+- All pages mein consistent
 
 ---
 
-## 📦 14 Files in PHASE2.zip
+## 📦 15 Files in PHASE3.zip
 
 ```
-PHASE2/
-├── 6 HTML pages (CRUD pages):
-│   ├── projects.html (NEW: image upload)
-│   ├── testimonials.html (NEW: avatar upload)
+PHASE3/
+├── apps-script-v8.gs            ⚠️ Apps Script Editor mein paste (UPGRADE from v7)
+├── portfolio.js                  ⭐ Portfolio repo ke liye
+├── activity-log.html             ⭐ Naya page
+│
+├── HTML pages (with Activity Log sidebar):
+│   ├── dashboard.html
+│   ├── projects.html
+│   ├── testimonials.html
 │   ├── skills.html
-│   ├── services.html
-│   ├── achievements.html
+│   ├── services.html (with Reorder)
+│   ├── achievements.html (with Reorder)
 │   └── whatsnew.html
 │
 ├── css/
-│   └── styles.css (1035 lines — Phase 1 + Phase 2 combined)
+│   └── styles.css (1261 lines - all phases combined)
 │
 └── js/
-    ├── common.js (660 lines — Bulk + Export + Image upload)
-    ├── projects.js (exportColumns added)
-    ├── testimonials.js
-    ├── skills.js
-    ├── services.js
-    ├── achievements.js
-    └── whatsnew.js
+    ├── dashboard.js (existing)
+    ├── services.js (with drag-drop init)
+    ├── achievements.js (with drag-drop init)
+    ├── activity-log.js (NEW)
+    └── dragdrop.js (NEW - drag-drop helper)
 ```
-
-**Note:** Sirf 14 files — dashboard, messages, analytics, sections, settings, website-editor, login, index, theme, auth — **inko Phase 1 wala hi rakhna hai**.
 
 ---
 
-## 🚀 Installation (Bohot Simple)
+## 🚀 Installation (Step by Step)
 
-### **Step 1: GitHub Upload** (5 min)
+### **🔴 STEP 1: Apps Script v8 Deploy** (5 min)
+**MOST IMPORTANT — Reorder + Activity Log v8 ke bina nahi chalega**
 
-1. ZIP extract karo
-2. GitHub repo `Hanan-develop/hanan-dashboard` kholo
-3. **Replace these files:**
+1. Google Sheet → Extensions → Apps Script
+2. **Ctrl+A → Delete** old code (v7)
+3. Paste `apps-script-v8.gs` content
+4. **Ctrl+S** save
+5. **Deploy** → **Manage Deployments** → **✏️** → **New Version** → **Deploy**
 
-   **Root level (replace 6 HTML files):**
-   - projects.html
-   - testimonials.html
-   - skills.html
-   - services.html
-   - achievements.html
-   - whatsnew.html
+**Verify in browser:**
+```
+?action=getActivityLog
+```
+Should return `{"ok":true,"activity":[]}` (empty initially)
 
-   **css/ folder (replace 1 file):**
-   - styles.css
+### **🟡 STEP 2: Dashboard Files Upload** (10 min)
 
-   **js/ folder (replace 7 files):**
-   - common.js
-   - projects.js
-   - testimonials.js
-   - skills.js
-   - services.js
-   - achievements.js
-   - whatsnew.js
+GitHub repo `hanan-dashboard` mein:
 
-### **Step 2: No Apps Script Changes Needed**
-Phase 1 ka **Apps Script v7** already perfect hai. No re-deploy.
+**Replace existing files:**
+- dashboard.html
+- projects.html
+- testimonials.html
+- skills.html
+- services.html
+- achievements.html
+- whatsnew.html
 
-### **Step 3: Test** (5 min)
+**Add new file (root):**
+- activity-log.html
 
-1. Wait 3 min for GitHub Pages
-2. Cache clear: `Ctrl+Shift+Delete`
-3. Incognito test: open dashboard
+**Replace css/:**
+- styles.css
 
-**Test checklist:**
-- ☐ Open `/services.html`
-- ☐ Click **Export** button → dropdown dikhayi de
-- ☐ Click **"Export as PDF"** → browser print opens
-- ☐ Click **"Export as Word"** → .doc downloads
-- ☐ Click **"Bulk"** button → bulk mode activate
-- ☐ Click on cards → green checkmark
-- ☐ Click **"Select All"** → sab select
-- ☐ Click **"Delete Selected"** → confirmation → delete
-- ☐ Open `/projects.html`
-- ☐ Click **Add Project** → modal open
-- ☐ Click **"Upload Image"** → file picker → image select
-- ☐ Preview dikhayi de
-- ☐ Save → image stored
+**Replace js/services.js, js/achievements.js**
+
+**Add new JS files:**
+- js/activity-log.js
+- js/dragdrop.js
+
+### **🟢 STEP 3: Portfolio Website Setup** (15 min)
+
+**Upload to portfolio repo `Hanan-develop/hanan-portfolio`:**
+- `portfolio.js` → `js/` folder
+
+**Edit portfolio `index.html`, add before `</body>`:**
+```html
+<script src="js/portfolio.js"></script>
+```
+
+**Add containers in portfolio HTML:**
+```html
+<!-- Projects section -->
+<section id="projects">
+  <div id="projectsContainer"></div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials">
+  <div id="testimonialsContainer"></div>
+</section>
+
+<!-- Skills -->
+<section id="skills">
+  <div id="skillsContainer"></div>
+</section>
+
+<!-- Services -->
+<section id="services">
+  <div id="servicesContainer"></div>
+</section>
+
+<!-- Achievements -->
+<section id="achievements">
+  <div id="achievementsContainer"></div>
+</section>
+
+<!-- What's New -->
+<section id="whatsnew">
+  <div id="whatsnewContainer"></div>
+</section>
+```
+
+**Add data attributes to hero/contact:**
+```html
+<h1 data-hero-name>Abdul Hanan</h1>
+<p data-hero-tagline>WordPress Developer</p>
+<a data-contact-whatsapp-link href="">WhatsApp</a>
+<a data-social-github href="">GitHub</a>
+```
 
 ---
 
-## 🎯 Feature Detail
+## 🎯 Feature Details
 
-### **PDF Export Flow:**
+### **Activity Log:**
 ```
-1. Click "Export" → menu open
-2. Click "Export as PDF"
-3. New tab opens with formatted data
-4. Browser print dialog auto-opens
-5. Choose "Save as PDF" destination
-6. Save → done!
-```
+Activity automatically logs:
+✅ created (new item added)
+✅ updated (item edited)
+✅ deleted (item removed)
+✅ reorder (drag-drop save)
+✅ received (new message)
+✅ login (user logged in)
+✅ changed (credentials updated)
 
-### **Word Export Flow:**
-```
-1. Click "Export" → menu open
-2. Click "Export as Word"
-3. .doc file downloads automatically
-4. Opens in Microsoft Word / Google Docs
-5. Edit/share as needed
+View: /activity-log.html
+Filter: All / Created / Updated / Deleted
+Last 500 entries kept (auto-cleanup)
 ```
 
-### **Bulk Delete Flow:**
+### **Drag-Drop Reorder Flow:**
 ```
-1. Click "Bulk" button (top right)
-2. Bulk mode activated (red border on button)
-3. Action bar appears at top
-4. Click cards to select (checkbox appears)
-5. Optional: "Select All" for all filtered items
-6. Click "Delete Selected" (X items shown)
-7. Confirm → items deleted one by one
-8. Done!
+1. Open /services.html or /achievements.html
+2. Click "Reorder" button (top-right)
+3. Purple banner appears with instructions
+4. Cards become draggable (yellow drop zones on hover)
+5. Drag cards into new order
+6. Click "Save Order" → Sheet updated
+7. Page reloads with new order
 ```
 
-### **Image Upload Flow:**
+### **Portfolio Auto-Sync:**
 ```
-1. Click "Add Project" or edit existing
-2. Modal opens with form
-3. Click "Upload Image" button
-4. File picker opens
-5. Select image (max 2MB)
-6. Auto-compress to 800px / 70% quality
-7. Preview shown below
-8. Optional: Use URL field instead
-9. Save → image stored as base64
+Dashboard pe Edit Project
+       ↓
+Sheet mein update
+       ↓
+Portfolio website pe (2 min cache)
+       ↓
+Auto-reflects on next visit
 ```
 
 ---
 
 ## ⚠️ Important Notes
 
-### **PDF Export:**
-- Browser print dialog se "Save as PDF" choose karna padega
-- A4 landscape mode (better for wide data)
-- Allow popups for the dashboard domain
-- Header: Yellow brand color, footer: site URL
+### **Activity Log:**
+- v8 deploy ke baad activity start hoti hai
+- Pichli activity (v7 ke time ki) won't show
+- New activities log honi shuru ho jayengi
+- Clear log button irreversible hai
 
-### **Word Export:**
-- `.doc` extension (Word opens it perfectly)
-- HTML inside (Microsoft Word XML namespaces)
-- Use Word / Google Docs / LibreOffice to edit
+### **Drag-Drop:**
+- Sirf **Services aur Achievements** mein available
+- Drag-drop ke baad **page reload** hota hai (clean state)
+- Touch devices pe limited support (use mouse/trackpad)
 
-### **Bulk Delete:**
-- **IRREVERSIBLE!** Confirmation dialog appears
-- 350ms throttle between deletes (server safety)
-- Cache cleared after batch
-- Notifications show progress
+### **Portfolio Sync:**
+- Cache duration: 2 minutes
+- Force refresh: `localStorage.removeItem('hanan_portfolio_cache')`
+- Or call: `HananPortfolio.refresh()` in console
 
-### **Image Upload:**
-- Max 2MB file size
-- Auto-compresses to ~80-150KB after upload
-- Stores as base64 in Sheet
-- URL field still works (backward compatible)
-- Sheet cell limit: 50KB per cell — large images may fail
+---
+
+## 🧪 Test Checklist
+
+```
+☐ Apps Script v8 deployed (test ?action=getActivityLog)
+☐ Open /activity-log.html → empty initially, OK
+☐ Make a change anywhere (add/edit/delete project)
+☐ Reload /activity-log.html → see the activity logged
+☐ Open /services.html → click "Reorder" button
+☐ Purple banner appears
+☐ Drag a card to new position → drop zone highlights
+☐ Click "Save Order" → page reloads with new order
+☐ Activity log shows "Reordered" entry
+☐ Portfolio website pe data dikhayi de raha
+☐ Hide a service in dashboard → website pe gayab
+```
 
 ---
 
 ## 🆘 Troubleshooting
 
-### **Issue: Export menu doesn't open**
+### **Issue: Activity Log empty rehta**
 **Fix:**
-1. Hard refresh: `Ctrl+Shift+R`
-2. F12 → Console → check for errors
-3. Verify `common.js` uploaded latest version
+1. Apps Script v8 deployed?
+2. Make a change first (add/edit something)
+3. Check `?action=getActivityLog` URL response
+4. F12 → Console for errors
 
-### **Issue: PDF doesn't print**
+### **Issue: Reorder button doesn't appear**
 **Fix:**
-1. Allow popups in browser settings
-2. Try different browser (Chrome recommended)
-3. Disable popup blocker extensions
+1. Hard refresh `Ctrl+Shift+R`
+2. Check `dragdrop.js` uploaded
+3. F12 → Console — check for JS errors
 
-### **Issue: Word file won't open**
+### **Issue: Drag doesn't work**
 **Fix:**
-1. Right-click → Open with → Microsoft Word
-2. Or open in Google Docs
-3. File is HTML-based, sometimes shows "convert" prompt — click yes
+1. Touch devices: try with mouse
+2. Click "Reorder" first (mode must activate)
+3. Cards should show "grab" cursor
+4. Try in Chrome (best support)
 
-### **Issue: Bulk delete doesn't work**
+### **Issue: Portfolio website doesn't update**
 **Fix:**
-1. Make sure clicked on card body (not buttons)
-2. Look for green checkmark on selected cards
-3. F12 → Network tab → check delete requests
-
-### **Issue: Image upload fails**
-**Fix:**
-1. File size under 2MB?
-2. JPG/PNG format?
-3. Try smaller image
-4. F12 → Console → check errors
-5. Alternative: use URL field
-
-### **Issue: Image too large for Sheet**
-**Fix:**
-- Sheet cell limit: 50KB
-- Compress more before upload (use online tools)
-- Or use external image hosting (Cloudinary, Imgur) and paste URL
+1. `portfolio.js` uploaded?
+2. `<script src="js/portfolio.js"></script>` in HTML?
+3. Containers `id="projectsContainer"` etc. present?
+4. F12 → Network tab — check API call
+5. Clear localStorage: `localStorage.clear()` in console
 
 ---
 
-## 📊 What's NOT in Phase 2 (Saved for Phase 3)
+## 📊 Database Changes (v8)
 
-- ↕️ Drag-and-drop reorder (complex, needs Sheet schema change)
-- 📊 Activity log (audit trail)
-- 🔔 Real-time notifications
+New sheet auto-created on first request:
+- **ActivityLog** (Timestamp, Action, Section, Item ID, Item Title)
 
-**Reason:** Drag-drop requires updating Apps Script + adding order tracking column. Will do properly in Phase 3.
+Existing sheets unchanged.
 
 ---
 
 ## ⏱️ Total Setup Time
 
 ```
-Upload 14 files to GitHub:  5 min
-Wait + cache clear:         3 min
-Test all features:          5 min
-─────────────────────────────────
-Total:                      13 min
+Apps Script v8 deploy:         5 min
+Dashboard files upload:        10 min
+Portfolio.js + setup:          15 min
+Wait for deploy + test:        5 min
+─────────────────────────────────────
+Total:                         35 min
 ```
 
 ---
 
-## 🎯 Quick Test Order
+## 🎯 Quick Test (After Install)
 
-1. **Open `/services.html`** (4 stats widgets to test)
-2. **Click "Export" → "PDF"** → see formatted PDF
-3. **Click "Export" → "Word"** → download .doc
-4. **Click "Bulk"** → select 2 cards → "Delete Selected" → ✅
-5. **Open `/projects.html`** → Add Project
-6. **Upload an image** → preview → save → ✅
+1. **Apps Script v8 test:**
+   ```
+   https://script.google.com/.../exec?action=getActivityLog
+   → Returns: {"ok":true,"activity":[]}
+   ```
+
+2. **Activity logging test:**
+   - Add a new project
+   - Open `/activity-log.html`
+   - Should see "Created · Projects · [project name]"
+
+3. **Drag-drop test:**
+   - Open `/services.html`
+   - Click "Reorder"
+   - Drag cards
+   - Save
+   - Reload — order persists
+
+4. **Portfolio sync test:**
+   - Add new testimonial in dashboard
+   - Wait 2 min OR clear portfolio cache
+   - Refresh portfolio website
+   - New testimonial appears
 
 ---
 
-## 🎉 After Installation
+## 🎉 What's Complete Now
 
 ```
-✅ Export to PDF (printable)
-✅ Export to Word (.doc)
-✅ Bulk delete (multiple items at once)
-✅ Image upload (file picker)
-✅ All Phase 1 features intact (search, filter, stats)
-✅ Apps Script v7 working (no duplicates)
-✅ Portfolio sync (if you set it up)
+PHASE 1 ✅
+  - Duplicate fix
+  - Search/filter
+  - Export JSON
+  - Stats widgets
+
+PHASE 2 ✅
+  - Export PDF + Word
+  - Bulk delete
+  - Image upload
+
+PHASE 3 ✅ (NOW)
+  - Activity log
+  - Drag-drop reorder
+  - Portfolio auto-sync (ready)
 ```
 
 ---
 
-## 💡 Pro Tips
+## 💡 Final Notes
 
-### **PDF Export:**
-- Best for printing or sharing as official document
-- Landscape A4 (more columns visible)
-- Browser print → "Save as PDF" → name file → done
+Bhai **complete CMS hai ab**:
+- Dashboard se control sab kuch
+- Website auto-update
+- All actions tracked
+- Reorder pe full control
+- Export, search, bulk operations
+- Image upload working
 
-### **Word Export:**
-- Best for editing in Office/Google Docs
-- Easy to modify content before sharing
-- Comes with Hanan brand styling
+**Test karke screenshot bhejna agar koi issue!** 🚀
 
-### **Bulk Delete:**
-- Use after **filter by status** (e.g. all "hidden" services)
-- Quick way to clean up test data
-- ALWAYS confirm before clicking delete
-
-### **Image Upload:**
-- Compress images BEFORE upload for better performance
-- Use 800x600 or similar resolution
-- JPG > PNG for photos (smaller file size)
-
----
-
-**Bhai install karke test karo. Screenshot bhejna agar koi issue!** 🚀💪
-
-Agar sab kaam karta hai → **Phase 3** plan karenge (drag-drop + activity log)!
+Agar **portfolio HTML share karo**, main wo bhi modify karke ready-to-use version dunga.

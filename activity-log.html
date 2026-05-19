@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activity Log — Hanan Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-avatar"><span>AH</span></div>
+      <div><h3 id="sbUserName">Hanan</h3><p>Admin Panel</p></div>
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="messages.html"><i class="fa-solid fa-envelope"></i> <span>Messages</span> <span class="sb-badge" id="unreadBadge" style="display:none;">0</span></a>
+      <a href="analytics.html"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a>
+      <a href="projects.html"><i class="fa-solid fa-folder-open"></i> <span>Projects</span></a>
+      <a href="testimonials.html"><i class="fa-solid fa-star"></i> <span>Testimonials</span></a>
+      <a href="skills.html"><i class="fa-solid fa-code"></i> <span>Skills</span></a>
+      <a href="services.html"><i class="fa-solid fa-briefcase"></i> <span>Services</span></a>
+      <a href="achievements.html"><i class="fa-solid fa-trophy"></i> <span>Achievements</span></a>
+      <a href="whatsnew.html"><i class="fa-solid fa-bullhorn"></i> <span>What's New</span></a>
+      <a href="activity-log.html" class="active"><i class="fa-solid fa-clock-rotate-left"></i> <span>Activity Log</span></a>
+      <a href="website-editor.html"><i class="fa-solid fa-pen-to-square"></i> <span>Website Editor</span></a>
+      <a href="sections.html"><i class="fa-solid fa-eye"></i> <span>Sections</span></a>
+      <a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
+    </nav>
+    <div class="sb-footer">
+      <button class="sb-logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="sb-toggle" id="sbToggle"><i class="fa-solid fa-bars"></i></button>
+      <h1>Activity Log</h1>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
+        <button class="btn-cancel" id="clearLogBtn"><i class="fa-solid fa-trash"></i> <span>Clear Log</span></button>
+      </div>
+    </header>
+
+    <div class="page-stats">
+      <div class="page-stat-card"><div class="icon yellow"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="info"><div class="num" id="statTotal">0</div><div class="lbl">Total Activities</div></div></div>
+      <div class="page-stat-card"><div class="icon green"><i class="fa-solid fa-plus"></i></div><div class="info"><div class="num" id="statCreated">0</div><div class="lbl">Created</div></div></div>
+      <div class="page-stat-card"><div class="icon blue"><i class="fa-solid fa-pen"></i></div><div class="info"><div class="num" id="statUpdated">0</div><div class="lbl">Updated</div></div></div>
+      <div class="page-stat-card"><div class="icon red"><i class="fa-solid fa-trash"></i></div><div class="info"><div class="num" id="statDeleted">0</div><div class="lbl">Deleted</div></div></div>
+    </div>
+
+    <div class="filter-toolbar">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="created">Created</button>
+        <button class="filter-btn" data-filter="updated">Updated</button>
+        <button class="filter-btn" data-filter="deleted">Deleted</button>
+      </div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Search activity..." />
+      </div>
+      <span class="search-result-count" id="searchResultCount" style="display:none;"></span>
+    </div>
+
+    <div id="activityList"><div class="loading-state"><div class="loader-spinner"></div><p>Loading activity...</p></div></div>
+  </main>
+
+  <div class="notify-container" id="notifyContainer"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/activity-log.js"></script>
+</body>
+</html>

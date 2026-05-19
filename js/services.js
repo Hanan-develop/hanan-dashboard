@@ -1,4 +1,4 @@
-/* SERVICES PAGE - Phase 2 */
+/* SERVICES PAGE - Phase 3 (with drag-drop) */
 $(function () {
     CRUD.init({
         endpoint: 'getServices',
@@ -85,4 +85,7 @@ $(function () {
             };
         }
     });
+
+    /* Phase 3: Initialize drag-drop */
+    if (window.DragDrop) DragDrop.init('services', '#grid');
 });
