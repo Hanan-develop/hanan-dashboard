@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
-  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -43,10 +43,30 @@
       <h1>Testimonials</h1>
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-export" id="exportBtn" title="Export as JSON"><i class="fa-solid fa-download"></i> <span>Export</span></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Review</span></button>
       </div>
     </header>
+
+    <div class="page-stats">
+      <div class="page-stat-card"><div class="icon yellow"><i class="fa-solid fa-star"></i></div><div class="info"><div class="num" id="statTotal">0</div><div class="lbl">Total Reviews</div></div></div>
+      <div class="page-stat-card"><div class="icon blue"><i class="fa-solid fa-award"></i></div><div class="info"><div class="num" id="statFeatured">0</div><div class="lbl">Featured</div></div></div>
+      <div class="page-stat-card"><div class="icon green"><i class="fa-solid fa-thumbs-up"></i></div><div class="info"><div class="num" id="statAvg">0.0</div><div class="lbl">Avg Rating</div></div></div>
+    </div>
+
+    <div class="filter-toolbar">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="featured">Featured</button>
+        <button class="filter-btn" data-filter="5star">5 Stars</button>
+      </div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Search reviews..." />
+      </div>
+      <span class="search-result-count" id="searchResultCount" style="display:none;"></span>
+    </div>
 
     <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading testimonials...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">
@@ -64,7 +84,7 @@
           <div class="form-field"><label>Rating</label><select id="rating"><option value="5">⭐⭐⭐⭐⭐ 5</option><option value="4">⭐⭐⭐⭐ 4</option><option value="3">⭐⭐⭐ 3</option><option value="2">⭐⭐ 2</option><option value="1">⭐ 1</option></select></div>
           <div class="form-field"><label>Avatar URL</label><input type="url" id="avatar" /></div>
         </div>
-        <div class="modal-toggle-row"><label><i class="fa-solid fa-star"></i> Featured</label><div class="toggle-switch" id="featuredToggle"></div><input type="hidden" id="featured" value="no" /></div>
+        <div class="modal-toggle-row"><label><i class="fa-solid fa-star"></i> Featured Review</label><div class="toggle-switch" id="featuredToggle"></div><input type="hidden" id="featured" value="no" /></div>
         <div class="form-actions">
           <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
           <button type="submit" class="btn-save"><i class="fa-solid fa-check"></i> <span id="saveBtnText">Save</span></button>

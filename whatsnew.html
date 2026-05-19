@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
-  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -43,10 +43,25 @@
       <h1>What's New</h1>
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-export" id="exportBtn" title="Export as JSON"><i class="fa-solid fa-download"></i> <span>Export</span></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Update</span></button>
       </div>
     </header>
+
+    <div class="filter-toolbar">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="NEW">New</button>
+        <button class="filter-btn" data-filter="LAUNCH">Launch</button>
+        <button class="filter-btn" data-filter="UPDATE">Update</button>
+      </div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Search updates..." />
+      </div>
+      <span class="search-result-count" id="searchResultCount" style="display:none;"></span>
+    </div>
 
     <div class="timeline" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading updates...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">

@@ -698,3 +698,54 @@ body.light-theme .current-info-row { border-bottom-color: rgba(0, 0, 0, 0.05); }
     .modal-content { padding: 1.2rem; }
     .breakdown-grid { grid-template-columns: 1fr; }
 }
+/* =========================================================
+   HANAN DASHBOARD - PHASE 1 ADDITIONS
+   Search bar, export button, enhanced filters
+   ========================================================= */
+
+/* Search + Filter Toolbar */
+.toolbar { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.4rem; align-items: center; }
+.toolbar .search-wrap { flex: 1; min-width: 24rem; position: relative; }
+.toolbar .search-wrap i { position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; pointer-events: none; }
+.toolbar .search-input { width: 100%; padding: 1.1rem 1.3rem 1.1rem 3.6rem; background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid var(--border-strong); border-radius: 0.7rem; color: var(--text); font-size: 1.25rem; outline: none; transition: all 0.2s; }
+.toolbar .search-input:focus { border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(249, 202, 36, 0.15); }
+.search-result-count { display: inline-block; padding: 0.4rem 0.8rem; background: rgba(249, 202, 36, 0.1); color: var(--yellow); border-radius: 5rem; font-size: 1.05rem; font-weight: 600; margin-left: 0.5rem; }
+
+/* Export button */
+.btn-export { padding: 0 1.4rem; height: 3.6rem; background: var(--card-bg); border: 1px solid var(--border-strong); color: var(--text-soft); border-radius: 0.7rem; font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s; }
+.btn-export:hover { border-color: var(--success); color: var(--success); }
+
+/* Better filter bar with toolbar */
+.filter-toolbar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.4rem; padding: 0.9rem 1.2rem; background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 0.9rem; align-items: center; }
+.filter-toolbar .filter-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.filter-toolbar .search-wrap { flex: 1; min-width: 18rem; position: relative; margin-left: auto; }
+.filter-toolbar .search-wrap input { width: 100%; padding: 0.7rem 1rem 0.7rem 3rem; background: var(--input-bg); border: 1px solid var(--border-strong); border-radius: 0.6rem; color: var(--text); font-size: 1.15rem; outline: none; }
+.filter-toolbar .search-wrap i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; pointer-events: none; }
+.filter-toolbar .search-wrap input:focus { border-color: var(--yellow); }
+
+/* Stats widgets for CRUD pages */
+.page-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; margin-bottom: 1.4rem; }
+.page-stat-card { background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 0.9rem; padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; transition: all 0.2s; }
+.page-stat-card:hover { border-color: rgba(249, 202, 36, 0.3); }
+.page-stat-card .icon { width: 3.4rem; height: 3.4rem; border-radius: 0.6rem; display: grid; place-items: center; font-size: 1.3rem; flex-shrink: 0; }
+.page-stat-card .icon.yellow { background: rgba(249, 202, 36, 0.15); color: var(--yellow); }
+.page-stat-card .icon.green { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+.page-stat-card .icon.red { background: rgba(239, 68, 68, 0.15); color: var(--error); }
+.page-stat-card .icon.blue { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.page-stat-card .info { flex: 1; min-width: 0; }
+.page-stat-card .num { font-family: 'Sora', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1; }
+.page-stat-card .lbl { font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .toolbar .search-wrap { min-width: 100%; }
+    .filter-toolbar { flex-direction: column; align-items: stretch; }
+    .filter-toolbar .search-wrap { min-width: 100%; margin-left: 0; }
+    .filter-toolbar .filter-buttons { flex-wrap: wrap; }
+    .btn-export span { display: none; }
+    .page-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+    .page-stats { grid-template-columns: 1fr; }
+}

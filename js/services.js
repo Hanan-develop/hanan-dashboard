@@ -1,4 +1,4 @@
-/* SERVICES PAGE */
+/* SERVICES PAGE - Phase 1 */
 $(function () {
     CRUD.init({
         endpoint: 'getServices',
@@ -13,9 +13,13 @@ $(function () {
             return true;
         },
         updateCounts: function (items) {
-            $('#countAll').text(items.length);
-            $('#countVisible').text(items.filter(function (i) { return i.visible !== 'no'; }).length);
-            $('#countHidden').text(items.filter(function (i) { return i.visible === 'no'; }).length);
+            var visible = items.filter(function (i) { return i.visible !== 'no'; }).length;
+            var hidden = items.filter(function (i) { return i.visible === 'no'; }).length;
+            var tagged = items.filter(function (i) { return i.tag; }).length;
+            $('#statTotal').text(items.length);
+            $('#statVisible').text(visible);
+            $('#statHidden').text(hidden);
+            $('#statTagged').text(tagged);
         },
         sortFn: function (items) {
             return items.slice().sort(function (a, b) { return (parseInt(a.orderNum) || 99) - (parseInt(b.orderNum) || 99); });

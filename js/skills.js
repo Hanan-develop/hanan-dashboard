@@ -1,4 +1,4 @@
-/* SKILLS PAGE */
+/* SKILLS PAGE - Phase 1 */
 $(function () {
     CRUD.init({
         endpoint: 'getSkills',
@@ -7,6 +7,23 @@ $(function () {
         dataKey: 'skills',
         emptyIcon: 'fa-code',
         emptyText: 'No skills yet',
+        filterFn: function (s, f) {
+            if (f === 'expert') return s.level === 'Expert';
+            if (f === 'advanced') return s.level === 'Advanced';
+            return true;
+        },
+        updateCounts: function (items) {
+            var cats = {};
+            var totalPercent = 0;
+            items.forEach(function (s) {
+                if (s.category) cats[s.category] = true;
+                totalPercent += parseInt(s.percent) || 0;
+            });
+            var avg = items.length ? Math.round(totalPercent / items.length) : 0;
+            $('#statTotal').text(items.length);
+            $('#statCategories').text(Object.keys(cats).length);
+            $('#statAvgPercent').text(avg + '%');
+        },
         renderCard: function (s) {
             var ic = (s.icon || 'fa-code').indexOf('fa-') === 0 ? (s.icon.indexOf('wordpress') !== -1 || s.icon.indexOf('shopify') !== -1 ? 'fa-brands ' + s.icon : 'fa-solid ' + s.icon) : s.icon;
             var p = parseInt(s.percent) || 0;

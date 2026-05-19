@@ -1,4 +1,4 @@
-/* ACHIEVEMENTS PAGE */
+/* ACHIEVEMENTS PAGE - Phase 1 */
 $(function () {
     CRUD.init({
         endpoint: 'getAchievements',
@@ -13,9 +13,14 @@ $(function () {
             return true;
         },
         updateCounts: function (items) {
-            $('#countAll').text(items.length);
-            $('#countVisible').text(items.filter(function (i) { return i.visible !== 'no'; }).length);
-            $('#countHidden').text(items.filter(function (i) { return i.visible === 'no'; }).length);
+            var visible = items.filter(function (i) { return i.visible !== 'no'; }).length;
+            var hidden = items.filter(function (i) { return i.visible === 'no'; }).length;
+            var years = {};
+            items.forEach(function (i) { if (i.year) years[i.year] = true; });
+            $('#statTotal').text(items.length);
+            $('#statVisible').text(visible);
+            $('#statHidden').text(hidden);
+            $('#statYears').text(Object.keys(years).length);
         },
         sortFn: function (items) {
             return items.slice().sort(function (a, b) { return (parseInt(a.orderNum) || 99) - (parseInt(b.orderNum) || 99); });

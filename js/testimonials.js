@@ -1,4 +1,4 @@
-/* TESTIMONIALS PAGE */
+/* TESTIMONIALS PAGE - Phase 1 */
 $(function () {
     CRUD.init({
         endpoint: 'getTestimonials',
@@ -7,6 +7,19 @@ $(function () {
         dataKey: 'testimonials',
         emptyIcon: 'fa-star',
         emptyText: 'No reviews yet',
+        filterFn: function (t, f) {
+            if (f === 'featured') return (t.featured === true || t.featured === 'yes');
+            if (f === '5star') return (parseInt(t.rating) || 0) === 5;
+            return true;
+        },
+        updateCounts: function (items) {
+            var featured = items.filter(function (t) { return t.featured === true || t.featured === 'yes'; }).length;
+            var total = items.length;
+            var avg = total ? (items.reduce(function (s, t) { return s + (parseInt(t.rating) || 5); }, 0) / total).toFixed(1) : '0.0';
+            $('#statTotal').text(total);
+            $('#statFeatured').text(featured);
+            $('#statAvg').text(avg);
+        },
         renderCard: function (t) {
             var stars = '';
             for (var i = 0; i < 5; i++) stars += i < (parseInt(t.rating) || 5) ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>';

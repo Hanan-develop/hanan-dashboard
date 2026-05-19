@@ -1,4 +1,4 @@
-/* WHAT'S NEW PAGE */
+/* WHAT'S NEW PAGE - Phase 1 */
 $(function () {
     CRUD.init({
         endpoint: 'getWhatsNew',
@@ -7,6 +7,10 @@ $(function () {
         dataKey: 'updates',
         emptyIcon: 'fa-bullhorn',
         emptyText: 'No updates yet',
+        filterFn: function (u, f) {
+            if (f === 'all') return true;
+            return (u.tag || '').toUpperCase() === f.toUpperCase();
+        },
         sortFn: function (items) {
             return items.slice().sort(function (a, b) { return new Date(b.date || 0) - new Date(a.date || 0); });
         },

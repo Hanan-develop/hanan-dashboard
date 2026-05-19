@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
-  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -43,16 +43,32 @@
       <h1>Achievements</h1>
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-export" id="exportBtn" title="Export as JSON"><i class="fa-solid fa-download"></i> <span>Export</span></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Achievement</span></button>
       </div>
     </header>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">All <span class="filter-count" id="countAll">0</span></button>
-      <button class="filter-btn" data-filter="visible">Visible <span class="filter-count" id="countVisible">0</span></button>
-      <button class="filter-btn" data-filter="hidden">Hidden <span class="filter-count" id="countHidden">0</span></button>
+    <div class="page-stats">
+      <div class="page-stat-card"><div class="icon yellow"><i class="fa-solid fa-trophy"></i></div><div class="info"><div class="num" id="statTotal">0</div><div class="lbl">Total</div></div></div>
+      <div class="page-stat-card"><div class="icon green"><i class="fa-solid fa-eye"></i></div><div class="info"><div class="num" id="statVisible">0</div><div class="lbl">Visible</div></div></div>
+      <div class="page-stat-card"><div class="icon red"><i class="fa-solid fa-eye-slash"></i></div><div class="info"><div class="num" id="statHidden">0</div><div class="lbl">Hidden</div></div></div>
+      <div class="page-stat-card"><div class="icon blue"><i class="fa-solid fa-calendar"></i></div><div class="info"><div class="num" id="statYears">0</div><div class="lbl">Years</div></div></div>
     </div>
+
+    <div class="filter-toolbar">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="visible">Visible</button>
+        <button class="filter-btn" data-filter="hidden">Hidden</button>
+      </div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Search achievements..." />
+      </div>
+      <span class="search-result-count" id="searchResultCount" style="display:none;"></span>
+    </div>
+
     <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading achievements...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
@@ -66,7 +82,7 @@
           <div class="form-field"><label>Category</label><select id="category"><option value="career">Career</option><option value="education">Education</option><option value="certification">Certification</option><option value="award">Award</option><option value="milestone">Milestone</option><option value="recognition">Recognition</option></select></div>
         </div>
         <div class="icon-color-row">
-          <div class="form-field"><label>Icon</label><input type="text" id="icon" placeholder="fa-trophy" value="fa-trophy" /></div>
+          <div class="form-field"><label>Icon</label><input type="text" id="icon" value="fa-trophy" /></div>
           <div class="form-field"><label>Color</label><div class="color-picker-wrap"><input type="color" id="color" value="#f9ca24" /><input type="text" id="colorHex" value="#f9ca24" maxlength="7" /></div></div>
         </div>
         <div class="form-row">

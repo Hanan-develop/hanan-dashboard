@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
-  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -43,10 +43,30 @@
       <h1>Skills</h1>
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-export" id="exportBtn" title="Export as JSON"><i class="fa-solid fa-download"></i> <span>Export</span></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Skill</span></button>
       </div>
     </header>
+
+    <div class="page-stats">
+      <div class="page-stat-card"><div class="icon yellow"><i class="fa-solid fa-code"></i></div><div class="info"><div class="num" id="statTotal">0</div><div class="lbl">Total Skills</div></div></div>
+      <div class="page-stat-card"><div class="icon blue"><i class="fa-solid fa-layer-group"></i></div><div class="info"><div class="num" id="statCategories">0</div><div class="lbl">Categories</div></div></div>
+      <div class="page-stat-card"><div class="icon green"><i class="fa-solid fa-chart-line"></i></div><div class="info"><div class="num" id="statAvgPercent">0%</div><div class="lbl">Avg Level</div></div></div>
+    </div>
+
+    <div class="filter-toolbar">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="expert">Expert</button>
+        <button class="filter-btn" data-filter="advanced">Advanced</button>
+      </div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Search skills..." />
+      </div>
+      <span class="search-result-count" id="searchResultCount" style="display:none;"></span>
+    </div>
 
     <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading skills...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">

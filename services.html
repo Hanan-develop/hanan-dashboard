@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="bg-orbs" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
-  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-avatar"><span>AH</span></div>
@@ -43,29 +43,45 @@
       <h1>Services</h1>
       <div class="topbar-actions">
         <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button class="btn-export" id="exportBtn" title="Export as JSON"><i class="fa-solid fa-download"></i> <span>Export</span></button>
         <button class="btn-refresh" id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn-add" id="addBtn"><i class="fa-solid fa-plus"></i> <span>Add Service</span></button>
       </div>
     </header>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">All <span class="filter-count" id="countAll">0</span></button>
-      <button class="filter-btn" data-filter="visible">Visible <span class="filter-count" id="countVisible">0</span></button>
-      <button class="filter-btn" data-filter="hidden">Hidden <span class="filter-count" id="countHidden">0</span></button>
+    <div class="page-stats">
+      <div class="page-stat-card"><div class="icon yellow"><i class="fa-solid fa-briefcase"></i></div><div class="info"><div class="num" id="statTotal">0</div><div class="lbl">Total Services</div></div></div>
+      <div class="page-stat-card"><div class="icon green"><i class="fa-solid fa-eye"></i></div><div class="info"><div class="num" id="statVisible">0</div><div class="lbl">Visible</div></div></div>
+      <div class="page-stat-card"><div class="icon red"><i class="fa-solid fa-eye-slash"></i></div><div class="info"><div class="num" id="statHidden">0</div><div class="lbl">Hidden</div></div></div>
+      <div class="page-stat-card"><div class="icon blue"><i class="fa-solid fa-tag"></i></div><div class="info"><div class="num" id="statTagged">0</div><div class="lbl">Tagged</div></div></div>
     </div>
+
+    <div class="filter-toolbar">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="visible">Visible</button>
+        <button class="filter-btn" data-filter="hidden">Hidden</button>
+      </div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Search services..." />
+      </div>
+      <span class="search-result-count" id="searchResultCount" style="display:none;"></span>
+    </div>
+
     <div class="card-grid" id="grid"><div class="loading-state"><div class="loader-spinner"></div><p>Loading services...</p></div></div>
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
       <div class="modal-header"><h2 id="modalTitle">Add Service</h2><button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button></div>
       <form id="itemForm">
         <input type="hidden" id="itemId" />
-        <div class="form-field"><label>Title *</label><input type="text" id="title" required maxlength="100" placeholder="WordPress Development" /></div>
+        <div class="form-field"><label>Title *</label><input type="text" id="title" required maxlength="100" /></div>
         <div class="form-field"><label>Description *</label><textarea id="description" required maxlength="500"></textarea></div>
         <div class="icon-color-row">
           <div class="form-field"><label>Icon</label><input type="text" id="icon" placeholder="fa-wordpress" value="fa-briefcase" /></div>
           <div class="form-field"><label>Color</label><div class="color-picker-wrap"><input type="color" id="color" value="#f9ca24" /><input type="text" id="colorHex" value="#f9ca24" maxlength="7" /></div></div>
         </div>
-        <div class="form-field"><label>Features (one per line)</label><textarea id="features" placeholder="Theme customization&#10;Plugin integration"></textarea></div>
+        <div class="form-field"><label>Features (one per line)</label><textarea id="features"></textarea></div>
         <div class="form-row">
           <div class="form-field"><label>Display Order</label><input type="number" id="orderNum" min="1" max="100" value="1" /></div>
           <div class="form-field"><label>Tag</label><select id="tag"><option value="">None</option><option value="popular">Popular</option><option value="new">New</option><option value="featured">Featured</option></select></div>
