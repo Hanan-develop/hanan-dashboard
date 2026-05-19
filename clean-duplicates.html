@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clean Duplicates — Hanan Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .clean-card { background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 1rem; padding: 1.4rem 1.6rem; margin-bottom: 1.2rem; }
+    .clean-card h2 { font-family: 'Sora'; font-size: 1.4rem; color: var(--text); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem; justify-content: space-between; }
+    .clean-card h2 .count { font-size: 1.1rem; color: var(--text-muted); font-weight: 600; }
+    .clean-actions { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .btn-clean { padding: 0.7rem 1.2rem; background: rgba(239,68,68,0.15); border: 1px solid var(--error); color: var(--error); border-radius: 0.6rem; font-family: 'Sora'; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s; }
+    .btn-clean:hover { background: var(--error); color: #fff; }
+    .btn-clean:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-auto { background: rgba(245,158,11,0.15); border-color: var(--warning); color: var(--warning); }
+    .btn-auto:hover { background: var(--warning); color: #fff; }
+    .item-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 1rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 0.6rem; margin-bottom: 0.4rem; }
+    .item-row.duplicate { border-left: 3px solid var(--error); background: rgba(239,68,68,0.05); }
+    .item-row .item-num { font-family: 'Sora'; color: var(--text-muted); font-weight: 700; min-width: 2.4rem; }
+    .item-row .item-name { flex: 1; font-family: 'Sora'; font-size: 1.15rem; color: var(--text); }
+    .item-row .item-dup-badge { padding: 0.15rem 0.5rem; background: var(--error); color: #fff; border-radius: 5rem; font-size: 0.95rem; font-weight: 700; }
+    .item-row button { width: 2.6rem; height: 2.6rem; background: transparent; border: 1px solid var(--border-strong); color: var(--text-soft); border-radius: 0.5rem; cursor: pointer; font-size: 1.1rem; }
+    .item-row button:hover { border-color: var(--error); color: var(--error); }
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.8rem; margin-bottom: 1.4rem; }
+    .stat-mini { background: var(--card-bg); border: 1px solid var(--border); border-radius: 0.8rem; padding: 1rem; text-align: center; }
+    .stat-mini .num { font-family: 'Sora'; font-size: 1.8rem; font-weight: 800; color: var(--yellow); }
+    .stat-mini .lbl { font-size: 1rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="bg-grid"></div>
+
+  <main class="main" style="margin-left: 0; max-width: 90rem; margin: 0 auto;">
+    <header class="topbar">
+      <h1><i class="fa-solid fa-broom" style="color:var(--yellow);"></i> Clean Duplicates</h1>
+      <a href="dashboard.html" class="btn-view-site"><i class="fa-solid fa-arrow-left"></i> <span>Dashboard</span></a>
+    </header>
+
+    <div class="clean-card">
+      <h2><i class="fa-solid fa-info-circle" style="color:var(--yellow);"></i> What This Tool Does</h2>
+      <p style="color: var(--text-soft); line-height: 1.6; margin-bottom: 1rem;">Yahan tumhari Sheet ka <strong>saara data dikhayi de raha hai</strong>. Duplicates automatically detect kar liye gaye hain. Ek click mein purify karo:</p>
+      <ul style="margin-left: 2rem; color: var(--text-soft); line-height: 1.8;">
+        <li>🔴 <strong>Red border</strong> = Duplicate item</li>
+        <li>🟡 <strong>"Auto-Clean All Duplicates"</strong> = Sab duplicates ek saath remove</li>
+        <li>🗑️ <strong>Individual delete</strong> = Manual control</li>
+      </ul>
+    </div>
+
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div id="loadingState" class="clean-card" style="text-align:center; padding: 3rem;">
+      <div class="loader-spinner"></div>
+      <p style="margin-top: 1rem;">Loading all data from Google Sheet...</p>
+    </div>
+
+    <div id="content" style="display:none;">
+      <button class="btn-clean btn-auto" id="autoCleanAll" style="margin-bottom: 1.4rem; padding: 1.2rem 2rem; font-size: 1.3rem;">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Clean ALL Duplicates Across All Sections
+      </button>
+
+      <div class="clean-card" id="projectsSection">
+        <h2><span><i class="fa-solid fa-folder-open" style="color:var(--yellow);"></i> Projects</span><span class="count" id="projectsCount">—</span></h2>
+        <div class="clean-actions">
+          <button class="btn-clean btn-auto" data-section="projects"><i class="fa-solid fa-magic"></i> Auto-Clean</button>
+        </div>
+        <div id="projectsList"></div>
+      </div>
+
+      <div class="clean-card" id="testimonialsSection">
+        <h2><span><i class="fa-solid fa-star" style="color:var(--yellow);"></i> Testimonials/Reviews</span><span class="count" id="testimonialsCount">—</span></h2>
+        <div class="clean-actions">
+          <button class="btn-clean btn-auto" data-section="testimonials"><i class="fa-solid fa-magic"></i> Auto-Clean</button>
+        </div>
+        <div id="testimonialsList"></div>
+      </div>
+
+      <div class="clean-card" id="skillsSection">
+        <h2><span><i class="fa-solid fa-code" style="color:var(--yellow);"></i> Skills</span><span class="count" id="skillsCount">—</span></h2>
+        <div class="clean-actions">
+          <button class="btn-clean btn-auto" data-section="skills"><i class="fa-solid fa-magic"></i> Auto-Clean</button>
+        </div>
+        <div id="skillsList"></div>
+      </div>
+
+      <div class="clean-card" id="servicesSection">
+        <h2><span><i class="fa-solid fa-briefcase" style="color:var(--yellow);"></i> Services</span><span class="count" id="servicesCount">—</span></h2>
+        <div class="clean-actions">
+          <button class="btn-clean btn-auto" data-section="services"><i class="fa-solid fa-magic"></i> Auto-Clean</button>
+        </div>
+        <div id="servicesList"></div>
+      </div>
+
+      <div class="clean-card" id="achievementsSection">
+        <h2><span><i class="fa-solid fa-trophy" style="color:var(--yellow);"></i> Achievements</span><span class="count" id="achievementsCount">—</span></h2>
+        <div class="clean-actions">
+          <button class="btn-clean btn-auto" data-section="achievements"><i class="fa-solid fa-magic"></i> Auto-Clean</button>
+        </div>
+        <div id="achievementsList"></div>
+      </div>
+
+      <div class="clean-card" id="whatsnewSection">
+        <h2><span><i class="fa-solid fa-bullhorn" style="color:var(--yellow);"></i> What's New</span><span class="count" id="whatsnewCount">—</span></h2>
+        <div class="clean-actions">
+          <button class="btn-clean btn-auto" data-section="whatsnew"><i class="fa-solid fa-magic"></i> Auto-Clean</button>
+        </div>
+        <div id="whatsnewList"></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="notify-container" id="notifyContainer"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+(function () {
+    'use strict';
+    if (!HananAuth.requireAuth()) return;
+
+    var allData = {};
+
+    var SECTIONS = [
+        { key: 'projects', endpoint: 'getProjects', dataKey: 'projects', deleteAction: 'deleteProject', nameField: 'title' },
+        { key: 'testimonials', endpoint: 'getTestimonials', dataKey: 'testimonials', deleteAction: 'deleteTestimonial', nameField: 'name' },
+        { key: 'skills', endpoint: 'getSkills', dataKey: 'skills', deleteAction: 'deleteSkill', nameField: 'name' },
+        { key: 'services', endpoint: 'getServices', dataKey: 'services', deleteAction: 'deleteService', nameField: 'title' },
+        { key: 'achievements', endpoint: 'getAchievements', dataKey: 'achievements', deleteAction: 'deleteAchievement', nameField: 'title' },
+        { key: 'whatsnew', endpoint: 'getWhatsNew', dataKey: 'updates', deleteAction: 'deleteWhatsNew', nameField: 'title' }
+    ];
+
+    function findDuplicates(items, nameField) {
+        var seen = {};
+        return items.map(function (item, idx) {
+            var key = (item[nameField] || '').toLowerCase().trim();
+            if (!key) return { item: item, idx: idx, isDup: false };
+            var isDup = !!seen[key];
+            if (!isDup) seen[key] = true;
+            return { item: item, idx: idx, isDup: isDup };
+        });
+    }
+
+    function renderSection(section) {
+        var items = allData[section.key] || [];
+        var marked = findDuplicates(items, section.nameField);
+        var dupCount = marked.filter(function (m) { return m.isDup; }).length;
+
+        $('#' + section.key + 'Count').text(items.length + ' total · ' + dupCount + ' duplicates');
+
+        if (items.length === 0) {
+            $('#' + section.key + 'List').html('<div style="text-align:center; color:var(--text-muted); padding:1.5rem;">No items</div>');
+            return;
+        }
+
+        var html = marked.map(function (m, i) {
+            var name = m.item[section.nameField] || '(no name)';
+            return '<div class="item-row ' + (m.isDup ? 'duplicate' : '') + '">' +
+                '<div class="item-num">#' + (i + 1) + '</div>' +
+                '<div class="item-name">' + escapeHtml(name) + '</div>' +
+                (m.isDup ? '<span class="item-dup-badge">DUPLICATE</span>' : '') +
+                '<button data-section="' + section.key + '" data-id="' + m.item.id + '" title="Delete"><i class="fa-solid fa-trash"></i></button>' +
+                '</div>';
+        }).join('');
+        $('#' + section.key + 'List').html(html);
+    }
+
+    function renderStats() {
+        var totalItems = 0, totalDups = 0;
+        SECTIONS.forEach(function (s) {
+            var items = allData[s.key] || [];
+            var marked = findDuplicates(items, s.nameField);
+            totalItems += items.length;
+            totalDups += marked.filter(function (m) { return m.isDup; }).length;
+        });
+        var html =
+            '<div class="stat-mini"><div class="num">' + totalItems + '</div><div class="lbl">Total Items</div></div>' +
+            '<div class="stat-mini"><div class="num" style="color:' + (totalDups > 0 ? 'var(--error)' : 'var(--success)') + ';">' + totalDups + '</div><div class="lbl">Duplicates</div></div>' +
+            '<div class="stat-mini"><div class="num">' + SECTIONS.length + '</div><div class="lbl">Sections</div></div>' +
+            '<div class="stat-mini"><div class="num">' + (totalItems - totalDups) + '</div><div class="lbl">Unique Items</div></div>';
+        $('#statsBar').html(html);
+    }
+
+    function loadAll() {
+        var promises = SECTIONS.map(function (s) {
+            return fetch(HananAuth.getApiUrl() + '?action=' + s.endpoint)
+                .then(function (r) { return r.json(); })
+                .then(function (res) { allData[s.key] = (res && res[s.dataKey]) || []; })
+                .catch(function () { allData[s.key] = []; });
+        });
+        Promise.all(promises).then(function () {
+            $('#loadingState').hide();
+            $('#content').show();
+            SECTIONS.forEach(renderSection);
+            renderStats();
+        });
+    }
+
+    function deleteItem(section, id) {
+        return new Promise(function (resolve) {
+            var s = SECTIONS.find(function (x) { return x.key === section; });
+            if (!s) return resolve(false);
+            var fd = new FormData();
+            fd.append('action', s.deleteAction);
+            fd.append('secret', HananAuth.getSecret());
+            fd.append('id', id);
+            fetch(HananAuth.getApiUrl(), { method: 'POST', body: fd })
+                .then(function (r) { return r.json(); })
+                .then(function (res) { resolve(res && res.ok); })
+                .catch(function () { resolve(false); });
+        });
+    }
+
+    function autoCleanSection(sectionKey) {
+        var section = SECTIONS.find(function (s) { return s.key === sectionKey; });
+        var items = allData[sectionKey] || [];
+        var marked = findDuplicates(items, section.nameField);
+        var duplicates = marked.filter(function (m) { return m.isDup; });
+
+        if (duplicates.length === 0) {
+            notify({ message: 'No duplicates in ' + sectionKey + '!', type: 'success' });
+            return Promise.resolve();
+        }
+
+        if (!confirm('Delete ' + duplicates.length + ' duplicate(s) from ' + sectionKey + '?')) {
+            return Promise.resolve();
+        }
+
+        notify({ message: 'Cleaning ' + duplicates.length + ' from ' + sectionKey + '...', type: 'warning' });
+
+        var promise = Promise.resolve();
+        duplicates.forEach(function (m) {
+            promise = promise.then(function () {
+                return deleteItem(sectionKey, m.item.id);
+            }).then(function () {
+                return new Promise(function (r) { setTimeout(r, 400); });
+            });
+        });
+        return promise.then(function () {
+            notify({ message: 'Cleaned ' + duplicates.length + ' from ' + sectionKey, type: 'success' });
+        });
+    }
+
+    $(document).on('click', '.btn-clean[data-section]', function () {
+        var section = $(this).data('section');
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Cleaning...');
+        autoCleanSection(section).then(function () {
+            try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
+            loadAll();
+            $btn.prop('disabled', false).html('<i class="fa-solid fa-magic"></i> Auto-Clean');
+        });
+    });
+
+    $('#autoCleanAll').on('click', function () {
+        if (!confirm('Clean ALL duplicates across ALL sections? This action cannot be undone.')) return;
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Cleaning Everything...');
+
+        var promise = Promise.resolve();
+        SECTIONS.forEach(function (s) {
+            promise = promise.then(function () { return autoCleanSection(s.key); });
+        });
+        promise.then(function () {
+            try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
+            loadAll();
+            $btn.prop('disabled', false).html('<i class="fa-solid fa-check"></i> All Cleaned!');
+            notify({ message: '🎉 All duplicates removed!', type: 'success' });
+        });
+    });
+
+    $(document).on('click', '.item-row button', function () {
+        var section = $(this).data('section');
+        var id = $(this).data('id');
+        if (!confirm('Delete this item?')) return;
+        var $btn = $(this);
+        $btn.prop('disabled', true);
+        deleteItem(section, id).then(function (ok) {
+            if (ok) {
+                try { localStorage.removeItem('hanan_dashboard_cache'); } catch (e) {}
+                notify({ message: 'Deleted!', type: 'success' });
+                loadAll();
+            } else {
+                notify({ message: 'Failed', type: 'error' });
+                $btn.prop('disabled', false);
+            }
+        });
+    });
+
+    loadAll();
+})();
+  </script>
+</body>
+</html>
